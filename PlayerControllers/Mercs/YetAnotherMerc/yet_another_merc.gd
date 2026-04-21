@@ -15,4 +15,22 @@ func money_custom_ready() -> void:
 		if cur is MeshInstance3D:
 			(cur as MeshInstance3D).set_surface_override_material(0, GoldMaterial)
 
+	for ability in self.abilities:
+		if !ability.is_in_group(MoneyAbility.GROUP_NAME): continue
+		ability.equipped.connect(
+			func(ab: Ability) -> void:
+				print("Equipped: " + str(ab))
+				last_equipped_ability = ab
+				_update_ammo(last_equipped_ability)
+		)
+	
 	return
+
+var last_equipped_ability: Ability = null
+func _update_ammo(ab: Ability) -> void:
+	if !ab: return
+	$"UI/Ammo".text = "%0.2f/(%0.2f * %0.2f): %0.f Bullets" % [cash, ab.cost_per_activation, ab.cost_multiplier, floor(cash / ab.net_activation_cost)]
+
+func custom_process(_delta: float) -> void:
+	$"UI/Remaining Money".text = "Cash: %0.2f" % cash
+	_update_ammo(last_equipped_ability)

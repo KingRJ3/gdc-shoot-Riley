@@ -22,6 +22,7 @@ signal mult_updated(old: float, new: float)
 signal activations_updated(old: int, new: int)
 
 signal fired(cost: float)
+signal equipped(this: Ability)
 
 var activations: int = abh.activations:
 	get: return abh.activations
@@ -61,7 +62,6 @@ var cash_storage: float = abh.cash_storage:
 	set(m): 
 		abh.cash_storage = m
 		cash_storage = abh.cash_storage
-		update_label()
 
 var net_activation_cost: float = abh.net_activation_cost:
 	get: return abh.net_activation_cost
@@ -84,32 +84,27 @@ func _ready() -> void:
 	abh.reward_updated		.connect(func(old: float, new: float) -> void: self.reward_updated		.emit(old, new))
 	abh.mult_updated		.connect(func(old: float, new: float) -> void: self.mult_updated		.emit(old, new))
 	abh.activations_updated	.connect(func(old: float, new: float) -> void: self.activations_updated	.emit(old, new))
+	abh.equipped			.connect(func(ab: Ability) -> void: self.equipped.emit(ab))
 	
 	## Gun Settings
 	ammo = 99
 	max_ammo = 99
 	super()
 	
-	update_label()
 	cost_per_activation = 0
 	reward_per_kill = -500
 	can_kill = true
+	
+	$Crosshair002/Label.visible = false
 
 func _process(delta: float) -> void:
 	super(delta)
-	
-	# TODO: This is a bit hacky, and I don't love it, but it works for now. Figure out why it's not updating
-	# correctly and remove this so that it only updates on actual cash update
-	update_label()
 
 ### Gun Stuff ###
 
-func update_label() -> void:
-	label.text = "%0.2f/%0.2f: %0.f" % [cash_storage, net_activation_cost, floor(cash_storage / net_activation_cost)]
-
 func equip() -> void:
 	super()
-	update_label()
+	abh.equipped.emit(self)
 
 func reload() -> void: return
 

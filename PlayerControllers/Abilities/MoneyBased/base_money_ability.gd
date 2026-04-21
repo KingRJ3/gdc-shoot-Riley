@@ -18,8 +18,10 @@ signal reward_updated(old: float, new: float)	## Emitted when the cost per kill 
 signal mult_updated(old: float, new: float)		## Emitted when the cost multiplier of ability activation changes
 signal activations_updated(old: int, new: int)	## Emitted when the total number of activations changes
 
-@warning_ignore("unused_signal")
+@warning_ignore_start("unused_signal")
 signal fired(cost: float) ## Emitted by extending ability when a behavior is successful. Should emit the amount of money to subtract from the player
+signal equipped(this: Ability)
+@warning_ignore_restore("unused_signal")
 
 ## Number of times this ability has been activated. Used to determine cost multiplier
 var activations: int = 0:
@@ -79,3 +81,8 @@ func connect_player_cash(player: Merc) -> void:
 ## Adds any instantiated nodes to the money ability group. Call super() in your extending classes if you want them to be properly included
 func _ready() -> void:
 	add_to_group(GROUP_NAME)
+
+func equip_ability(ab: Array[Ability]) -> void:
+	super(ab)
+	equipped.emit(self)
+	

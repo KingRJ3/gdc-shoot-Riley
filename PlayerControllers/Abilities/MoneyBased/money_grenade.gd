@@ -19,6 +19,7 @@ signal mult_updated(old: float, new: float)
 signal activations_updated(old: int, new: int)
 
 signal fired(cost: float)
+signal equipped(this: Ability)
 
 var activations: int = abh.activations:
 	get: return abh.activations
@@ -73,6 +74,7 @@ func _ready() -> void:
 	abh.reward_updated		.connect(func(old: float, new: float) -> void: self.reward_updated		.emit(old, new))
 	abh.mult_updated		.connect(func(old: float, new: float) -> void: self.mult_updated		.emit(old, new))
 	abh.activations_updated	.connect(func(old: float, new: float) -> void: self.activations_updated	.emit(old, new))
+	abh.equipped			.connect(func(ab: Ability) -> void: self.equipped.emit(ab))
 
 	cost_per_activation = 35
 	damage = 100
@@ -85,3 +87,7 @@ func shoot():
 	cash_storage -= net_activation_cost
 	fired.emit(net_activation_cost)
 	activations += 1
+
+func equip():
+	super()
+	equipped.emit(self)
