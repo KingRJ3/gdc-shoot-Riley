@@ -16,6 +16,7 @@
 [ext_resource type="Script" uid="uid://jw4xg8xmvwg0" path="res://PlayerControllers/Abilities/MoneyBased/money_sprint.gd" id="13_f2hxi"]
 [ext_resource type="Script" uid="uid://cpmibxxp622lk" path="res://PlayerControllers/Abilities/MoneyBased/supply_and_demand.gd" id="14_0oa5j"]
 [ext_resource type="Script" uid="uid://bqlafu15hbs0a" path="res://PlayerControllers/Mercs/YetAnotherMerc/ui.gd" id="16_4v6uc"]
+[ext_resource type="FontFile" uid="uid://vvyb1rcex0wp" path="res://PlayerControllers/Mercs/YetAnotherMerc/TF2Build_centered.ttf" id="17_2ktc3"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_0oa5j"]
 
@@ -35,6 +36,7 @@ shader_parameter/noise = SubResource("NoiseTexture2D_4v6uc")
 script = ExtResource("1_mpngw")
 debug_mode = true
 camera = NodePath("Camera3D")
+air_acceleration = 0.01
 visual_body = NodePath("MeshInstance3D")
 merc_UI_color = Color(0.21284103, 0.4399235, 1, 1)
 abilities = [NodePath("MoneyGun"), NodePath("MoneyShotgun"), NodePath("MoneyMachineGun"), NodePath("MoneyGrenade"), NodePath("MoneyJump"), NodePath("MoneySprint"), NodePath("SupplyAndDemand")]
@@ -90,6 +92,7 @@ metadata/_edit_lock_ = true
 [node name="MoneyJump" parent="." unique_id=27473948 instance=ExtResource("6_ernmp")]
 script = ExtResource("11_hid7e")
 auto_bhop = true
+jump_strength = 3.5
 AbilityDescription = "Jump using money-powered boots"
 trigger_key = "Space"
 metadata/_edit_lock_ = true
@@ -118,6 +121,10 @@ offset_left = 1200.0
 offset_top = 679.0
 offset_right = 1240.0
 offset_bottom = 696.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0, 1, 0, 1)
+theme_override_fonts/normal_font = ExtResource("17_2ktc3")
+theme_override_font_sizes/normal_font_size = 22
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
@@ -130,6 +137,10 @@ offset_left = 40.0
 offset_top = 679.0
 offset_right = 80.0
 offset_bottom = 696.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0, 1, 0, 1)
+theme_override_fonts/normal_font = ExtResource("17_2ktc3")
+theme_override_font_sizes/normal_font_size = 22
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
