@@ -22,7 +22,7 @@ var health_bar: ProgressBar
 @export_group("Universal Properties")
 @export var health :float = 100.0:
 	set(value):
-		if health_bar: health_bar.value = clamp(value, 0, max_health)
+		if health_bar: health_bar.health = clamp(value, 0, max_health)
 		if value != health:
 			var old := health
 			health = value
@@ -306,8 +306,9 @@ func check_abilities() -> void:
 func add_ability(ability: Ability) -> void:
 	if not multiplayer.is_server(): return
 	# The server tells EVERYONE (including itself) to attach this specific node
+	print(ability.get_path())
 	_sync_add_ability.rpc(ability.get_path())
-	
+
 func remove_ability(ability: Ability) -> void:
 	if not multiplayer.is_server(): return
 	

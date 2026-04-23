@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://co4gkxh1je7gk" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/bomb.gd" id="1_r4gtw"]
 [ext_resource type="Texture2D" uid="uid://7t25cg31su6k" path="res://MapsAndGamemodes/Maps/dm_grahhh/assets/blahhh_0.png" id="2_8foco"]
-[ext_resource type="Material" uid="uid://ej07qv6yq17u" path="res://PlayerControllers/Abilities/DefuseBomb/explosivematerial.tres" id="3_qqgut"]
-[ext_resource type="Material" uid="uid://bj31ogvo4qulj" path="res://PlayerControllers/Abilities/DefuseBomb/bombmaterial.tres" id="3_r4gtw"]
+[ext_resource type="Material" uid="uid://ej07qv6yq17u" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/explosivematerial.tres" id="3_qqgut"]
+[ext_resource type="Material" uid="uid://bj31ogvo4qulj" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/bombmaterial.tres" id="3_r4gtw"]
 [ext_resource type="FontFile" uid="uid://bxfv5oguicmee" path="res://Misc/UI/fonts/GothicA1-Light.ttf" id="4_r4gtw"]
 [ext_resource type="AudioStream" uid="uid://bpb8bmowhnkgd" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/plant.mp3" id="5_qqgut"]
 [ext_resource type="Texture2D" uid="uid://dgk8egylyylkq" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/image-removebg-preview(10).png" id="5_t045v"]
@@ -434,7 +434,7 @@ script = ExtResource("1_r4gtw")
 trigger_key = "5"
 
 [node name="bomb" type="StaticBody3D" parent="." unique_id=1844621931]
-transform = Transform3D(1, 0, 0, 0, 0.57489115, -0.81823, 0, 0.81823015, 0.57489103, 0, -0.35789844, -1.3540034)
+transform = Transform3D(0.99999994, 0, 0, 0, 0.57489115, -0.81823, 0, 0.81823015, 0.57489103, 0, -0.35789844, -1.3540034)
 
 [node name="Decal" type="Decal" parent="bomb" unique_id=837029761]
 transform = Transform3D(1, 0, 0, 0, -8.940697e-08, 1, 0, -1, -8.940697e-08, -0.20732254, 0.6980908, 0.31367236)
@@ -540,3 +540,5 @@ max_db = -10.5
 [node name="PlantRaycast" type="RayCast3D" parent="." unique_id=542495229]
 target_position = Vector3(0, 0, -5)
 collision_mask = 32768
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1071008145]
