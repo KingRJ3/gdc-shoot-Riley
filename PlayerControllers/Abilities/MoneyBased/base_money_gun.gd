@@ -128,7 +128,7 @@ func shoot():
 	fire_attack_speed.start()
 	
 	# 4. Fire every raycast in the array (1 for Pistol, Many for Shotgun)
-	_do_raycasts()
+	#_do_raycasts()
 	
 	fired.emit(net_activation_cost)
 	activations += 1
