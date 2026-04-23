@@ -21,7 +21,8 @@ func _ready():
 func _physics_process(delta):
 	if targets.size() > 0:
 		while targets[0] == null:
-			targets.pop_front()
+			#targets.pop_front()
+			pass
 		if !test_cast(targets[0]) and !$LockonTimer.is_stopped():
 			return
 		var rotation_speed = 5.0
@@ -39,14 +40,12 @@ func _physics_process(delta):
 
 func shoot():
 	
-
 	$ShootTimer.start()
 	$turret/turrethead/AudioStreamPlayer3D.play()
 	$turret/turrethead/AudioStreamPlayer3D/OmniLight3D.visible = true
 	await get_tree().create_timer(0.1).timeout
 	$turret/turrethead/AudioStreamPlayer3D/OmniLight3D.visible = false
 	$turret/turrethead/AudioStreamPlayer3D.pitch_scale = randf_range(0.9,1.1)
-	if !is_multiplayer_authority():return
 	var hit_target = $turret/turrethead/BulletCast.get_collider()
 	if hit_target is Merc:
 		hit_target.take_damage.rpc_id(hit_target.name.to_int(), damage)
