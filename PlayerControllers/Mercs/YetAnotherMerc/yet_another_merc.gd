@@ -12,7 +12,10 @@ func money_custom_ready() -> void:
 	while to_visit.size() > 0:
 		var cur: Variant = to_visit.pop_back()
 		to_visit += cur.get_children()
-		if cur is MeshInstance3D:
-			(cur as MeshInstance3D).set_surface_override_material(0, GoldMaterial)
-
+		if cur is MeshInstance3D: (cur as MeshInstance3D).set_surface_override_material(0, GoldMaterial)
+		if cur is RayCast3D:
+			(cur as RayCast3D).set_exclude_parent_body(true)
+			(cur as RayCast3D).add_exception(self)
+			#self.add_collision_exception_with(cur)
+	
 	return

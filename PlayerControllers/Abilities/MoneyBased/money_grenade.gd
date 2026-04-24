@@ -64,6 +64,12 @@ var connected: bool = abh.connected:
 		abh.connected = v
 		connected = abh.connected
 
+var m: Merc = abh.m:
+	get: return abh.m
+	set(mer):
+		abh.m = mer
+		m = abh.m
+
 func connect_player_cash(player: Merc) -> void:
 	abh.connect_player_cash(player)
 
@@ -85,3 +91,31 @@ func shoot():
 	cash_storage -= net_activation_cost
 	fired.emit(net_activation_cost)
 	activations += 1
+	
+@rpc("any_peer", "call_local", "reliable")
+func explode():
+	# Only the authority should calculate and send damage
+	if is_multiplayer_authority():
+		for i in explosion_radius.get_overlapping_bodies():
+			if i != null and i != m and i is Merc:
+				i.take_damage.rpc_id(i.name.to_int(), damage) 
+	
+	# Everything below this runs locally for all clients (Visuals/Cleanup)
+	if cpu_particles_3d: cpu_particles_3d.emitting = true
+	grenade.set_deferred("freeze", true)
+	
+	await cpu_particles_3d.finished
+	reset_grenade()
+
+func reset_grenade():
+	#Kill leftover momentum so it doesn't fly off when un-frozen later
+	grenade.linear_velocity = Vector3.ZERO
+	grenade.angular_velocity = Vector3.ZERO
+	
+	grenade.global_transform = hand.global_transform
+	
+	#Re-link the RemoteTransform3D so the grenade follows the hand again
+	hand.set_deferred("remote_path", hand.get_path_to(grenade))
+	
+	grenade.visible = true
+	thrown = false

@@ -17,6 +17,8 @@
 [ext_resource type="Script" uid="uid://cpmibxxp622lk" path="res://PlayerControllers/Abilities/MoneyBased/supply_and_demand.gd" id="14_0oa5j"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_0oa5j"]
+radius = 0.25
+height = 1.0
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_vid3w"]
 
@@ -29,6 +31,8 @@ shader = ExtResource("2_vid3w")
 shader_parameter/noise = SubResource("NoiseTexture2D_4v6uc")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8ppig"]
+radius = 0.25
+height = 1.0
 
 [node name="YetAnotherMerc" type="CharacterBody3D" unique_id=1806716565 node_paths=PackedStringArray("camera", "visual_body", "abilities")]
 script = ExtResource("1_mpngw")
