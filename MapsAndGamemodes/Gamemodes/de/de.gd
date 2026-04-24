@@ -15,7 +15,6 @@ var round_timer: float = 0.0
 @export var attacker_spawn_points: Array[Node3D] = []
 @export var defender_spawn_points: Array[Node3D] = []
 @export var before_round_start_barriers : StaticBody3D
-@export var bomb : DEBOMB
 
 var attackers_score: int = 0
 var defenders_score: int = 0
@@ -30,6 +29,7 @@ var defuse_ui: DEUI
 var char_select_ui
 var team_select_ui
 var has_picked_team_locally := false
+var active_bomb : DEBOMB = null
 
 func _ready() -> void:
 	# Instance all UI elements exactly like in DM and TD
@@ -45,12 +45,8 @@ func _ready() -> void:
 	add_child(team_select_ui)
 	team_select_ui.hide()
 	team_select_ui.side_chosen.connect(_on_local_team_locked_in)
-	
-	if bomb:
-		bomb.defuse_gamemode = self
 
 # --- PHASE 2: ROUND STATE MACHINE ---
-
 func _process(delta: float) -> void:
 	if not is_match_active: 
 		return
@@ -94,6 +90,8 @@ func _advance_state() -> void:
 		RoundState.BOMB_PLANTED:
 			# Time ran out, the bomb detonated!
 			# Attackers win on detonation!
+			if is_instance_valid(active_bomb):
+				active_bomb.explode.rpc()
 			_round_won("red")
 			
 		RoundState.ROUND_END:
@@ -116,6 +114,8 @@ func _sync_state(new_state: int, new_time: float) -> void:
 
 func reset_round() -> void:
 	if not multiplayer.is_server(): return
+	
+	active_bomb = null
 	
 	# 1. Clear any surviving players or leftover bodies from the previous round
 	for child in get_children():
@@ -221,22 +221,31 @@ func submit_team_choice(team_name: String) -> void:
 			_spawn_individual_for_round(sender_id, team_name)
 			players_alive_this_round.append(sender_id)
 
-@rpc("any_peer", "call_remote", "reliable")
-func on_bomb_planted() -> void:
+func on_bomb_planted(planter_id: int, planted_bomb: DEBOMB) -> void:
 	if not multiplayer.is_server(): return
 	if current_state != RoundState.ACTION: return
 	
-	print("Bomb has been planted by ", ServerDatabase.Players[multiplayer.get_remote_sender_id()]["gamertag"])
-	# Shift state and override the round timer with the detonation timer
+	# Store the bomb so we can explode it later
+	active_bomb = planted_bomb 
+	
+	var player_name = "Unknown"
+	if ServerDatabase.Players.has(planter_id):
+		player_name = ServerDatabase.Players[planter_id]["gamertag"]
+		
+	print("Bomb has been planted by ", player_name)
 	_set_state(RoundState.BOMB_PLANTED, bomb_duration)
 
 @rpc("any_peer", "call_remote", "reliable")
-func on_bomb_defused(defuser_id: int) -> void:
+func on_bomb_defused() -> void:
 	if not multiplayer.is_server(): return
 	if current_state != RoundState.BOMB_PLANTED: return
 	
-	print("Bomb has been defused by ", ServerDatabase.Players[multiplayer.get_remote_sender_id()]["gamertag"])
-	# Defenders win immediately upon defusing the bomb
+	var defuser_id = multiplayer.get_remote_sender_id()
+	var player_name = "Unknown"
+	if ServerDatabase.Players.has(defuser_id):
+		player_name = ServerDatabase.Players[defuser_id]["gamertag"]
+		
+	print("Bomb has been defused by ", player_name)
 	_round_won("blue")
 
 func check_win_conditions() -> void:

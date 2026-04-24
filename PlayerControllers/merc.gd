@@ -54,6 +54,7 @@ var health_bar: ProgressBar
 #reminder abilities  can have their own ui
 
 var abilites_ui: AbilitiesUI
+var ability_spawner: MultiplayerSpawner
 var name_label_instance
 var target_position: Vector3 #what other people see
 var target_rotation: Vector3
@@ -78,7 +79,21 @@ const TEAM_COLORS = {
 	"blue": Color.BLUE
 }
 
+func _enter_tree() -> void:
+	ability_spawner = MultiplayerSpawner.new()
+	ability_spawner.name = "AbilitySpawner"
+	
+	# 1. Add it to the tree FIRST
+	add_child(ability_spawner)
+	
+	# 2. THEN set the spawn path using a relative path (".." means the parent, which is self)
+	ability_spawner.spawn_path = ".."
+	
+	# 3. Tell the spawner to use the custom function
+	ability_spawner.spawn_function = _spawn_ability
+	
 func _ready() -> void:
+	initiate_abilities() #HACK
 	max_health = health
 	set_collision_layer_value(2, true)
 	# ==========================================
@@ -93,7 +108,6 @@ func _ready() -> void:
 		# Force name to 1 (Server ID) so label and damage logic work
 		name = "1"
 		set_multiplayer_authority(1)
-		
 		
 		var debug_environment : = TEST_ENVIRONMENT.instantiate()
 		add_child(debug_environment)
@@ -149,6 +163,11 @@ func _ready() -> void:
 		
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
+func initiate_abilities():
+	for i in abilities:
+		if i == null: continue
+		i.merc = self
+		i.abilities = abilities
 
 @rpc("any_peer","call_remote","reliable")
 func show_visual_body_to_world():
@@ -188,8 +207,13 @@ func apply_knockback(vec:Vector3, power:float, decay:float):
 	knockback_decay = decay
 
 @rpc("any_peer", "call_remote", "reliable")
-func disable_movement():
+func disable_movement(time_to_unfreeze : float = 0):
 	can_move = false
+	if time_to_unfreeze > 0:
+		var tween = create_tween()
+		tween.tween_interval(time_to_unfreeze)
+		await tween.finished
+		enable_movement()
 
 @rpc("any_peer", "call_remote", "reliable")
 func enable_movement():
@@ -303,18 +327,70 @@ func check_abilities() -> void:
 # ABILITY MANAGEMENT (SERVER ONLY)
 # ==========================================
 
-func add_ability(ability: Ability) -> void:
-	if not multiplayer.is_server(): return
-	# The server tells EVERYONE (including itself) to attach this specific node
-	print(ability.get_path())
-	_sync_add_ability.rpc(ability.get_path())
-
-func remove_ability(ability: Ability) -> void:
+func add_ability(scene_path: String) -> void:
 	if not multiplayer.is_server(): return
 	
-	# The server tells EVERYONE to remove this specific node
+	# The spawner sends the string to all current AND future clients
+	ability_spawner.spawn(scene_path)
+
+func _spawn_ability(data: Variant) -> Node: #<SPAWN FUNCTION>
+	var scene_path = data as String
+	var ability_resource = load(scene_path) as PackedScene
+	if not ability_resource: return null
+	
+	var new_ability = ability_resource.instantiate() as Ability
+	
+	# Ensure network authority matches the player holding it
+	new_ability.set_multiplayer_authority(get_multiplayer_authority())
+	
+	# We must defer the setup logic until Godot finishes adding it to the tree
+	new_ability.ready.connect(_on_ability_spawned.bind(new_ability))
+	
+	return new_ability
+
+func _on_ability_spawned(new_ability: Ability) -> void:
+	# 1. Link references
+	new_ability.merc = self
+	new_ability.abilities = abilities
+	
+	# 2. Resolve keybinds and array tracking
+	if not abilities.has(new_ability):
+		abilities.append(new_ability)
+		
+	new_ability.equip_ability(abilities)
+	
+	# 3. Handle visibility
+	new_ability.show()
+	for child in new_ability.get_children():
+		if child is Node3D:
+			child.show()
+			
+	# 4. Refresh local UI
+	if abilites_ui and abilites_ui.has_method("generate_ui"):
+		abilites_ui.generate_ui(self)
+		
+	new_ability.activate()
+
+# Keep your remove logic relatively the same, just update the array cleanup
+func remove_ability(ability: Ability) -> void:
+	if not multiplayer.is_server(): return
 	_sync_remove_ability.rpc(ability.get_path())
 
+@rpc("any_peer", "call_local", "reliable")
+func _sync_remove_ability(ability_path: NodePath) -> void:
+	var ability_node = get_node_or_null(ability_path)
+	if not ability_node: return
+	
+	if abilities.has(ability_node):
+		abilities.erase(ability_node)
+		ability_node.dequip_ability()
+		
+		if abilites_ui and abilites_ui.has_method("generate_ui"):
+			abilites_ui.generate_ui(self)
+			
+		# Actually delete the node so the spawner registers it as gone
+		ability_node.queue_free()
+		
 # ==========================================
 # TEAM FIGHTING STUFF
 # ==========================================
@@ -331,54 +407,7 @@ func sync_team_database(new_database: Dictionary) -> void:
 		if name_label_instance and TEAM_COLORS.has(team):
 			name_label_instance.modulate = TEAM_COLORS[team]
 
-# ==========================================
-# ABILITY SYNCHRONIZATION (ALL PEERS)
-# ==========================================
 
-@rpc("any_peer", "call_local", "reliable")
-func _sync_add_ability(ability_path: NodePath) -> void:
-	# 1. Find the physical ability node in the world using its path
-	var ability_node = get_node_or_null(ability_path)
-	if not ability_node: 
-		push_error("Sync Error: Could not find Ability at path: ", ability_path)
-		return
-		
-	# 2. Resolve keybinds
-	ability_node.equip_ability(abilities)
-	ability_node.show()
-	for i in ability_node.get_children():
-		if i is Node3D:
-			i.show()
-	
-	# 3. Add to the local tracking array
-	if not abilities.has(ability_node):
-		abilities.append(ability_node)
-		
-	# 4. Attach it to the Merc (Only reparent if it isn't already attached)
-	if ability_node.get_parent() != self:
-		ability_node.reparent(self) 
-		
-	# 5. Refresh the local UI
-	if abilites_ui and abilites_ui.has_method("generate_ui"):
-		abilites_ui.generate_ui(self)
-	
-	ability_node.activate()
-
-@rpc("any_peer", "call_local", "reliable")
-func _sync_remove_ability(ability_path: NodePath) -> void:
-	var ability_node = get_node_or_null(ability_path)
-	if not ability_node: return
-	
-	if abilities.has(ability_node):
-		# 1. Remove from the local tracking array
-		abilities.erase(ability_node)
-		
-		# 2. Trigger the cleanup function you wrote earlier
-		ability_node.dequip_ability()
-		
-		# 3. Refresh the local UI so it disappears from the screen
-		if abilites_ui and abilites_ui.has_method("generate_ui"):
-			abilites_ui.generate_ui(self)
 
 
 @rpc("any_peer", "call_remote", "unreliable")
@@ -428,6 +457,7 @@ func _sync_flash_damage() -> void:
 	# 3. Wait for the flash duration
 	var tween = create_tween()
 	tween.tween_interval(.15)
+	await tween.finished
 	
 	#if not visual_body: return
 	# 4. Strip the overlay off everything
@@ -443,8 +473,6 @@ func _apply_overlay_recursive(current_node: Node, mat: Material) -> void:
 	# Recursively call this exact function on all children of the current node
 	for child in current_node.get_children():
 		_apply_overlay_recursive(child, mat)
-
-
 
 @rpc("any_peer", "call_local")
 func death_effects():

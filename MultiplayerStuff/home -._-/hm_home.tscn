@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://bs0ioqnyph33c" path="res://Misc/TransitionWorkDolley/camera_follow_path.tscn" id="3_815gs"]
 [ext_resource type="Script" uid="uid://bnpmpieeptntu" path="res://MultiplayerStuff/home -._-/lobby_chair.gd" id="4_jma86"]
 [ext_resource type="PackedScene" uid="uid://cp6wxq6dtf3te" path="res://MultiplayerStuff/home -._-/headset.glb" id="5_cisks"]
+[ext_resource type="PackedScene" uid="uid://m3x50ujkghf8" path="res://MapsAndGamemodes/Gamemodes/PresetGamemodeWidgets/AbilityPickup/ability_pickup.tscn" id="7_blu8w"]
+[ext_resource type="PackedScene" uid="uid://nhp4lghbjo31" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/Bomb.tscn" id="8_yr5t0"]
 
 [sub_resource type="Image" id="Image_lfb2e"]
 data = {
@@ -1168,6 +1170,9 @@ sky_material = SubResource("ProceduralSkyMaterial_cisks")
 background_mode = 2
 sky = SubResource("Sky_e1cqa")
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_blu8w"]
+size = Vector3(4.8789063, 0.5834961, 2.536621)
+
 [node name="WorldEnvironment2" type="Node3D" unique_id=678425904]
 script = ExtResource("1_cb1aq")
 
@@ -1453,7 +1458,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.04814, -1.0077102, 3.84792
 curve = SubResource("Curve3D_jma86")
 
 [node name="PathFollow3D" parent="TransOutPath" index="0" unique_id=1301980135]
-transform = Transform3D(0.001448988, -0.07825765, -0.9968834, 0, 0.9968844, -0.07825774, 0.99994653, 0.000113400456, 0.0014445492, 0.26595688, 2.4640374, -0.26728296)
+transform = Transform3D(0.0014489872, -0.07825765, -0.9968834, 0, 0.9968844, -0.07825774, 0.999946, 0.000113400456, 0.0014445492, 0.26595688, 2.4640374, -0.26728296)
 
 [node name="TESTCAM" type="Camera3D" parent="TransOutPath/PathFollow3D" index="0" unique_id=344265971]
 transform = Transform3D(0.9983976, 0, -0.056588236, 0, 1, 0, 0.056588236, 0, 0.9983976, 0, 0, 0)
@@ -1467,7 +1472,7 @@ curve = SubResource("Curve3D_cisks")
 dur = 2.0
 
 [node name="PathFollow3D" parent="TransMiddle" index="0" unique_id=1301980135]
-transform = Transform3D(-0.0048909704, 0.02402893, -0.99968266, -1.8626103e-09, 0.99969804, 0.024029138, 0.9999693, 0.00011753027, -0.0048895683, 0.039081573, 0.07580018, -0.010753155)
+transform = Transform3D(-0.004890968, 0.02402893, -0.99968266, -1.8626093e-09, 0.99969804, 0.024029138, 0.99996877, 0.00011753027, -0.0048895683, 0.039081573, 0.07580018, -0.010753155)
 
 [node name="TESTCAM" type="Camera3D" parent="TransMiddle/PathFollow3D" index="0" unique_id=1110072097]
 transform = Transform3D(0.9983976, 0, -0.056588236, 0, 1, 0, 0.056588236, 0, 0.9983976, 0, 0, 0)
@@ -1506,6 +1511,24 @@ environment = SubResource("Environment_4r2bv")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6128268, -1.726413, 0)
 light_color = Color(0.8923333, 0.62, 1, 1)
 omni_range = 12.039668
+
+[node name="AbilityPickup" parent="." unique_id=167658854 instance=ExtResource("7_blu8w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.975441)
+ability_scene = ExtResource("8_yr5t0")
+consumable = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1314712841]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.64850974, -2.3899896)
+collision_layer = 32768
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=2080695976]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9394531, -0.6253327, -0.76831055)
+shape = SubResource("BoxShape3D_blu8w")
+
+[node name="preloadbomb" parent="." unique_id=1600695075 instance=ExtResource("8_yr5t0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7059493, -11.472117, -5.4563103)
+trigger_key = "7"
 
 [editable path="TransOutPath"]
 [editable path="TransMiddle"]
