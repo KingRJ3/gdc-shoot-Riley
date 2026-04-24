@@ -12,17 +12,9 @@ func _ready() -> void:
 			$"Remaining Money".position += money_size - $"Remaining Money".size
 			money_size = $"Remaining Money".size
 	)
-	
-	$Ammo.minimum_size_changed.connect(
-		func() -> void:
-			if $Ammo.size > ammo_size:
-				ammo_size = $Ammo.size
-				$Ammo.custom_minimum_size = ammo_size
-			print($Ammo.size)
-	)
 
 	return
 	
-func _process(delta: float) -> void:
-	if !is_multiplayer_authority(): return
-	return
+#func _process(delta: float) -> void:
+	#if !is_multiplayer_authority(): return
+	#return
