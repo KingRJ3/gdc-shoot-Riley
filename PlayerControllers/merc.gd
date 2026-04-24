@@ -386,6 +386,7 @@ func receive_pos_from_server(pos: Vector3, rot: Vector3):
 	# Don't move them yet! Just update the target.
 	target_position = pos
 	target_rotation = rot
+
 @rpc("any_peer", "call_remote", "reliable")
 func take_damage(damage: float):
 	if !is_multiplayer_authority(): return

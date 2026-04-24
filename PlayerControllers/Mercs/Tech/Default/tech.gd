@@ -1,7 +1,7 @@
 extends Merc
 
 @onready var UI = $TrackerUI
-var turrets = 0 : set = set_turrets
+@export var turrets = 0 : set = set_turrets
 var bandages = 1
 
 func set_turrets(value):

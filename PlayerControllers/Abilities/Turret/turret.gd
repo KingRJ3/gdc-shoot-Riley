@@ -9,20 +9,20 @@ var dada : Merc
 var targets := []
 
 func hit_effect(damage):
-	pass
+	print("ouchies")
 
 func destory_effect():
 	get_parent().bandages +=1
 
 func _ready():
-	health = 100
+	$Area3D.set_deferred("monitoring", true)
+	health = 70
 	dada = get_parent()
 
 func _physics_process(delta):
-	if targets.size() > 0:
-		while targets[0] == null:
-			#targets.pop_front()
-			pass
+	if is_in_group("insmoke"):return
+	if targets.size() > 0 and !is_in_group("insmoke"):
+		
 		if !test_cast(targets[0]) and !$LockonTimer.is_stopped():
 			return
 		var rotation_speed = 5.0
@@ -47,12 +47,13 @@ func shoot():
 	$turret/turrethead/AudioStreamPlayer3D/OmniLight3D.visible = false
 	$turret/turrethead/AudioStreamPlayer3D.pitch_scale = randf_range(0.9,1.1)
 	var hit_target = $turret/turrethead/BulletCast.get_collider()
-	if hit_target is Merc:
+	if hit_target is Merc and !is_multiplayer_authority():
 		hit_target.take_damage.rpc_id(hit_target.name.to_int(), damage)
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if body is Merc and body.team != dada.team and body != dada:
 		$LockonTimer.start()
+		$AudioStreamPlayer3D.play()
 		targets.append(body)
 
 func test_cast(body):
@@ -61,3 +62,8 @@ func test_cast(body):
 		return true
 	else:
 		return false
+
+
+func _on_area_3d_body_exited(body: Node3D) -> void:
+	if targets.has(body):
+		targets.erase(body)
