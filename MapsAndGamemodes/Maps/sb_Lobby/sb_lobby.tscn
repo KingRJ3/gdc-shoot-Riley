@@ -1,23 +1,13 @@
 [gd_scene format=3 uid="uid://27dxcrv3ostv"]
 
-[ext_resource type="Script" uid="uid://c8vcha0bpxltm" path="res://MapsAndGamemodes/Gamemodes/sb/sb.gd" id="1_5cp0e"]
-[ext_resource type="Environment" uid="uid://b0wv4lj6oo8v8" path="res://MapsAndGamemodes/Maps/dm_grahhh/grahh_enviornment.tres" id="2_4wfj7"]
-[ext_resource type="Texture2D" uid="uid://b7b8tego25aq3" path="res://PrototypeAssets/PrototypeMapAssets/Vector/texture_02.svg" id="2_wjog0"]
+[ext_resource type="Script" uid="uid://dogm3cno1tnmx" path="res://MapsAndGamemodes/Gamemodes/dm/dm.gd" id="1_wjog0"]
+[ext_resource type="PackedScene" uid="uid://dnqxl0h5xo3hc" path="res://MapsAndGamemodes/Maps/TestEnvironment/TestEnvironment.tscn" id="3_4wfj7"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qt646"]
-albedo_texture = ExtResource("2_wjog0")
-
-[node name="sb_lobby" type="Node3D" unique_id=678425904 node_paths=PackedStringArray("player_spawn")]
-script = ExtResource("1_5cp0e")
-player_spawn = NodePath("PlayerSpawner")
+[node name="sb_lobby" type="Node3D" unique_id=678425904 node_paths=PackedStringArray("spawn_points")]
+script = ExtResource("1_wjog0")
+spawn_points = [NodePath("Marker3D"), NodePath("Marker3D2"), NodePath("Marker3D3")]
+gamemode_length = 900.0
 map_name = "sb_lobby"
-environment = ExtResource("2_4wfj7")
-
-[node name="CSGBox3D2" type="CSGBox3D" parent="." unique_id=409190496]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.7690873, 0)
-material_override = SubResource("StandardMaterial3D_qt646")
-use_collision = true
-size = Vector3(54.756798, 1, 58.8974)
 
 [node name="PlayerSpawner" type="Marker3D" parent="." unique_id=2128248748]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3790727, 0)
@@ -28,3 +18,14 @@ transform = Transform3D(1, 0, 0, 0, 0.49999997, 0.86602545, 0, -0.86602545, 0.49
 [node name="ItemPickup" type="Area3D" parent="." unique_id=558217701]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ItemPickup" unique_id=439414194]
+
+[node name="TestEnvironment" parent="." unique_id=765145103 instance=ExtResource("3_4wfj7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0484924, 3.3292408, 5.3904)
+
+[node name="Marker3D" type="Marker3D" parent="." unique_id=922280735]
+
+[node name="Marker3D2" type="Marker3D" parent="." unique_id=1284108695]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.889017, 30.001102, -22.699257)
+
+[node name="Marker3D3" type="Marker3D" parent="." unique_id=680846900]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.606438, 23.575603, 5.1442184)

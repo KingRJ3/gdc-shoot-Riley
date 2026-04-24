@@ -6,6 +6,7 @@ class_name GrapplePullAbility
 @export var noise_rope: NoiseTexture3D
 @export var pull_speed: float = 40.0
 @export var vertical_boost: float = 4.8
+@export var range_multiplier: int = 1
 
 @onready var look_ray_cast: RayCast3D = $LookRayCast
 @onready var grapple_start: MeshInstance3D = $GrappleStart
@@ -29,6 +30,7 @@ var _was_held: bool = false
 func _ready() -> void:
 	grapple_end.hide()
 	line.hide()
+	look_ray_cast.target_position.z *= range_multiplier
 
 func activate() -> void:
 	_is_held = true

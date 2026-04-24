@@ -7,22 +7,22 @@ signal kill_confirmed(person_killed_id : int)
 signal health_changed(old: float, new: float)
 
 # Debug test environment import
-const TEST_ENVIRONMENT = preload("res://MapsAndGamemodes/Maps/TestEnvironment/TestEnvironment.tscn")
+const TEST_ENVIRONMENT := preload("res://MapsAndGamemodes/Maps/TestEnvironment/TestEnvironment.tscn")
 
 ## THIS THE BASE CLASS, DO NOT CHANGE AN OF THIS UNLESS ITS IN THE INSPECTOR
 const ABILITY_UI = preload("res://Misc/UI/ability_ui.tscn")
 const MERC_LABEL = preload("res://MultiplayerStuff/Client/MercLabel.tscn")
 const HEALTH_BAR = preload("res://Misc/UI/health_bar.tscn")
-var health_bar : ProgressBar
+var health_bar: ProgressBar
 
 @export var debug_mode : bool = false
 @export_category("REQUIRED CAMERA")
-@export var camera : Camera3D
+@export var camera: Camera3D
 
 @export_group("Universal Properties")
 @export var health :float = 100.0:
 	set(value):
-		if health_bar: health_bar.value = value
+		if health_bar: health_bar.health = clamp(value, 0, max_health)
 		if value != health:
 			var old := health
 			health = value
@@ -33,14 +33,15 @@ var health_bar : ProgressBar
 		# (they really shouldn't) - Connor
 		else: health = value
 
-@export var gravity := 9.8
-@export var friction := .1
-@export var air_acceleration := .3
-@export var speed := 1.0
-@export var visual_body : Node3D
-@export var visual_hand : Node3D
-@export var merc_UI_color : Color
-@export var camera_fov : float = 90.0
+@export var gravity: float = 9.8
+@export var friction: float = .1
+@export var wall_friction_enabled: bool = false
+@export var air_acceleration: float = .3
+@export var speed: float = 1.0
+@export var visual_body: Node3D
+@export var visual_hand: Node3D
+@export var merc_UI_color: Color
+@export var camera_fov: float = 90.0
 
 			#and more implicitones
 			#ex. position
@@ -52,14 +53,16 @@ var health_bar : ProgressBar
 @export var abilities : Array[Ability]
 #reminder abilities  can have their own ui
 
-var abilites_ui : AbilitiesUI
+var abilites_ui: AbilitiesUI
 var name_label_instance
 var target_position: Vector3 #what other people see
 var target_rotation: Vector3
 
-var can_move:bool = true
-var dead = false
+var can_move: bool = true
+var dead: bool = false
 var ability_ui 
+var max_health: float
+
 var team: String = "default":
 	set(value):
 		team = value
@@ -76,7 +79,8 @@ const TEAM_COLORS = {
 }
 
 func _ready() -> void:
-	
+	max_health = health
+	set_collision_layer_value(2, true)
 	# ==========================================
 	# DEBUG MODE SETUP
 	# ==========================================
@@ -177,10 +181,19 @@ var knockback_dir : Vector3 = Vector3(0,0,0)
 var knockback_pwr := 0
 var knockback_decay := 0.3
 
+@rpc("any_peer", "call_remote", "reliable")
 func apply_knockback(vec:Vector3, power:float, decay:float):
 	knockback_dir = vec
 	knockback_pwr = power
 	knockback_decay = decay
+
+@rpc("any_peer", "call_remote", "reliable")
+func disable_movement():
+	can_move = false
+
+@rpc("any_peer", "call_remote", "reliable")
+func enable_movement():
+	can_move = true
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): 
@@ -222,7 +235,7 @@ func _physics_process(delta: float) -> void:
 		velocity += (knockback_dir*knockback_pwr)
 		
 	else:
-		if is_on_wall(): 
+		if is_on_wall() && wall_friction_enabled == true: 
 			velocity = velocity.lerp(Vector3.ZERO, delta * 5) 
 		sv_airaccelerate(movement_dir, delta)
 	
@@ -293,8 +306,9 @@ func check_abilities() -> void:
 func add_ability(ability: Ability) -> void:
 	if not multiplayer.is_server(): return
 	# The server tells EVERYONE (including itself) to attach this specific node
+	print(ability.get_path())
 	_sync_add_ability.rpc(ability.get_path())
-	
+
 func remove_ability(ability: Ability) -> void:
 	if not multiplayer.is_server(): return
 	
@@ -348,7 +362,7 @@ func _sync_add_ability(ability_path: NodePath) -> void:
 	if abilites_ui and abilites_ui.has_method("generate_ui"):
 		abilites_ui.generate_ui(self)
 	
-	ability_node.activate(abilities, self)
+	ability_node.activate()
 
 @rpc("any_peer", "call_local", "reliable")
 func _sync_remove_ability(ability_path: NodePath) -> void:

@@ -1,10 +1,10 @@
 extends WeaponAbility
 
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var tracer_effect: Node3D = $TracerEffect
-@onready var fire_attack_speed: Timer = $FireAttackSpeed
-@onready var crosshair_002: Sprite2D = $Crosshair002
-@onready var label: Label = $Crosshair002/Label
+@onready var animation_player: AnimationPlayer = $buffer/AnimationPlayer
+@onready var tracer_effect: Node3D = $buffer/TracerEffect
+@onready var fire_attack_speed: Timer = $buffer/FireAttackSpeed
+@onready var crosshair_002: Sprite2D = $buffer/Crosshair002
+@onready var label: Label = $buffer/Crosshair002/Label
 var equipped = false
 
 @export_category("Weapon Stats")
@@ -34,6 +34,7 @@ func _ready() -> void:
 	fire_attack_speed.wait_time = fire_speed
 	fire_attack_speed.one_shot = true
 	hide()
+	$buffer/Crosshair002.hide()
 	label.text = str(ammo) + "/" + str(max_ammo)
 	
 	# --- NEW: Save the resting position of the visual mesh ---
@@ -83,7 +84,7 @@ func shoot():
 	# Consume 1 ammo per trigger pull (even if it's a shotgun firing 8 pellets)
 	ammo = clamp(ammo - 1, 0, max_ammo)
 	
-	$AudioStreamPlayer3D.play()
+	$buffer/AudioStreamPlayer3D.play()
 	# Restart animation and start the cooldown timer
 	animation_player.stop() 
 	animation_player.play("shoot")
@@ -103,7 +104,7 @@ func _do_raycasts() -> void:
 			var person_hit = rc.get_collider()
 			if person_hit != null and person_hit is Merc:
 				person_hit.take_damage.rpc_id(int(person_hit.name), damage)
-				person_hit.apply_knockback.rpc_id(int(person_hit.name), (get_parent().position-person_hit.position).normalized(), 90, 0.91)
+				person_hit.apply_knockback.rpc_id(int(person_hit.name), -(get_parent().position-person_hit.position).normalized(), 90, 0.91)
 				
 			# Spawn tracer at hit point
 			tracer_effect._create_tracer_effect.rpc(tracer_effect.global_position, rc.get_collision_point())
@@ -115,6 +116,7 @@ func _do_raycasts() -> void:
 func equip():
 	equipped = true
 	show()
+	crosshair_002.show()
 	show_visual_hand.rpc(true)
 
 @rpc("any_peer","call_remote","reliable")

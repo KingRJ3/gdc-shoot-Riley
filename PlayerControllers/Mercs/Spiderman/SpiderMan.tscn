@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://ptcrhv0ddrxj"]
+
+[ext_resource type="Script" uid="uid://2ip0lrtrrhsr" path="res://PlayerControllers/merc.gd" id="1_l851f"]
+[ext_resource type="PackedScene" uid="uid://dnxo7tnmmkhbh" path="res://PlayerControllers/Abilities/TitanFallGrapple/TitanFallGrapple.tscn" id="2_4qiff"]
+[ext_resource type="PackedScene" uid="uid://5a3huyysdg4m" path="res://PlayerControllers/Abilities/Spiderman-Punch/spiderman_punch.tscn" id="3_grw8o"]
+[ext_resource type="PackedScene" uid="uid://b36uuh56645j5" path="res://PlayerControllers/Abilities/Jump/JumpAbility.tscn" id="3_kgdjr"]
+[ext_resource type="PackedScene" uid="uid://byblikkwgri3q" path="res://PlayerControllers/Abilities/Sprint/SprintAbility.tscn" id="4_grw8o"]
+[ext_resource type="Material" uid="uid://bk7hnigx4dcm7" path="res://PlayerControllers/Mercs/BoomerShooter/Assets/HitScanBulletlaserr.tres" id="4_kgdjr"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_grw8o"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_uq2hx"]
+material = ExtResource("4_kgdjr")
+
+[node name="SpiderMan" type="CharacterBody3D" unique_id=1829145158 node_paths=PackedStringArray("camera", "visual_body", "abilities")]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("1_l851f")
+debug_mode = true
+camera = NodePath("Camera3D")
+health = 125.0
+visual_body = NodePath("CollisionShape3D/MeshInstance3D")
+abilities = [NodePath("TitanFallGrapple"), NodePath("JumpAbility"), NodePath("SprintAbility"), NodePath("Spiderman-Punch")]
+metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
+
+[node name="TitanFallGrapple" parent="." unique_id=919763641 instance=ExtResource("2_4qiff")]
+pull_speed = 50.0
+vertical_boost = 15.0
+range_multiplier = 3
+
+[node name="Spiderman-Punch" parent="." unique_id=683206933 instance=ExtResource("3_grw8o")]
+damage = 50
+cooldown = 0.3
+trigger_key = "E"
+
+[node name="JumpAbility" parent="." unique_id=27473948 instance=ExtResource("3_kgdjr")]
+auto_bhop = true
+jump_strength = 7.0
+trigger_key = "Space"
+
+[node name="SprintAbility" parent="." unique_id=699710493 instance=ExtResource("4_grw8o")]
+speed_multiplier = 2.0
+fov_multiplier = 1.5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=424688985]
+shape = SubResource("CapsuleShape3D_grw8o")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D" unique_id=125217454]
+mesh = SubResource("CapsuleMesh_uq2hx")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=368589339]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8024421, 0)

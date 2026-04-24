@@ -75,8 +75,15 @@ var connected: bool = abh.connected:
 		abh.connected = v
 		connected = abh.connected
 
+var m: Merc = null:
+	get: return abh.m
+	set(mer):
+		abh.m = mer
+		m = abh.m
+
 func connect_player_cash(player: Merc) -> void:
 	abh.connect_player_cash(player)
+	m = player
 
 func _ready() -> void:
 	add_to_group(abh.GROUP_NAME)
@@ -123,10 +130,30 @@ func shoot():
 	fire_attack_speed.start()
 	
 	# 4. Fire every raycast in the array (1 for Pistol, Many for Shotgun)
-	_do_raycasts()
+	_do_raycasts() #CRASHING THE GAME?
 	
 	fired.emit(net_activation_cost)
 	activations += 1
 	
 	success.emit()
 	activated.emit(true)
+
+# Test
+func _do_raycasts() -> void:
+	for rc in raycasts:
+		if not is_instance_valid(rc): continue
+		
+		# Force update so the raycast is perfectly aligned with the camera this frame
+		rc.force_raycast_update()
+
+		if rc.is_colliding():
+			var person_hit = rc.get_collider()
+			if person_hit == null or person_hit == m: return
+			if person_hit is Merc: person_hit.take_damage.rpc_id(int(person_hit.name), damage)
+			
+			# Spawn tracer at hit point
+			tracer_effect._create_tracer_effect.rpc(tracer_effect.global_position, rc.get_collision_point())
+		else:
+			# Spawn tracer fading off into the distance if they missed
+			var miss_point = rc.global_transform * rc.target_position
+			tracer_effect._create_tracer_effect.rpc(tracer_effect.global_position, miss_point)

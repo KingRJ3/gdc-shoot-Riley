@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://5a3huyysdg4m"]
+
+[ext_resource type="Script" uid="uid://bcp1k3lb3i73v" path="res://PlayerControllers/Abilities/Spiderman-Punch/SpiderCombo.gd" id="1_jkf8s"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_tga8u"]
+
+[node name="Spiderman-Punch" type="Node3D" unique_id=683206933]
+script = ExtResource("1_jkf8s")
+damage = 40
+kick_damage = 90
+cooldown = 0.4
+longer_cooldown = 0.8
+
+[node name="Punch" type="Area3D" parent="." unique_id=698293946]
+transform = Transform3D(-2.8237025e-07, 0, -3.1250217, 0, 4.317635, 0, 6.459879, 0, -1.3659903e-07, 0, 0, -1.716218)
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Punch" unique_id=121722895]
+shape = SubResource("SphereShape3D_tga8u")
+
+[node name="Kick" type="Area3D" parent="." unique_id=1969639671]
+transform = Transform3D(7.214356, 0, 0, 0, 6.480913, 0, 0, 0, 6.1676335, 0, 0, -2.5390747)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Kick" unique_id=494727225]
+shape = SubResource("SphereShape3D_tga8u")
+
+[node name="Timer" type="Timer" parent="." unique_id=410049269]
+one_shot = true

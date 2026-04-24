@@ -67,6 +67,7 @@ var net_activation_cost: float:
 	set(n): assert(false, "<BaseMoneyAbility::set(net_activation_cost, %f)> Error: This is a virtual property, it can not be set" % n)
 
 var connected: bool = false	## Whether the ability has been connected to a player or not. 
+var m: Merc = null
 
 ## Connects the ability's `cash_storage` to a player's actual `cash_updated` signal
 func connect_player_cash(player: Merc) -> void:
@@ -75,6 +76,7 @@ func connect_player_cash(player: Merc) -> void:
 	player.cash_updated.connect(func(_old: float, new: float) -> void: cash_storage = new)
 	cash_storage = player.cash
 	connected = true
+	m = player
 	
 	return
 
