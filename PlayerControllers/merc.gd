@@ -424,6 +424,15 @@ func _request_drop_inventory() -> void:
 		var ability = abilities[i]
 		if is_instance_valid(ability):
 			drop_ability(ability)
+
+@rpc("any_peer", "call_local", "reliable")
+func request_drop_single_ability(ability_path: NodePath) -> void:
+	if not multiplayer.is_server(): return
+	
+	var ability_to_drop = get_node_or_null(ability_path)
+	if ability_to_drop and abilities.has(ability_to_drop):
+		drop_ability(ability_to_drop)
+
 # ==========================================
 # TEAM FIGHTING STUFF
 # ==========================================
