@@ -1,13 +1,14 @@
-[gd_scene format=4 uid="uid://nhp4lghbjo31"]
+[gd_scene format=4 uid="uid://c0ayi8bmjtkef"]
 
-[ext_resource type="Script" uid="uid://co4gkxh1je7gk" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/bomb.gd" id="1_r4gtw"]
+[ext_resource type="Script" uid="uid://by2qbhuc53ljj" path="res://PlayerControllers/Abilities/EvilGun/evil_gun_ability.gd" id="1_p1o0t"]
 [ext_resource type="Texture2D" uid="uid://7t25cg31su6k" path="res://MapsAndGamemodes/Maps/dm_grahhh/assets/blahhh_0.png" id="2_8foco"]
-[ext_resource type="Material" uid="uid://uiq7fijwx2od" path="res://PlayerControllers/Abilities/Turret/turretpreview.tres" id="3_o1hlm"]
-[ext_resource type="Material" uid="uid://ej07qv6yq17u" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/explosivematerial.tres" id="3_qqgut"]
-[ext_resource type="Material" uid="uid://bj31ogvo4qulj" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/bombmaterial.tres" id="3_r4gtw"]
+[ext_resource type="Material" path="res://PlayerControllers/Abilities/DefuseBomb/explosivematerial.tres" id="3_qqgut"]
+[ext_resource type="Material" path="res://PlayerControllers/Abilities/DefuseBomb/bombmaterial.tres" id="3_r4gtw"]
 [ext_resource type="FontFile" uid="uid://bxfv5oguicmee" path="res://Misc/UI/fonts/GothicA1-Light.ttf" id="4_r4gtw"]
-[ext_resource type="AudioStream" uid="uid://bpb8bmowhnkgd" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/plant.mp3" id="5_qqgut"]
-[ext_resource type="Texture2D" uid="uid://dgk8egylyylkq" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/image-removebg-preview(10).png" id="5_t045v"]
+[ext_resource type="AudioStream" path="res://PlayerControllers/Abilities/DefuseBomb/plant.mp3" id="5_qqgut"]
+[ext_resource type="Texture2D" path="res://PlayerControllers/Abilities/DefuseBomb/image-removebg-preview(10).png" id="5_t045v"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n6e4m"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_xlgcv"]
 _surfaces = [{
@@ -30,7 +31,7 @@ _surfaces = [{
 "format": 34359742487,
 "index_count": 36,
 "index_data": PackedByteArray("AAABAAIAAgADAAAABAAFAAYABgAHAAQACAAJAAoACgALAAgADAANAA4ADgAPAAwAEAARABIAEgATABAAFAAVABYAFgAXABQA"),
-"material": ExtResource("3_o1hlm"),
+"material": SubResource("StandardMaterial3D_n6e4m"),
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 24,
@@ -203,23 +204,12 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_mqoow")
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_r4gtw"]
-size = Vector3(1.28656, 1.1209717, 1.3535156)
-
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_bd5au"]
-properties/0/path = NodePath(".:position")
-properties/0/spawn = true
-properties/0/replication_mode = 2
-properties/1/path = NodePath(".:rotation")
-properties/1/spawn = true
-properties/1/replication_mode = 2
-
 [sub_resource type="Animation" id="Animation_angkb"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("bomb/palm/spinningpalm/DefuseTimer:visible")
+tracks/0/path = NodePath("bomb/palm/spinningpalm/Label3D:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -238,7 +228,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(-1.5707964, 0, -1.5707964)]
+"values": [Vector3(-1.5707964, 0, 0)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -276,161 +266,9 @@ tracks/4/keys = {
 "update": 1,
 "values": [false]
 }
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("bomb:rotation")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0.9583253, 0, 0)]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("bomb:position")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, -0.35789844, -1.3540034)]
-}
-
-[sub_resource type="Animation" id="Animation_r4gtw"]
-resource_name = "dequip"
-length = 0.6705
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("bomb:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.03333333, 0.49999997),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0.80700636, -1.2017539, -0.4203116), Vector3(0.13166164, 0.933576, 1.2886964)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("bomb:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.03333333, 0.46666667),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(1.4453976, -0.873229, -2.2667933), Vector3(1.7126286, -1.9781165, -1.1581482)]
-}
 
 [sub_resource type="Animation" id="Animation_p1o0t"]
 resource_name = "equip"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("bomb:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.38, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector3(0.13166164, 0.933576, 1.2886964), Vector3(0.7994422, -1.2158315, -0.4317279), Vector3(0.80700636, -1.2017539, -0.4203116)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("bomb:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.38, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector3(1.7126286, -1.9781165, -1.1581482), Vector3(1.4453976, -0.8276164, -2.2667933), Vector3(1.4453976, -0.873229, -2.2667933)]
-}
-
-[sub_resource type="Animation" id="Animation_o1hlm"]
-resource_name = "idle"
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("bomb:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0.80700636, -1.2017539, -0.4203116)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("bomb:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(1.4453976, -0.873229, -2.2667933)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("bomb/palm/spinningpalm/DefuseTimer:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("bomb/fingers:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("bomb/palm/spinningpalm:rotation")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(-1.5707964, 0, -1.5707964)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("bomb/palm/palm/SpotLight3D:light_energy")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
 
 [sub_resource type="Animation" id="Animation_m5ulp"]
 resource_name = "plant"
@@ -438,7 +276,7 @@ length = 2.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("bomb/palm/spinningpalm/DefuseTimer:visible")
+tracks/0/path = NodePath("bomb/palm/spinningpalm/Label3D:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -485,7 +323,7 @@ tracks/3/keys = {
 }
 tracks/4/type = "value"
 tracks/4/imported = false
-tracks/4/enabled = false
+tracks/4/enabled = true
 tracks/4/path = NodePath("AudioStreamPlayer3D:playing")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
@@ -495,112 +333,27 @@ tracks/4/keys = {
 "update": 1,
 "values": [true]
 }
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("bomb:rotation")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.20077205, 0.32625458, 0.6650574, 2.426931, 2.4333334, 2.465221, 2.4666667, 2.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(0.80700636, -1.2017539, -0.4203116), Vector3(1.1521021, -0.32648602, -0.27854416), Vector3(1.1751144, 0.042407244, 0.12233177), Vector3(1.1657386, 0.21390176, 0.30846968), Vector3(1.1663289, 0.28779775, 0.3255456), Vector3(1.1751144, 0.042407244, 0.12233177), Vector3(1.1334878, 0.5477628, 0.53647697), Vector3(1.1751144, 0.042407244, 0.12233177), Vector3(1.1574135, -0.28864592, -0.23717627)]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("bomb:position")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0, 0.20077205, 0.32625458),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector3(1.4453976, -0.873229, -2.2667933), Vector3(0.163, -0.799, -1.88), Vector3(0.163, -0.774, -2.123)]
-}
-
-[sub_resource type="Animation" id="Animation_hq3dx"]
-resource_name = "planted"
-length = 2.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("bomb/palm/spinningpalm/DefuseTimer:visible")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("bomb/palm/spinningpalm:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(-1.5707964, 0, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("bomb/fingers:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, -0.33, 0)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("bomb/palm/palm/SpotLight3D:light_energy")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.0]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("AudioStreamPlayer3D:playing")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(),
-"transitions": PackedFloat32Array(),
-"update": 1,
-"values": []
-}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_angkb"]
 _data = {
 &"RESET": SubResource("Animation_angkb"),
-&"dequip": SubResource("Animation_r4gtw"),
 &"equip": SubResource("Animation_p1o0t"),
-&"idle": SubResource("Animation_o1hlm"),
-&"plant": SubResource("Animation_m5ulp"),
-&"planted": SubResource("Animation_hq3dx")
+&"plant": SubResource("Animation_m5ulp")
 }
 
-[node name="Bomb" type="Node3D" unique_id=1600695075]
-script = ExtResource("1_r4gtw")
-AbilityDescription = null
-trigger_key = "5"
+[node name="Bomb" type="Node3D" unique_id=1600695075 node_paths=PackedStringArray("weapon_mesh", "raycasts", "visual_hand")]
+script = ExtResource("1_p1o0t")
+max_ammo = 1
+damage = 0.0
+fire_speed = 0.0
+weapon_mesh = NodePath("bomb")
+raycasts = [null]
+AbilityDescription = "Plant the Bomb"
+visual_hand = NodePath("VisualHand")
+trigger_key = "1"
 
-[node name="bomb" type="StaticBody3D" parent="." unique_id=1844621931]
-transform = Transform3D(0.9999993, 0, 0, 0, 0.57489115, -0.8182298, 0, 0.81823015, 0.5748909, 0, -0.35789844, -1.3540034)
+[node name="bomb" type="Node3D" parent="." unique_id=1341440860]
+transform = Transform3D(1, 0, 0, 0, 0.57489103, -0.81823, 0, 0.81823, 0.57489103, 0, -0.35789844, -1.3540034)
 
 [node name="Decal" type="Decal" parent="bomb" unique_id=837029761]
 transform = Transform3D(1, 0, 0, 0, -8.940697e-08, 1, 0, -1, -8.940697e-08, -0.20732254, 0.6980908, 0.31367236)
@@ -662,12 +415,12 @@ spot_range = 6.130899
 spot_angle = 21.704535
 
 [node name="spinningpalm" type="MeshInstance3D" parent="bomb/palm" unique_id=1198912050]
-transform = Transform3D(-2.5356635e-06, 41.302063, 0, 2.5356635e-06, 7.8915254e-14, 297.93698, 58.00922, 1.8053705e-06, -1.3023239e-05, 0, 0, 0)
+transform = Transform3D(58.00922, 0, 0, 0, -1.8053705e-06, 297.93698, 0, -41.302063, -1.3023239e-05, 0, 0, 0)
 mesh = SubResource("ArrayMesh_qcq4n")
 skeleton = NodePath("")
 surface_material_override/0 = ExtResource("3_r4gtw")
 
-[node name="DefuseTimer" type="Label3D" parent="bomb/palm/spinningpalm" unique_id=486757335]
+[node name="Label3D" type="Label3D" parent="bomb/palm/spinningpalm" unique_id=486757335]
 transform = Transform3D(0.017238637, 0, 0, 0, 0.024211865, 3.7252903e-09, 0, -2.3283064e-10, 0.0033564141, 0.00012390503, 0.002327418, 0.0025939578)
 visible = false
 modulate = Color(1, 0, 0, 1)
@@ -684,14 +437,6 @@ alpha_antialiasing_mode = 1
 texture_filter = 1
 texture = ExtResource("5_t045v")
 
-[node name="BombCollisionShape" type="CollisionShape3D" parent="bomb" unique_id=181307900]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.009918213, 0.06048596, 0.0029296875)
-shape = SubResource("BoxShape3D_r4gtw")
-disabled = true
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="bomb" unique_id=568046422]
-replication_config = SubResource("SceneReplicationConfig_bd5au")
-
 [node name="VisualHand" type="Marker3D" parent="." unique_id=295525846]
 transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0, 0, 0)
 
@@ -702,48 +447,3 @@ libraries/ = SubResource("AnimationLibrary_angkb")
 stream = ExtResource("5_qqgut")
 volume_db = -4.8
 max_db = -10.5
-
-[node name="PlantRaycast" type="RayCast3D" parent="." unique_id=542495229]
-target_position = Vector3(0, 0, -5)
-collision_mask = 32768
-
-[node name="Camera3D" type="Camera3D" parent="." unique_id=1071008145]
-
-[node name="HologramMesh" type="Marker3D" parent="." unique_id=496517700]
-transform = Transform3D(0.355, 0, 0, 0, 0.355, 0, 0, 0, 0.355, 0, 0, 0)
-
-[node name="finger" type="MeshInstance3D" parent="HologramMesh" unique_id=779188923]
-transform = Transform3D(20.684164, 0, 0, 0, -1.9073486e-06, 20.684162, 0, -20.684162, -1.9073486e-06, -0.39386034, 0.33035254, 0.39370117)
-mesh = SubResource("ArrayMesh_h24ky")
-skeleton = NodePath("")
-surface_material_override/0 = ExtResource("3_o1hlm")
-
-[node name="finger_001" type="MeshInstance3D" parent="HologramMesh" unique_id=1079245256]
-transform = Transform3D(20.684164, 0, 0, 0, -2.4657445e-06, 20.684162, 0, -20.684162, -2.4657445e-06, -0.39444578, 0.33035251, -0.40294564)
-mesh = SubResource("ArrayMesh_jfad8")
-skeleton = NodePath("")
-surface_material_override/0 = ExtResource("3_o1hlm")
-
-[node name="finger_002" type="MeshInstance3D" parent="HologramMesh" unique_id=370612144]
-transform = Transform3D(20.684164, 0, 0, 0, -2.4657445e-06, 20.684162, 0, -20.684162, -2.4657445e-06, 0.39608184, 0.33035251, -0.40294564)
-mesh = SubResource("ArrayMesh_n4nhb")
-skeleton = NodePath("")
-surface_material_override/0 = ExtResource("3_o1hlm")
-
-[node name="finger_003" type="MeshInstance3D" parent="HologramMesh" unique_id=619202255]
-transform = Transform3D(20.684164, 0, 0, 0, -2.4657445e-06, 20.684162, 0, -20.684162, -2.4657445e-06, 0.39608184, 0.33035251, 0.3937012)
-mesh = SubResource("ArrayMesh_3q66f")
-skeleton = NodePath("")
-surface_material_override/0 = ExtResource("3_o1hlm")
-
-[node name="palm" type="MeshInstance3D" parent="HologramMesh" unique_id=494936012]
-transform = Transform3D(58.009216, 0, 0, 0, -1.8053703e-06, 297.93698, 0, -41.30206, -1.3023239e-05, 0, 0, 0)
-mesh = SubResource("ArrayMesh_wcy81")
-skeleton = NodePath("")
-surface_material_override/0 = ExtResource("3_o1hlm")
-
-[node name="spinningpalm" type="MeshInstance3D" parent="HologramMesh" unique_id=1888163953]
-transform = Transform3D(58.00922, 0, 0, 0, -1.8053705e-06, 297.93698, 0, -41.302063, -1.3023239e-05, 0, 0, 0)
-mesh = SubResource("ArrayMesh_qcq4n")
-skeleton = NodePath("")
-surface_material_override/0 = ExtResource("3_o1hlm")

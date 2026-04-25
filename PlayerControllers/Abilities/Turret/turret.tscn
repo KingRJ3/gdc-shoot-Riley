@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://c3j336qdd1ylu" path="res://PlayerControllers/Abilities/Turret/turret.gd" id="1_q0cjq"]
 [ext_resource type="Material" uid="uid://bj31ogvo4qulj" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/bombmaterial.tres" id="2_8e6j0"]
 [ext_resource type="AudioStream" uid="uid://da8a61gmx8n8s" path="res://PlayerControllers/Abilities/Turret/turretshot.mp3" id="3_8e6j0"]
+[ext_resource type="AudioStream" uid="uid://chek2v50yrpay" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/bombplanted.mp3" id="4_0n1m3"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_47kkg"]
 resource_name = "metal.001"
@@ -252,8 +253,8 @@ debug_shape_custom_color = Color(0.71, 0, 0, 0.34509805)
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="turret/turrethead" unique_id=103615048]
 transform = Transform3D(-0.15912272, 0.43718556, 4.067286e-08, 0.43575048, 0.15860045, 2.0269674e-08, 1.7604322e-09, 1.5296763e-08, -0.15753503, -0.0070365965, -0.00011014938, 0.087468944)
 stream = ExtResource("3_8e6j0")
-volume_db = -19.394
-max_distance = 17.9
+volume_db = -12.205
+max_distance = 21.45
 max_polyphony = 3
 panning_strength = 1.34
 
@@ -262,8 +263,6 @@ visible = false
 light_color = Color(0.84, 0.54012, 0.3108, 1)
 light_size = 0.08
 shadow_enabled = true
-shadow_opacity = 0.95
-shadow_blur = 5.286
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1583859313]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3798828, 0)
@@ -271,20 +270,21 @@ shape = SubResource("CapsuleShape3D_0n1m3")
 
 [node name="Area3D" type="Area3D" parent="." unique_id=1558449328]
 collision_mask = 2
+monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=239017568]
 shape = SubResource("SphereShape3D_cb38g")
 debug_color = Color(0.5817794, 9.62615e-08, 0.2923747, 0.41960785)
 
 [node name="ShootTimer" type="Timer" parent="." unique_id=2071784304]
-wait_time = 0.25
+wait_time = 0.439
 one_shot = true
 autostart = true
 
 [node name="TestCast" type="RayCast3D" parent="." unique_id=2115676562]
 transform = Transform3D(1.6120601, 0, 0, 0, 1.6173689, 0, 0, 0, 4.760846, -0.00090344425, 0.4478619, -0.013677709)
 target_position = Vector3(0, 0, 1.965)
-collision_mask = 2
+collision_mask = 3
 debug_shape_custom_color = Color(0.71, 0, 0, 0.34509805)
 
 [node name="LockonTimer" type="Timer" parent="." unique_id=1556296218]
@@ -293,4 +293,12 @@ one_shot = true
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=804594555]
 replication_config = SubResource("SceneReplicationConfig_8e6j0")
 
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=906874851]
+stream = ExtResource("4_0n1m3")
+volume_db = -21.099
+pitch_scale = 1.27
+autoplay = true
+max_distance = 45.01
+
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

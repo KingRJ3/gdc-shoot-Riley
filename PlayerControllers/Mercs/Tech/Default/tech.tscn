@@ -4,9 +4,10 @@
 [ext_resource type="PackedScene" uid="uid://byblikkwgri3q" path="res://PlayerControllers/Abilities/Sprint/SprintAbility.tscn" id="2_dmx7s"]
 [ext_resource type="PackedScene" uid="uid://cjg8huuii57ls" path="res://PlayerControllers/Abilities/TechRifle/techrifle.tscn" id="4_t61k7"]
 [ext_resource type="PackedScene" uid="uid://ca0y4uoljvp0i" path="res://PlayerControllers/Abilities/TurretPlacer/turretplacer.tscn" id="4_y15xa"]
-[ext_resource type="Material" uid="uid://bj31ogvo4qulj" path="res://PlayerControllers/Abilities/DefuseBomb/bombmaterial.tres" id="5_uv011"]
+[ext_resource type="Material" uid="uid://b1fqsvj0l56cx" path="res://PlayerControllers/Abilities/DefuseBomb/bombmaterial.tres" id="5_uv011"]
 [ext_resource type="PackedScene" uid="uid://b36uuh56645j5" path="res://PlayerControllers/Abilities/Jump/JumpAbility.tscn" id="6_1ljai"]
 [ext_resource type="Script" uid="uid://cuwv6563upnct" path="res://PlayerControllers/Mercs/Tech/ui.gd" id="6_j1smo"]
+[ext_resource type="PackedScene" uid="uid://btge38lo8isyd" path="res://PlayerControllers/Abilities/Footsteps/footsteps.tscn" id="9_crk8k"]
 [ext_resource type="PackedScene" uid="uid://ba65rnglgfi41" path="res://PlayerControllers/Abilities/TechBandage/boltgun.tscn" id="9_joyth"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lwjk5"]
@@ -146,6 +147,14 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_vr6iu")
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_j1smo"]
+properties/0/path = NodePath("MeshInstance3D/backrig/turret2:visible")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath("MeshInstance3D/backrig/turret1:visible")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+
 [node name="Player" type="CharacterBody3D" unique_id=728258314 node_paths=PackedStringArray("camera", "visual_body", "abilities")]
 collision_layer = 2
 script = ExtResource("1_uv011")
@@ -153,15 +162,15 @@ debug_mode = true
 camera = NodePath("Camera3D")
 gravity = 8.945
 air_acceleration = 0.13
-speed = 0.73
+speed = 0.685
 visual_body = NodePath("MeshInstance3D")
 merc_UI_color = Color(0.25355646, 0.42044947, 0.109449945, 1)
-abilities = [NodePath("SprintAbility"), NodePath("JumpAbility"), NodePath("turretpreview"), NodePath("techrifle"), NodePath("bandage")]
+abilities = [NodePath("JumpAbility"), NodePath("SprintAbility"), NodePath("turretpreview"), NodePath("techrifle"), NodePath("bandage"), null]
 
 [node name="SprintAbility" parent="." unique_id=699710493 instance=ExtResource("2_dmx7s")]
 speed_multiplier = 1.2
 fov_multiplier = 1.1
-transition_speed = 8.0
+transition_speed = 4.0
 AbilityDescription = "sprint"
 
 [node name="JumpAbility" parent="." unique_id=27473948 instance=ExtResource("6_1ljai")]
@@ -176,12 +185,13 @@ AbilityDescription = "place down 2 turrets. when a turret is destroyed, gain a b
 
 [node name="techrifle" parent="." unique_id=299331091 instance=ExtResource("4_t61k7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14452326, 0.060933933, -0.2201372)
+AbilityDescription = "semi auto rifle"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1977683154]
 shape = SubResource("CapsuleShape3D_lwjk5")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1865011546]
-transform = Transform3D(0.77857435, 0, 0, 0, 1, 0, 0, 0, 0.74186414, 0, 0, 0.053175926)
+transform = Transform3D(0.77857435, 0, 0, 0, 1, 0, 0, 0, 0.74186414, 0, 0, 0.006121129)
 mesh = SubResource("CapsuleMesh_g1ecg")
 
 [node name="backrig" type="Node3D" parent="MeshInstance3D" unique_id=835645317]
@@ -242,8 +252,9 @@ damage = 65.0
 AbilityDescription = "heal a teammate"
 trigger_key = "3"
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=888448145]
-_spawnable_scenes = PackedStringArray("uid://mrurkq3nymy")
-spawn_path = NodePath("..")
+[node name="Footsteps" parent="." unique_id=1784459721 instance=ExtResource("9_crk8k")]
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1240430921]
+replication_config = SubResource("SceneReplicationConfig_j1smo")
 
 [connection signal="kill_confirmed" from="." to="." method="_on_kill_confirmed"]
