@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" uid="uid://by2qbhuc53ljj" path="res://PlayerControllers/Abilities/EvilGun/evil_gun_ability.gd" id="1_p1o0t"]
 [ext_resource type="Texture2D" uid="uid://7t25cg31su6k" path="res://MapsAndGamemodes/Maps/dm_grahhh/assets/blahhh_0.png" id="2_8foco"]
-[ext_resource type="Material" path="res://PlayerControllers/Abilities/DefuseBomb/explosivematerial.tres" id="3_qqgut"]
-[ext_resource type="Material" path="res://PlayerControllers/Abilities/DefuseBomb/bombmaterial.tres" id="3_r4gtw"]
+[ext_resource type="Material" uid="uid://cvb22fneqgci8" path="res://PlayerControllers/Abilities/DefuseBomb/explosivematerial.tres" id="3_qqgut"]
+[ext_resource type="Material" uid="uid://b1fqsvj0l56cx" path="res://PlayerControllers/Abilities/DefuseBomb/bombmaterial.tres" id="3_r4gtw"]
 [ext_resource type="FontFile" uid="uid://bxfv5oguicmee" path="res://Misc/UI/fonts/GothicA1-Light.ttf" id="4_r4gtw"]
-[ext_resource type="AudioStream" path="res://PlayerControllers/Abilities/DefuseBomb/plant.mp3" id="5_qqgut"]
-[ext_resource type="Texture2D" path="res://PlayerControllers/Abilities/DefuseBomb/image-removebg-preview(10).png" id="5_t045v"]
+[ext_resource type="AudioStream" uid="uid://4xah06aixdq5" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/plant.mp3" id="5_qqgut"]
+[ext_resource type="Texture2D" uid="uid://brupuhk60x54r" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/image-removebg-preview(10).png" id="6_qqgut"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n6e4m"]
 
@@ -435,7 +435,7 @@ pixel_size = 0.009427
 shaded = true
 alpha_antialiasing_mode = 1
 texture_filter = 1
-texture = ExtResource("5_t045v")
+texture = ExtResource("6_qqgut")
 
 [node name="VisualHand" type="Marker3D" parent="." unique_id=295525846]
 transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0, 0, 0)

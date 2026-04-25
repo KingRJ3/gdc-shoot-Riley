@@ -155,7 +155,7 @@ properties/1/path = NodePath("MeshInstance3D/backrig/turret1:visible")
 properties/1/spawn = true
 properties/1/replication_mode = 2
 
-[node name="Player" type="CharacterBody3D" unique_id=728258314 node_paths=PackedStringArray("camera", "visual_body", "abilities")]
+[node name="Player" type="CharacterBody3D" unique_id=728258314 node_paths=PackedStringArray("camera", "visual_body", "visual_hand", "abilities")]
 collision_layer = 2
 script = ExtResource("1_uv011")
 debug_mode = true
@@ -164,6 +164,7 @@ gravity = 8.945
 air_acceleration = 0.13
 speed = 0.685
 visual_body = NodePath("MeshInstance3D")
+visual_hand = NodePath("Hand")
 merc_UI_color = Color(0.25355646, 0.42044947, 0.109449945, 1)
 abilities = [NodePath("JumpAbility"), NodePath("SprintAbility"), NodePath("turretpreview"), NodePath("techrifle"), NodePath("bandage"), null]
 
