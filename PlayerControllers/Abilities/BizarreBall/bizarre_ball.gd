@@ -56,9 +56,9 @@ func _process(_delta: float) -> void:
 		global_transform = merc.camera.global_transform
 	if Input.is_action_just_pressed("left_click"):
 		if thrown:
-			explode()
+			explode.rpc()
 		elif can_throw_again:
-			shoot()
+			shoot.rpc()
 	if Input.is_action_just_pressed("right_click"):
 		throw_crystal()
 		#holding_about_to_throw = true
@@ -70,6 +70,7 @@ func _process(_delta: float) -> void:
 		#thrown = true
 		#shoot()
 
+@rpc("any_peer", "call_local", "reliable")
 func shoot():
 	# Detach the grenade from the hand and throw it
 	# anim_player.play("throw")
