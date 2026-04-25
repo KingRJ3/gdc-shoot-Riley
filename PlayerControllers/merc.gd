@@ -390,7 +390,40 @@ func _sync_remove_ability(ability_path: NodePath) -> void:
 			
 		# Actually delete the node so the spawner registers it as gone
 		ability_node.queue_free()
+	
+
+# ==========================================
+# ABILITY DROPPING (SERVER ONLY)
+# ==========================================
+
+func drop_ability(ability: Ability) -> void:
+	if not multiplayer.is_server(): return
+	if not is_instance_valid(ability): return
+	
+	# 1. Grab the resource path before we delete the ability
+	var ability_path_to_drop = ability.scene_file_path 
+	
+	# 2. Calculate a safe drop position (slightly above the player's feet)
+	var drop_pos = global_position + Vector3(0, 1.0, 0) 
+	
+	# 3. Tell the Map to spawn the physical orb in the world
+	var current_map = get_parent()
+	if current_map and current_map.has_method("spawn_dropped_orb"):
+		current_map.spawn_dropped_orb(ability_path_to_drop, drop_pos)
 		
+	# 4. Strip the ability from the player using the function we already wrote
+	remove_ability(ability)
+
+# When the player dies, tell the server to dump everything
+@rpc("any_peer", "call_local", "reliable")
+func _request_drop_inventory() -> void:
+	if not multiplayer.is_server(): return
+	
+	# Iterate backwards when removing things from an array to avoid skipping indices!
+	for i in range(abilities.size() - 1, -1, -1):
+		var ability = abilities[i]
+		if is_instance_valid(ability):
+			drop_ability(ability)
 # ==========================================
 # TEAM FIGHTING STUFF
 # ==========================================
@@ -406,9 +439,6 @@ func sync_team_database(new_database: Dictionary) -> void:
 		# Update the UI color
 		if name_label_instance and TEAM_COLORS.has(team):
 			name_label_instance.modulate = TEAM_COLORS[team]
-
-
-
 
 @rpc("any_peer", "call_remote", "unreliable")
 func receive_pos_from_server(pos: Vector3, rot: Vector3):

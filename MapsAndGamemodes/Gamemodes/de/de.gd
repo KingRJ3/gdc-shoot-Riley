@@ -25,6 +25,7 @@ var players_alive_this_round: Array[int] = []
 var defuse_ui_scene = preload("res://MapsAndGamemodes/Gamemodes/de/DefuseUI.tscn")
 var char_select_scene = preload("res://MapsAndGamemodes/Gamemodes/PresetGamemodeWidgets/CharacterSelect/CharacterSelect.tscn")
 var team_select_scene = preload("res://MapsAndGamemodes/Gamemodes/dm/deathmatch side choice button.tscn")
+var defuser_node_scene = "res://PlayerControllers/Abilities/DEAbilities/Defuser/Defuser.tscn"
 var defuse_ui: DEUI
 var char_select_ui
 var team_select_ui
@@ -204,11 +205,12 @@ func _spawn_individual_for_round(player_id: int, team: String) -> void:
 	if existing_merc:
 		existing_merc.queue_free()
 		
-	player_spawner.spawn({
+	var player : Merc = player_spawner.spawn({
 		"merc_type": chosen_merc,
 		"position": spawn_pos,
 		"peer_id": player_id
 	})
+	if team == 'blue': player.add_ability(defuser_node_scene)
 
 @rpc("any_peer", "call_remote", "reliable")
 func submit_team_choice(team_name: String) -> void:

@@ -16,16 +16,16 @@ func update_timer(time_left: float, state: int) -> void:
 		
 	if state_label:
 		match state:
-			0: # FREEZE
+			0 or 1: # FREEZE
 				state_label.text = "FREEZE TIME"
 				state_label.modulate = Color.AQUA
-			1: # ACTION
+			2: # ACTION
 				state_label.text = "DEFEND / ATTACK"
 				state_label.modulate = Color.WHITE
-			2: # BOMB_PLANTED
+			3: # BOMB_PLANTED
 				state_label.text = "BOMB PLANTED"
 				state_label.modulate = Color.RED
-			3: # ROUND_END
+			4: # ROUND_END
 				state_label.text = "ROUND OVER"
 				state_label.modulate = Color.YELLOW
 
