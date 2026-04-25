@@ -373,11 +373,14 @@ func _on_ability_spawned(new_ability: Ability) -> void:
 
 # Keep your remove logic relatively the same, just update the array cleanup
 func remove_ability(ability: Ability) -> void:
+
 	if not multiplayer.is_server(): return
+
 	_sync_remove_ability.rpc(ability.get_path())
 
 @rpc("any_peer", "call_local", "reliable")
 func _sync_remove_ability(ability_path: NodePath) -> void:
+	
 	var ability_node = get_node_or_null(ability_path)
 	if not ability_node: return
 	
@@ -387,9 +390,11 @@ func _sync_remove_ability(ability_path: NodePath) -> void:
 		
 		if abilites_ui and abilites_ui.has_method("generate_ui"):
 			abilites_ui.generate_ui(self)
-			
+		
 		# Actually delete the node so the spawner registers it as gone
-		ability_node.queue_free()
+		if multiplayer.is_server():
+			ability_node.queue_free()
+		
 	
 
 # ==========================================

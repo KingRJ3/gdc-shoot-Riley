@@ -1,13 +1,10 @@
 extends WeaponAbility
 class_name DEBOMB
 
-var max_time_to_plant : float = 2.5 # Store the max time so we can reset it!
+var max_time_to_plant : float = 2.5 
 var time_to_plant : float = 1.0
 
-@onready var defuse_timer: Label3D = $bomb/palm/spinningpalm/DefuseTimer
 @onready var plant_raycast: RayCast3D = $PlantRaycast
-@onready var bomb: StaticBody3D = $bomb
-@onready var bomb_collision_shape: CollisionShape3D = $bomb/BombCollisionShape
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var hologram_mesh: Marker3D = $HologramMesh
 
@@ -19,19 +16,19 @@ func _ready() -> void:
 	time_to_plant = max_time_to_plant
 
 func _process(delta: float) -> void:
-	if !is_multiplayer_authority():return
+	if !is_multiplayer_authority(): return
 	if !currently_active: return
-	if !defuse_gamemode: return
-	if planted: 
-		if defuse_gamemode.current_state == defuse_gamemode.RoundState.BOMB_PLANTED:
-			var time = max(defuse_gamemode.round_timer, 0.0)
-			var minutes := int(time) / 60
-			var seconds := int(time) % 60
-			defuse_timer.text = "%d:%02d" % [minutes, seconds]
+	#if !defuse_gamemode: return
+	if planted: return
+	
+	# --- RIGHT CLICK TO DROP ---
+	if Input.is_action_just_pressed("right_click"): # Make sure this action is in your Input Map!
+		merc.request_drop_single_ability.rpc_id(1, get_path())
 		return
 	
 	if merc and merc.camera:
 		global_transform = merc.camera.global_transform
+		
 	var surface_point : Vector3 = Vector3.ZERO
 	var surface_normal : Vector3 = Vector3.ZERO
 	
@@ -40,7 +37,6 @@ func _process(delta: float) -> void:
 		surface_normal = plant_raycast.get_collision_normal()
 		hologram_mesh.show()
 		
-		# Safely align the hologram's UP direction to match the ground's slope
 		var align_quat = Quaternion(Vector3.UP, surface_normal)
 		hologram_mesh.global_basis = Basis(align_quat)
 		hologram_mesh.global_position = surface_point
@@ -54,8 +50,8 @@ func _process(delta: float) -> void:
 				
 			time_to_plant -= delta
 			if time_to_plant <= 0.0:
-				# FIX 3: Tell EVERYONE to plant the bomb, not just your local screen!
-				_sync_plant_bomb.rpc(surface_point, surface_normal)
+				# Tell the server to handle the actual planting!
+				_request_plant_bomb.rpc_id(1, surface_point, surface_normal)
 		else:
 			reset_plant_state()
 	else:
@@ -82,45 +78,18 @@ func dequip():
 	if planted: return
 	animation_player.play("dequip")
 
+# This is called purely on the Server now
 @rpc("any_peer", "call_local", "reliable")
-func _sync_plant_bomb(plant_spot: Vector3, surface_normal: Vector3):
+func _request_plant_bomb(plant_spot: Vector3, surface_normal: Vector3):
+	if not multiplayer.is_server(): return
 	if planted: return
 	
-	hologram_mesh.hide()
-	reset_plant_state()
 	planted = true
 	
-	# 1. Detach from the player's hand
-	bomb.set_as_top_level(true) 
-	
-	# 2. Apply the exact same rotation the hologram had
-	var align_quat = Quaternion(Vector3.UP, surface_normal)
-	bomb.global_basis = Basis(align_quat)
-	
-	# 3. Offset the position so it doesn't sink into the floor.
-	bomb.global_position = plant_spot
-	
-	bomb_collision_shape.set_deferred("disabled", false)
-	
-	# 4. Play the animation AFTER it is placed on the ground
-	animation_player.play("planted")
-	
-	# Tell the gamemode to start the detonation countdown (Server Only)
-	if multiplayer.is_server() and defuse_gamemode:
+	# 1. Ask the Gamemode to spawn the REAL bomb into the world
+	if defuse_gamemode:
 		var planter_id = multiplayer.get_remote_sender_id()
-		if planter_id == 0: planter_id = 1 # Fallback for the host
+		defuse_gamemode.spawn_real_bomb(planter_id, plant_spot, surface_normal)
 		
-		defuse_gamemode.on_bomb_planted(planter_id, self)
-
-@rpc("authority", "call_local", "reliable")
-func update_timer(time: float):
-	# Convert pure seconds into MM:SS format
-	var minutes := int(time) / 60
-	var seconds := int(time) % 60
-	defuse_timer.text = "%d:%02d" % [minutes, seconds]
-
-@rpc("authority", "call_local", "reliable")
-func explode(): 
-	# Add your particle emitters and explosion sounds here!
-	print("BOOM!")
-	
+	# 2. Delete this visual hand-bomb from the player's inventory completely!
+	merc.remove_ability(self)

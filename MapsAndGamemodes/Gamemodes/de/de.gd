@@ -30,9 +30,31 @@ var defuse_ui: DEUI
 var char_select_ui
 var team_select_ui
 var has_picked_team_locally := false
-var active_bomb : DEBOMB = null
+
+var active_bomb: PlantedBomb = null # Changed from DEBOMB to PlantedBomb
+var bomb_container: Node3D
+var bomb_spawner: MultiplayerSpawner
+
+# IMPORTANT: Put the exact path to your new scene here!
+var planted_bomb_scene = preload("res://MapsAndGamemodes/Gamemodes/de/PlantedBomb.tscn")
 
 func _ready() -> void:
+		# 1. Create a clean folder node for the physical bomb to live in
+	bomb_container = Node3D.new()
+	bomb_container.name = "BombContainer"
+	add_child(bomb_container)
+	
+	# 2. Set up the dynamic network spawner
+	bomb_spawner = MultiplayerSpawner.new()
+	bomb_spawner.name = "BombSpawner"
+	
+	# 3. Add it to the tree FIRST before assigning paths
+	add_child(bomb_spawner)
+	
+	# 4. Tell the spawner where to put the bomb and what function to use
+	bomb_spawner.spawn_path = bomb_container.get_path()
+	bomb_spawner.spawn_function = _spawn_planted_bomb
+	
 	# Instance all UI elements exactly like in DM and TD
 	defuse_ui = defuse_ui_scene.instantiate()
 	add_child(defuse_ui)
@@ -116,6 +138,8 @@ func _sync_state(new_state: int, new_time: float) -> void:
 func reset_round() -> void:
 	if not multiplayer.is_server(): return
 	
+	if is_instance_valid(active_bomb):
+		active_bomb.queue_free()
 	active_bomb = null
 	
 	# 1. Clear any surviving players or leftover bodies from the previous round
@@ -223,7 +247,41 @@ func submit_team_choice(team_name: String) -> void:
 			_spawn_individual_for_round(sender_id, team_name)
 			players_alive_this_round.append(sender_id)
 
-func on_bomb_planted(planter_id: int, planted_bomb: DEBOMB) -> void:
+# Called by the server when the player finishes the plant animation
+func spawn_real_bomb(planter_id: int, plant_spot: Vector3, surface_normal: Vector3) -> void:
+	if not multiplayer.is_server(): return
+
+	# Package the spawn location data
+	var spawn_data = {
+		"pos": plant_spot,
+		"normal": surface_normal
+	}
+	
+	# This automatically triggers _spawn_planted_bomb on ALL clients
+	var real_bomb = bomb_spawner.spawn(spawn_data)
+	
+	# Trigger the gamemode state shift!
+	on_bomb_planted(planter_id, real_bomb)
+
+# Automatically executes on Server and Clients to build the physical node
+func _spawn_planted_bomb(data: Variant) -> Node:
+	var spawn_data = data as Dictionary
+	var bomb_instance = planted_bomb_scene.instantiate() as PlantedBomb
+	
+	# Set the height offset so it doesn't sink into the floor (Adjust '1.0' as needed!)
+	var height_offset: float = 1.0 
+	bomb_instance.position = spawn_data["pos"] + (spawn_data["normal"] * height_offset)
+	
+	# Align the rotation to the slope
+	var align_quat = Quaternion(Vector3.UP, spawn_data["normal"])
+	bomb_instance.basis = Basis(align_quat)
+	
+	# Link the gamemode so the timer and defuser work
+	bomb_instance.defuse_gamemode = self
+	
+	return bomb_instance
+
+func on_bomb_planted(planter_id: int, planted_bomb: PlantedBomb) -> void:
 	if not multiplayer.is_server(): return
 	if current_state != RoundState.ACTION: return
 	
