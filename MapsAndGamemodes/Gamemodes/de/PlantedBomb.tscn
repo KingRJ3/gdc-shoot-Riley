@@ -6,7 +6,8 @@
 [ext_resource type="Material" uid="uid://ej07qv6yq17u" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/explosivematerial.tres" id="4_r0uuc"]
 [ext_resource type="Material" uid="uid://bj31ogvo4qulj" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/bombmaterial.tres" id="5_4rluo"]
 [ext_resource type="FontFile" uid="uid://bxfv5oguicmee" path="res://Misc/UI/fonts/GothicA1-Light.ttf" id="6_fhdgg"]
-[ext_resource type="Texture2D" uid="uid://dgk8egylyylkq" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/image-removebg-preview(10).png" id="7_d4rk3"]
+[ext_resource type="Texture2D" uid="uid://brupuhk60x54r" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/image-removebg-preview(10).png" id="7_d4rk3"]
+[ext_resource type="Texture2D" uid="uid://cqh3me5bmmfrm" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/Untitled.png" id="8_1reia"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3hlvc"]
 
@@ -204,6 +205,187 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_mqoow")
 
+[sub_resource type="Animation" id="Animation_1reia"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../MeshInstance3D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(16.445, 16.445, 16.445)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../MeshInstance3D:transparency")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.33]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../MeshInstance3D2:transparency")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.37]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../MeshInstance3D2:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(16, 16, 16)]
+}
+
+[sub_resource type="Animation" id="Animation_r0uuc"]
+resource_name = "explode"
+length = 4.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../MeshInstance3D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6333333),
+"transitions": PackedFloat32Array(-4.756827, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(16, 16, 16)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../MeshInstance3D:transparency")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 3.8666666),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.1, 1.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../MeshInstance3D2:transparency")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.26666668, 3.55),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.0, 0.37, 1.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../MeshInstance3D2:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.73333335),
+"transitions": PackedFloat32Array(0.15389313, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(16, 16, 16)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4rluo"]
+_data = {
+&"RESET": SubResource("Animation_1reia"),
+&"explode": SubResource("Animation_r0uuc")
+}
+
+[sub_resource type="Curve" id="Curve_1reia"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_r0uuc"]
+curve = SubResource("Curve_1reia")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_r0uuc"]
+emission_shape_offset = Vector3(0, 25.98, 0)
+emission_shape_scale = Vector3(20, 20, 20)
+emission_shape = 1
+emission_sphere_radius = 1.0
+angle_min = 227.10002
+angle_max = 227.10002
+spread = 106.875
+scale_min = 2.98
+scale_max = 11.91
+scale_over_velocity_max = 148.81
+alpha_curve = SubResource("CurveTexture_r0uuc")
+turbulence_enabled = true
+turbulence_noise_strength = 0.64
+turbulence_noise_scale = 4.241
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4rluo"]
+transparency = 1
+shading_mode = 0
+albedo_texture = ExtResource("8_1reia")
+billboard_mode = 1
+billboard_keep_scale = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_fhdgg"]
+material = SubResource("StandardMaterial3D_4rluo")
+orientation = 2
+
+[sub_resource type="TorusMesh" id="TorusMesh_fhdgg"]
+flip_faces = true
+rings = 14
+ring_segments = 6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d4rk3"]
+albedo_color = Color(0.15, 0.15, 0.15, 0.6862745)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_4rluo"]
+top_radius = 0.2
+bottom_radius = 0.425
+height = 1.195
+radial_segments = 13
+
 [node name="PlantedBomb" type="StaticBody3D" unique_id=1003094990]
 script = ExtResource("1_yo78a")
 
@@ -219,7 +401,7 @@ upper_fade = 1.3784376
 
 [node name="Decal2" type="Decal" parent="." unique_id=1641871172]
 transform = Transform3D(1, 0, 0, 0, -8.940697e-08, 1, 0, -1, -8.940697e-08, -0.02589789, -0.4948982, -0.049595594)
-size = Vector3(2.2873535, 1.810791, 1)
+size = Vector3(4.6279297, 3.5959473, 1)
 texture_albedo = ExtResource("2_comtp")
 albedo_mix = 0.54
 upper_fade = 1.3784376
@@ -290,3 +472,29 @@ shaded = true
 alpha_antialiasing_mode = 1
 texture_filter = 1
 texture = ExtResource("7_d4rk3")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=40041575]
+root_node = NodePath("../GPUParticles3D")
+libraries/ = SubResource("AnimationLibrary_4rluo")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=791333586]
+emitting = false
+amount = 15
+lifetime = 5.08
+one_shot = true
+explosiveness = 0.98
+randomness = 0.27
+process_material = SubResource("ParticleProcessMaterial_r0uuc")
+draw_pass_1 = SubResource("PlaneMesh_fhdgg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1329589606]
+transform = Transform3D(16.445, 0, 0, 0, 16.445, 0, 0, 0, 16.445, 0, 2.26442, 0)
+transparency = 0.33
+mesh = SubResource("TorusMesh_fhdgg")
+surface_material_override/0 = SubResource("StandardMaterial3D_d4rk3")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=1428927911]
+transform = Transform3D(16, 0, 0, 0, 16, 0, 0, 0, 16, 0, 14.163658, 0)
+transparency = 0.37
+mesh = SubResource("CylinderMesh_4rluo")
+surface_material_override/0 = SubResource("StandardMaterial3D_d4rk3")

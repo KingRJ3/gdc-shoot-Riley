@@ -78,7 +78,7 @@ func shoot():
 func gloot(placement_position):
 	var sender_id = multiplayer.get_remote_sender_id()
 	var turret_scene = load("res://PlayerControllers/Abilities/Turret/turret.tscn").instantiate()
-	turret_scene.global_position = placement_position
+	turret_scene.position = placement_position
 	turret_scene.dada = get_parent()
 	turret_scene.name = "turret_" + str(sender_id)
 	turret_scene.set_multiplayer_authority(sender_id)
