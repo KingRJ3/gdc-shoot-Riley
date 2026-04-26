@@ -6,6 +6,7 @@ extends WeaponAbility
 @onready var crosshair_002: Sprite2D = $Crosshair002
 @onready var label: Label = $Crosshair002/Label
 @onready var turret_preview = $turretpreview
+@onready var multiplayer_spawner: MultiplayerSpawner = $MultiplayerSpawner
 
 @export_category("Weapon Stats")
 @export var is_auto: bool = false
@@ -31,6 +32,10 @@ func _ready() -> void:
 	fire_attack_speed.wait_time = fire_speed
 	fire_attack_speed.one_shot = true
 	hide()
+	
+	# --- MULTIPLAYER SPAWNER SETUP ---
+	multiplayer_spawner.spawn_path = get_parent().get_path()
+	multiplayer_spawner.spawn_function = gloot
 	
 	# --- NEW: Save the resting position of the visual mesh ---
 	if weapon_mesh:
@@ -62,9 +67,12 @@ func _process(delta: float) -> void:
 			if get_parent().turrets <= 0:return
 			get_parent().turrets -= 1
 			var placement_position = $PlacementRay.get_collision_point()
-			gloot(placement_position)
-			gloot.rpc(placement_position)
-		
+			
+			# Use the spawner to instantiate locally and over the network simultaneously
+			multiplayer_spawner.spawn({
+				"pos": placement_position, 
+				"id": multiplayer.get_unique_id()
+			})
 	else:
 		turret_preview.visible = false
 	
@@ -74,15 +82,17 @@ func _process(delta: float) -> void:
 func shoot():
 	pass
 
-@rpc("any_peer", "call_remote", "reliable")
-func gloot(placement_position):
-	var sender_id = multiplayer.get_remote_sender_id()
+# The spawner passes the dictionary data here and automatically adds the returned node to the spawn_path
+func gloot(data: Dictionary) -> Node:
+	var sender_id = data["id"]
 	var turret_scene = load("res://PlayerControllers/Abilities/Turret/turret.tscn").instantiate()
-	turret_scene.position = placement_position
+	turret_scene.position = data["pos"]
 	turret_scene.dada = get_parent()
 	turret_scene.name = "turret_" + str(sender_id)
 	turret_scene.set_multiplayer_authority(sender_id)
-	get_parent().add_child(turret_scene)
+	
+	# Note: We return the node instead of using add_child(). The Spawner handles adding it automatically!
+	return turret_scene
 
 func equip():
 	show()

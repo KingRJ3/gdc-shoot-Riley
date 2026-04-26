@@ -10,6 +10,8 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if !is_multiplayer_authority(): return
+	
 	var velocity_int = abs(merc.velocity.x + merc.velocity.y + merc.velocity.z)
 	if merc.is_on_floor():
 		volume = clamp(-70 + ((velocity_int)*50), -100, 0)

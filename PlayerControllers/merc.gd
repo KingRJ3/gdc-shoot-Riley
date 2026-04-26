@@ -13,6 +13,8 @@ const TEST_ENVIRONMENT := preload("res://MapsAndGamemodes/Maps/TestEnvironment/T
 const ABILITY_UI = preload("res://Misc/UI/ability_ui.tscn")
 const MERC_LABEL = preload("res://MultiplayerStuff/Client/MercLabel.tscn")
 const HEALTH_BAR = preload("res://Misc/UI/health_bar.tscn")
+const FOOTSTEPS = preload("res://PlayerControllers/Abilities/Footsteps/footsteps.tscn")
+
 var health_bar: ProgressBar
 
 @export var debug_mode : bool = false
@@ -97,6 +99,11 @@ func _ready() -> void:
 	initiate_abilities() #HACK
 	max_health = health
 	set_collision_layer_value(2, true)
+	
+	var footsteps = FOOTSTEPS.instantiate()
+	footsteps.set_multiplayer_authority(multiplayer.get_unique_id())
+	add_child(footsteps)
+	
 	# ==========================================
 	# DEBUG MODE SETUP
 	# ==========================================
