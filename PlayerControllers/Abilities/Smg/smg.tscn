@@ -4,7 +4,14 @@
 [ext_resource type="PackedScene" uid="uid://lgfelikpw6ce" path="res://PlayerControllers/Abilities/TrackerRifle/tracer_effect.tscn" id="2_kvdrf"]
 [ext_resource type="Script" uid="uid://doi6ksc5c3s7p" path="res://PlayerControllers/Abilities/TrackerRifle/tracer_effect.gd" id="3_0m1ia"]
 [ext_resource type="Texture2D" uid="uid://b65fa3kdr05md" path="res://PrototypeAssets/PrototypeCrosshairsAssets/PNG/White/crosshair002.png" id="4_57l42"]
+[ext_resource type="FontFile" uid="uid://b1ohfsj2areyx" path="res://Misc/UI/fonts/GothicA1-Medium.ttf" id="5_fpsyp"]
 [ext_resource type="AudioStream" uid="uid://d3jshgvujyeao" path="res://PlayerControllers/Abilities/Smg/gunshot.mp3" id="5_rdqvm"]
+[ext_resource type="Material" uid="uid://cvb22fneqgci8" path="res://PlayerControllers/Abilities/DefuseBomb/explosivematerial.tres" id="6_62nle"]
+[ext_resource type="FontFile" uid="uid://f180c453b627" path="res://Misc/UI/fonts/GothicA1-SemiBold.ttf" id="7_j3to8"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_pod13"]
+font = ExtResource("5_fpsyp")
+font_size = 32
 
 [sub_resource type="Animation" id="Animation_to81w"]
 length = 0.001
@@ -71,6 +78,7 @@ tracks/4/keys = {
 
 [sub_resource type="Animation" id="Animation_r0p3f"]
 resource_name = "reload"
+length = 2.3
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -78,8 +86,8 @@ tracks/0/path = NodePath("buffer/smg:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.26666668, 0.93333334),
-"transitions": PackedFloat32Array(0.9330331, 5.4641595, 0.9330331),
+"times": PackedFloat32Array(0, 0.26666668, 2.2666667),
+"transitions": PackedFloat32Array(0.9330331, 1.866066, 0.9330331),
 "update": 0,
 "values": [Vector3(0.22845662, -0.25919166, -0.509812), Vector3(0.22845662, -0.25919166, -0.35625863), Vector3(0.22845662, -0.25919166, -0.509812)]
 }
@@ -90,8 +98,8 @@ tracks/1/path = NodePath("buffer/smg:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.33333334, 0.93333334),
-"transitions": PackedFloat32Array(0.7578583, 5.4641595, 0.7578583),
+"times": PackedFloat32Array(0, 0.33333334, 2.2666667),
+"transitions": PackedFloat32Array(0.7578583, 1.866066, 0.7578583),
 "update": 0,
 "values": [Vector3(0, -1.5707964, 0), Vector3(-0.45373878, -1.0279354, -0.7370533), Vector3(0, -1.5707964, 0)]
 }
@@ -102,10 +110,10 @@ tracks/2/path = NodePath("buffer/smg/mag:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.35673547, 0.6666667, 0.93333334),
-"transitions": PackedFloat32Array(1.8660659, 2.1435468, 0.2679437, 1, 1),
+"times": PackedFloat32Array(0, 0.2, 0.35673547, 0.83333325),
+"transitions": PackedFloat32Array(1.8660659, 2.1435468, 0.2679437, 1),
 "update": 0,
-"values": [Vector3(0, -0.41312805, 0), Vector3(0.8479658, -2.095457, 0.029567242), Vector3(0.8479658, -2.095457, 0.029567242), Vector3(0, -0.41312805, 0), Vector3(0, -0.41312805, 0)]
+"values": [Vector3(0, -0.41312805, 0), Vector3(0.8479658, -2.095457, 0.029567242), Vector3(0.8479658, -2.095457, 0.029567242), Vector3(0, -0.41312805, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_2e8bx"]
@@ -256,21 +264,21 @@ shadow_mesh = SubResource("ArrayMesh_jcptg")
 [node name="TrackerRifle" type="Node3D" unique_id=1600695075 node_paths=PackedStringArray("weapon_mesh", "raycasts")]
 script = ExtResource("1_6fyxj")
 is_auto = true
-max_ammo = 28
-damage = -3.0
-fire_speed = 0.08
+max_ammo = 22
+damage = -1.4
+fire_speed = 0.09
 weapon_mesh = NodePath("")
 bob_amplitude = 0.03
 raycasts = [NodePath("buffer/BulletRayCast")]
 trigger_key = "1"
 
 [node name="buffer" type="Node3D" parent="." unique_id=579951052]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.35647503, -0.51347065)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.16389674, -0.35647503, -0.51347065)
 
 [node name="TracerEffect" parent="buffer" unique_id=1482231535 instance=ExtResource("2_kvdrf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.23884735, 0.1029288, -1.0682745)
 script = ExtResource("3_0m1ia")
-tracer_color = Color(1, 0.9475, 0.55, 1)
+tracer_color = Color(0.55, 1, 0.61749995, 1)
 
 [node name="BulletRayCast" type="RayCast3D" parent="buffer" unique_id=1097835970]
 target_position = Vector3(0, 0, -80)
@@ -279,19 +287,20 @@ collision_mask = 3
 [node name="FireAttackSpeed" type="Timer" parent="buffer" unique_id=1953361202]
 
 [node name="Crosshair002" type="Sprite2D" parent="buffer" unique_id=771991382]
-modulate = Color(0.95, 0.19949998, 0.2745499, 1)
+modulate = Color(0.53199995, 1, 0.27999997, 1)
 position = Vector2(640, 360)
-rotation = 0.7853982
 scale = Vector2(0.99999994, 0.992936)
 texture = ExtResource("4_57l42")
 
 [node name="Label" type="Label" parent="buffer/Crosshair002" unique_id=1523280272]
-offset_left = -627.0
-offset_top = 321.26944
-offset_right = -535.0
-offset_bottom = 368.26944
+offset_left = 1.9999998
+offset_top = 2.0142174
+offset_right = 94.0
+offset_bottom = 49.014217
 scale = Vector2(0.5173408, 0.5173408)
 theme_override_font_sizes/font_size = 46
+text = "32"
+label_settings = SubResource("LabelSettings_pod13")
 metadata/_edit_use_anchors_ = true
 
 [node name="VisualHand" type="Marker3D" parent="buffer" unique_id=295525846]
@@ -328,3 +337,11 @@ skeleton = NodePath("")
 transform = Transform3D(7.1306214, 0, 0, 0, 5.042109, 5.04211, 0, -5.04211, 5.042109, 0, 0.6925963, 0)
 mesh = SubResource("ArrayMesh_yktoi")
 skeleton = NodePath("")
+surface_material_override/0 = ExtResource("6_62nle")
+
+[node name="HealthDisplay" type="Label3D" parent="buffer/smg" unique_id=1337192289]
+transform = Transform3D(-4.3939878e-08, -0.10211554, 0.9947726, 4.4636126e-09, 0.9947726, 0.10211554, -1, 8.927224e-09, -4.3254396e-08, 0.42871284, 0.9084554, -0.012221873)
+modulate = Color(0.48235294, 1, 0.39215687, 1)
+text = "HP"
+font = ExtResource("7_j3to8")
+outline_size = 8

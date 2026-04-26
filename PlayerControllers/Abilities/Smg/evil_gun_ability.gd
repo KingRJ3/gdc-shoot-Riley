@@ -103,10 +103,13 @@ func _do_raycasts() -> void:
 		if rc.is_colliding():
 			var person_hit = rc.get_collider()
 			if person_hit != null and person_hit is Merc:
-				person_hit.take_damage.rpc_id(int(person_hit.name), damage)
-				if Input.is_action_pressed("right_click"):
-					person_hit.apply_knockback.rpc_id(int(person_hit.name), -(get_parent().position-person_hit.position).normalized(), 2, 0.91)
-				
+				if person_hit.team == get_parent().team:
+					if person_hit.health < (person_hit.max_health+25):
+						person_hit.take_damage.rpc_id(int(person_hit.name), damage)
+				else:
+					person_hit.take_damage.rpc_id(int(person_hit.name), -damage)
+				$buffer/smg/HealthDisplay.text = str(person_hit.health)
+				$buffer/Crosshair002/Label.text = str(ammo) + "/" + str(max_ammo)
 			# Spawn tracer at hit point
 			tracer_effect._create_tracer_effect.rpc(tracer_effect.global_position, rc.get_collision_point())
 		else:
