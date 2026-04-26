@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://dyo4jpdrl7c4"]
 
-[ext_resource type="Script" uid="uid://2ip0lrtrrhsr" path="res://PlayerControllers/merc.gd" id="1_038mh"]
+[ext_resource type="Script" uid="uid://b62xliocjjkte" path="res://PlayerControllers/Mercs/Crutch/crutch.gd" id="1_v83g2"]
 [ext_resource type="PackedScene" uid="uid://byblikkwgri3q" path="res://PlayerControllers/Abilities/Sprint/SprintAbility.tscn" id="2_mofov"]
 [ext_resource type="PackedScene" uid="uid://c4indsu5jqmn6" path="res://PlayerControllers/Abilities/Smg/smg.tscn" id="4_7moma"]
 [ext_resource type="PackedScene" uid="uid://btge38lo8isyd" path="res://PlayerControllers/Abilities/Footsteps/footsteps.tscn" id="5_xylcw"]
@@ -61,7 +61,7 @@ shadow_mesh = SubResource("ArrayMesh_f5gf6")
 
 [node name="Player" type="CharacterBody3D" unique_id=1167000142 node_paths=PackedStringArray("camera", "visual_body", "visual_hand", "abilities")]
 collision_layer = 2
-script = ExtResource("1_038mh")
+script = ExtResource("1_v83g2")
 debug_mode = true
 camera = NodePath("Camera3D")
 health = 80.0
