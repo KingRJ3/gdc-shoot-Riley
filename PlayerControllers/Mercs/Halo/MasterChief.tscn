@@ -29,14 +29,14 @@ script = ExtResource("1_muwch")
 debug_mode = true
 camera = NodePath("Camera3D")
 air_acceleration = 0.08
-speed = 0.8
+speed = 0.4
 visual_body = NodePath("MeshInstance3D")
 abilities = [NodePath("SprintAbility"), NodePath("JumpAbility"), NodePath("HaloAR")]
 metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
 
 [node name="SprintAbility" parent="." unique_id=699710493 instance=ExtResource("2_h30se")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.1300366, -0.15780115)
-speed_multiplier = 2.0
+speed_multiplier = 1.3
 
 [node name="JumpAbility" parent="." unique_id=27473948 instance=ExtResource("3_010wl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.1300366, -0.15780115)
