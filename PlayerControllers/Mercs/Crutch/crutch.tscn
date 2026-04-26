@@ -6,11 +6,15 @@
 [ext_resource type="PackedScene" uid="uid://btge38lo8isyd" path="res://PlayerControllers/Abilities/Footsteps/footsteps.tscn" id="5_xylcw"]
 [ext_resource type="Texture2D" uid="uid://bpgdy8e5xjpfc" path="res://PlayerControllers/Mercs/Crutch/textures/Ushanka1Mtl_baseColor.png" id="6_038mh"]
 [ext_resource type="PackedScene" uid="uid://b36uuh56645j5" path="res://PlayerControllers/Abilities/Jump/JumpAbility.tscn" id="6_f21af"]
+[ext_resource type="PackedScene" uid="uid://dk1uiyodtwjio" path="res://PlayerControllers/Abilities/WallBuilder/turretplacer.tscn" id="6_mofov"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lwjk5"]
 radius = 0.38378906
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_g1ecg"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xylcw"]
+albedo_color = Color(0.65, 1, 0.70833325, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mofov"]
 albedo_texture = ExtResource("6_038mh")
@@ -66,7 +70,7 @@ speed = 0.9
 visual_body = NodePath("crutch")
 visual_hand = NodePath("Hand")
 camera_fov = 110.0
-abilities = [NodePath("SprintAbility"), NodePath("TrackerRifle"), NodePath("JumpAbility")]
+abilities = [NodePath("SprintAbility"), NodePath("HPSMG"), NodePath("JumpAbility"), NodePath("wallplacer")]
 metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
 
 [node name="SprintAbility" parent="." unique_id=699710493 instance=ExtResource("2_mofov")]
@@ -121,19 +125,23 @@ grow_vertical = 2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25360978, 0.23060426, -0.48329479)
 radius = 0.09193548
 
-[node name="TrackerRifle" parent="." unique_id=1600695075 instance=ExtResource("4_7moma")]
+[node name="HPSMG" parent="." unique_id=1600695075 instance=ExtResource("4_7moma")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.23129117, 0.58409363, 0.24758685)
 AbilityDescription = "heal teammates. hurt enemies."
 
 [node name="Footsteps" parent="." unique_id=1784459721 instance=ExtResource("5_xylcw")]
 
+[node name="wallplacer" parent="." unique_id=1651484999 instance=ExtResource("6_mofov")]
+trigger_key = "2"
+
 [node name="crutch" type="Node3D" parent="." unique_id=1678716086]
-transform = Transform3D(0.57, 0, 0, 0, 0.53673893, 0.059256535, 0, -0.059256535, 0.53673893, 0, 0.635, 0)
+transform = Transform3D(0.57, 0, 0, 0, 0.53673893, 0.059256535, 0, -0.059256535, 0.53673893, 0, 0.635, -0.05389023)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="crutch" unique_id=1865011546]
 transform = Transform3D(1.36592, 0, 0, 0, 1.8406684, -0.15075547, 0, 0.2032117, 1.365526, 0, -1.1796304, -0.031160176)
 mesh = SubResource("CapsuleMesh_g1ecg")
 skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_xylcw")
 
 [node name="Sketchfab_model" type="Node3D" parent="crutch" unique_id=1393672260]
 transform = Transform3D(100, 0, 0, 0, -100.000015, -1.5099583e-05, 0, 1.5099583e-05, -100.000015, 0, 0, 0)
