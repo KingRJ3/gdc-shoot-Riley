@@ -26,7 +26,6 @@ func take_real_damage(damage):
 		dead = true
 		destroy_prop.rpc()
 
-
 func _physics_process(delta):
 	if is_in_group("insmoke"):return
 	if targets.size() > 0 and !is_in_group("insmoke"):

@@ -101,7 +101,6 @@ func _ready() -> void:
 	set_collision_layer_value(2, true)
 	
 	var footsteps = FOOTSTEPS.instantiate()
-	footsteps.set_multiplayer_authority(multiplayer.get_unique_id())
 	add_child(footsteps)
 	
 	# ==========================================
@@ -122,7 +121,7 @@ func _ready() -> void:
 		debug_environment.top_level = true
 		
 		print("--- DEBUG MODE ACTIVE: Local Server & Floor Generated ---")
-
+	
 	# ==========================================
 	# STANDARD SETUP
 	# ==========================================
@@ -148,6 +147,7 @@ func _ready() -> void:
 		var map = get_parent()
 		if map is Map and camera and map.environment != null:
 			camera.environment = map.environment
+		
 		
 		camera.make_current()
 		if camera: camera.fov = camera_fov
