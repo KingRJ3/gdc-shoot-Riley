@@ -14,12 +14,25 @@ func hit_effect(damage):
 func destory_effect():
 	get_parent().bandages +=1
 
+@rpc("any_peer", "call_local", "reliable")
+func take_damage(damage: float):
+	dada.turret_take_damage(name, damage)
+
+@rpc("any_peer", "call_local", "reliable")
+func take_real_damage(damage):
+	health -= damage
+	if health <= 0 and not dead:
+		dead = true
+		destroy_prop.rpc()
+
 func _ready():
+	name = "turretpenis" + str(randi())
 	$Area3D.set_deferred("monitoring", true)
 	health = 70
 	dada = get_parent()
 
 func _physics_process(delta):
+	$turret/Label3D.text = str(health)
 	if is_in_group("insmoke"):return
 	if targets.size() > 0 and !is_in_group("insmoke"):
 		

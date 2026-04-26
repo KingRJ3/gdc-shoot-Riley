@@ -84,6 +84,7 @@ func shoot():
 	ammo = clamp(ammo - 1, 0, max_ammo)
 	
 	$AudioStreamPlayer3D.play()
+	$AudioStreamPlayer3D.play.rpc()
 	# Restart animation and start the cooldown timer
 	animation_player.stop() 
 	animation_player.play("shoot")

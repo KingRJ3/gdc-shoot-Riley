@@ -59,6 +59,7 @@ var name_label_instance
 var target_position: Vector3 #what other people see
 var target_rotation: Vector3
 
+var mouse_sensitivity: float = 0.005
 var can_move: bool = true
 var dead: bool = false
 var ability_ui 
@@ -301,8 +302,8 @@ func _input(event: InputEvent) -> void:
 	if ClientUI.menu.visible: return
 	if dead: return
 	if event is InputEventMouseMotion:
-		rotate_y(-event.relative.x * 0.005)
-		camera.rotate_x(-event.relative.y * .005)
+		rotate_y(-event.relative.x * mouse_sensitivity)
+		camera.rotate_x(-event.relative.y * mouse_sensitivity)
 		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
 
 #merc
