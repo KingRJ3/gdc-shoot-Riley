@@ -31,10 +31,11 @@ mesh = SubResource("QuadMesh_h6ttx")
 
 [node name="Area3D" type="Area3D" parent="." unique_id=658030302]
 collision_layer = 2147483648
-collision_mask = 3
+collision_mask = 131075
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=709240761]
 transform = Transform3D(0.825, 0, 0, 0, 0.825, 0, 0, 0, 0.825, 0, 0, 0)
 shape = SubResource("SphereShape3D_2el5u")
 
+[connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

@@ -240,7 +240,7 @@ transform = Transform3D(1, -1.1920929e-07, 1.4901161e-08, 0, 1, -1.4901161e-08, 
 shape = SubResource("CapsuleShape3D_seah1")
 
 [node name="Incendiary2" parent="Grenade" unique_id=1440469924 instance=ExtResource("2_xs34p")]
-transform = Transform3D(-0.064691305, -0.0008594734, -0.006268321, -0.0002704938, 0.06471433, -0.0060816295, 0.006321179, -0.006026665, -0.0644106, -0.004298568, -0.03716053, -0.00364542)
+transform = Transform3D(-0.064691305, -0.0008594734, -0.006268321, -0.0002704938, 0.06471433, -0.006081629, 0.006321179, -0.0060266647, -0.0644106, -0.004298568, -0.03716053, -0.00364542)
 
 [node name="Incendiary" parent="Grenade/Incendiary2" index="0" unique_id=98659808]
 surface_material_override/0 = ExtResource("3_l3mhk")
