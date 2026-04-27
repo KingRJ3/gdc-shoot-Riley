@@ -9,6 +9,8 @@ var defuse_gamemode: DE
 
 func _ready() -> void:
 	animation_player.play("idle")
+	await get_tree().create_timer(1.3).timeout
+	$Bombplanted.play()
 
 func _process(_delta: float) -> void:
 	# Continuously update the physical digital timer locally for all players
@@ -25,5 +27,7 @@ func explode():
 	# Trigger your explosion particles, sounds, and animations here
 	if animation_player.has_animation("explode"):
 		animation_player.stop()
+		$Bombexplosion.play()
 		animation_player.play("explode")
-	hide() # Hide the bomb mesh after it explodes
+	$palm.hide() # Hide the bomb mesh after it explodes
+	$fingers.hide()
