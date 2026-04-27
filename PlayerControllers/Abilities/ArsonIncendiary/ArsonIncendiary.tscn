@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://80ig0gmv38ka" path="res://PlayerControllers/Abilities/ArsonIncendiary/ArsonIncendiary.gd" id="1_1dgpb"]
 [ext_resource type="PackedScene" uid="uid://ira31rxsm7x1" path="res://PlayerControllers/Mercs/Arson/Assets/Incendiary.glb" id="2_xs34p"]
+[ext_resource type="Material" uid="uid://rq7cqlljrpwr" path="res://PlayerControllers/Mercs/Arson/Assets/Flamethrower_Primary.tres" id="3_l3mhk"]
+[ext_resource type="Material" uid="uid://drorms66sqkvs" path="res://PlayerControllers/Mercs/Arson/Assets/Flamethrower_Metal.tres" id="4_std12"]
+[ext_resource type="Material" uid="uid://cms8odrf8y27v" path="res://PlayerControllers/Mercs/Arson/Assets/Flamethrower_Undermetal.tres" id="5_5mc0a"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_seah1"]
 radius = 0.09082031
@@ -240,8 +243,13 @@ collision_mask = 3
 transform = Transform3D(1, -1.1920929e-07, 1.4901161e-08, 0, 1, -1.4901161e-08, 0, 0, 1, 1.4901161e-07, -0.020019472, 1.1920929e-07)
 shape = SubResource("CapsuleShape3D_seah1")
 
-[node name="Incendiary2" parent="Grenade" unique_id=1018205603 instance=ExtResource("2_xs34p")]
-transform = Transform3D(-0.064691305, -0.00085947354, -0.006268321, -0.0002704938, 0.06471433, -0.0060816305, 0.006321179, -0.006026666, -0.0644106, -0.004298568, -0.03716053, -0.00364542)
+[node name="Incendiary2" parent="Grenade" unique_id=1440469924 instance=ExtResource("2_xs34p")]
+transform = Transform3D(-0.064691305, -0.0008594734, -0.006268321, -0.0002704938, 0.06471433, -0.00608163, 0.006321179, -0.0060266657, -0.0644106, -0.004298568, -0.03716053, -0.00364542)
+
+[node name="Incendiary" parent="Grenade/Incendiary2" index="0" unique_id=98659808]
+surface_material_override/0 = ExtResource("3_l3mhk")
+surface_material_override/1 = ExtResource("4_std12")
+surface_material_override/2 = ExtResource("5_5mc0a")
 
 [node name="ExplosionRadius" type="Area3D" parent="Grenade" unique_id=83263472]
 
@@ -279,3 +287,5 @@ libraries/ = SubResource("AnimationLibrary_nla6h")
 replication_config = SubResource("SceneReplicationConfig_seah1")
 
 [connection signal="timeout" from="FuseTimer" to="." method="_on_fuse_timer_timeout"]
+
+[editable path="Grenade/Incendiary2"]

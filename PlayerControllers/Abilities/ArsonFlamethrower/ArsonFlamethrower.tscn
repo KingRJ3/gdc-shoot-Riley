@@ -2,8 +2,15 @@
 
 [ext_resource type="Script" uid="uid://pahyl18rvryh" path="res://PlayerControllers/Abilities/ArsonFlamethrower/ArsonFlamethrower.tres.gd" id="1_lymjw"]
 [ext_resource type="PackedScene" uid="uid://b7c8pomc2mix4" path="res://PlayerControllers/Mercs/Arson/Assets/Flamethrower.glb" id="2_70jtl"]
+[ext_resource type="Material" uid="uid://b8fd6bqjsi3la" path="res://PlayerControllers/Mercs/Arson/Assets/Flamethrower_Default.tres" id="3_xjout"]
 [ext_resource type="Texture2D" uid="uid://rfojkpxv7ix8" path="res://PlayerControllers/Mercs/Arson/Textures/FiresparkSpritesheet.png" id="4_70jtl"]
+[ext_resource type="Material" uid="uid://rq7cqlljrpwr" path="res://PlayerControllers/Mercs/Arson/Assets/Flamethrower_Primary.tres" id="4_81geu"]
 [ext_resource type="PackedScene" uid="uid://dagkuqdxw8qvf" path="res://PlayerControllers/Mercs/Arson/Assets/Gascanister.glb" id="4_twwqf"]
+[ext_resource type="Material" uid="uid://rdc0d4lmbpn3" path="res://PlayerControllers/Mercs/Arson/Assets/Flamethrower_Handle.tres" id="5_18nmc"]
+[ext_resource type="Material" uid="uid://drorms66sqkvs" path="res://PlayerControllers/Mercs/Arson/Assets/Flamethrower_Metal.tres" id="6_yytwa"]
+[ext_resource type="Material" uid="uid://cms8odrf8y27v" path="res://PlayerControllers/Mercs/Arson/Assets/Flamethrower_Undermetal.tres" id="7_ywpbp"]
+[ext_resource type="Material" uid="uid://cm8rb5t5lpb1" path="res://PlayerControllers/Mercs/Arson/Assets/Flamethrower_Void.tres" id="8_uo3xe"]
+[ext_resource type="Material" uid="uid://c41od2r8lq1gk" path="res://PlayerControllers/Mercs/Arson/Assets/Canister_Decal.tres" id="10_pk0cd"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_70jtl"]
 animation = &"ft_equip"
@@ -780,14 +787,26 @@ parameters/conditions/not_reloading = false
 root_node = NodePath("../..")
 libraries/ = SubResource("AnimationLibrary_7cf8f")
 
-[node name="Flamethrower" parent="." unique_id=1525914427 instance=ExtResource("2_70jtl")]
-transform = Transform3D(0.17930585, 0, 0, 0, 0.205, 0, 0, 0, 0.20092544, 0, 0, 0)
+[node name="Flamethrower" parent="." unique_id=1323524614 instance=ExtResource("2_70jtl")]
+transform = Transform3D(0.17930584, 0, 0, 0, 0.20499998, 0, 0, 0, 0.20092544, 0, 0, 0)
 
-[node name="Gascanister" parent="Flamethrower" unique_id=822425077 instance=ExtResource("4_twwqf")]
+[node name="Flamethrower" parent="Flamethrower" index="0" unique_id=1317575421]
+surface_material_override/0 = ExtResource("3_xjout")
+surface_material_override/1 = ExtResource("4_81geu")
+surface_material_override/2 = ExtResource("5_18nmc")
+surface_material_override/3 = ExtResource("6_yytwa")
+surface_material_override/4 = ExtResource("7_ywpbp")
+surface_material_override/5 = ExtResource("8_uo3xe")
+
+[node name="Gascanister" parent="Flamethrower" unique_id=1343223131 instance=ExtResource("4_twwqf")]
 transform = Transform3D(1.000001, 0, 0, 0, 1.0000023, 0, 0, 0, 1.0000027, 0, 0, 0)
 
+[node name="Canister" parent="Flamethrower/Gascanister" index="0" unique_id=105582428]
+surface_material_override/0 = ExtResource("7_ywpbp")
+surface_material_override/1 = ExtResource("10_pk0cd")
+
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="Flamethrower" unique_id=1756229397]
-transform = Transform3D(0.99996495, -0.008373172, 0.000214837, 0.008374288, 0.9999478, -0.0058609443, -0.00016575109, 0.0058625382, 0.99998283, 5.96, -0.35, 0.03)
+transform = Transform3D(0.99996495, -0.008373172, 0.000214837, 0.008374288, 0.9999478, -0.0058609447, -0.00016575107, 0.0058625387, 0.99998283, 5.96, -0.35, 0.03)
 billboard = 2
 sprite_frames = SubResource("SpriteFrames_jqxcm")
 autoplay = "default"
