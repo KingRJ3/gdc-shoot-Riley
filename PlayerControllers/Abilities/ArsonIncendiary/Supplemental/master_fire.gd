@@ -12,7 +12,7 @@ var spawn_queue = []       # Points waiting to grow neighbors
 var point_count = 0
 
 func _ready():
-	if !is_multiplayer_authority(): return
+	#if !is_multiplayer_authority(): return
 	# Start the first fire at impact point
 	await get_tree().create_timer(0.05).timeout
 	spawn_at_pos(global_position)
@@ -41,7 +41,8 @@ func spawn_at_pos(pos: Vector3):
 	
 	# 4. Spawn the fire point
 	var newname = (str(get_multiplayer_authority()) + "_" + str(point_count))
-	SyncSpawn.rpc(floor_pos, newname)
+	SyncSpawn(floor_pos, newname)
+	#SyncSpawn.rpc(floor_pos, newname)
 	
 	spawned_positions.append(grid_pos)
 	spawn_queue.append(grid_pos)
@@ -51,11 +52,11 @@ func spawn_at_pos(pos: Vector3):
 		await get_tree().create_timer(0.1).timeout
 		spread_from(grid_pos)
 
-@rpc("any_peer", "call_local", "reliable")
+#@rpc("any_peer", "call_local", "reliable")
 func SyncSpawn(pos, newname):
 	print("spawning fire!")
 	var f = FIRE_POINT.instantiate()
-	f.set_multiplayer_authority(multiplayer.get_remote_sender_id())
+	f.set_multiplayer_authority(self.get_multiplayer_authority())
 	get_parent().add_child(f)
 	f.global_position = pos
 	f.name = newname

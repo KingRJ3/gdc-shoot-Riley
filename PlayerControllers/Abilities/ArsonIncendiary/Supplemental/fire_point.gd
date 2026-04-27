@@ -8,9 +8,9 @@ var FireHeal = 0.25
 const BURNING_EFFECT = preload("res://PlayerControllers/Abilities/ArsonFlamethrower/Supplemental/BurningEffect.tscn")
 
 func fade_out_and_die():
-	sync_fade_out_and_die.rpc()
+	sync_fade_out_and_die()#.rpc()
 
-@rpc("any_peer", "call_local", "reliable")
+#@rpc("any_peer", "call_local", "reliable")
 func sync_fade_out_and_die():	# 1. Stop spawning new particles immediately
 	particles.emitting = false
 	

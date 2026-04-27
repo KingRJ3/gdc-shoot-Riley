@@ -17,13 +17,14 @@ func _process(delta: float) -> void:
 
 
 func _on_body_entered(body: Node) -> void:
-	if is_multiplayer_authority() and !exploding:
+	if !exploding:
 		var parent = get_parent()
 		var impact_pos = self.global_position
 		var multiplayer_auth = self.get_multiplayer_authority()
 		exploding = true
-		if body and body.has_method("take_damage"):
-			body.take_damage.rpc_id(body.get_multiplayer_authority(), 5.0) #Do 5 damage on direct impact
+		if is_multiplayer_authority():
+			if body and body.has_method("take_damage"):
+				body.take_damage.rpc_id(body.get_multiplayer_authority(), 5.0) #Do 5 damage on direct impact
 		#print("collided with " + str(body.name) + str(body.get_path()))
 		#var fire = MASTER_FIRE.instantiate()
 		#fire.set_multiplayer_authority(multiplayer_auth)
@@ -31,12 +32,14 @@ func _on_body_entered(body: Node) -> void:
 		#fire.global_position = impact_pos
 		#fire.set_multiplayer_authority(multiplayer_auth)
 		var parentpath = parent.get_path()
-		spawnMasterFire.rpc(impact_pos, multiplayer_auth)#, parentpath)
+		#spawnMasterFire.rpc(impact_pos, multiplayer_auth)#, parentpath)
+		spawnMasterFire(impact_pos, multiplayer_auth)
 		
 		#await get_tree().create_timer(0.05).timeout
-		despawnMyself.rpc()
+		despawnMyself()
+		#despawnMyself.rpc()
 
-@rpc("any_peer", "call_local", "reliable")
+#@rpc("any_peer", "call_local", "reliable")
 func spawnMasterFire(start_pos, ownerID):#, parentpath):
 	#print("Spawning master fire!")
 	var fire = MASTER_FIRE.instantiate()
@@ -46,7 +49,7 @@ func spawnMasterFire(start_pos, ownerID):#, parentpath):
 	parent.add_child(fire)
 	fire.global_position = start_pos
 
-@rpc("any_peer", "call_local", "reliable")
+#@rpc("any_peer", "call_local", "reliable")
 func despawnMyself():
 	hide()
 	#await get_tree().create_timer(20).timeout

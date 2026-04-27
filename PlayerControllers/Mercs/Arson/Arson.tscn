@@ -35,6 +35,7 @@
 [ext_resource type="Texture2D" uid="uid://dcrd7xu5btkxl" path="res://PlayerControllers/Mercs/Arson/Textures/FlamethrowerAmmo.png" id="22_47sre"]
 [ext_resource type="Script" uid="uid://cwyyd20cfpowi" path="res://PlayerControllers/Mercs/Arson/grenade_count.gd" id="23_0vwqq"]
 [ext_resource type="Script" uid="uid://b4cogq4twr52m" path="res://PlayerControllers/Mercs/Arson/ammo_control.gd" id="26_5ll0e"]
+[ext_resource type="Script" uid="uid://dutqs7wy41ehk" path="res://PlayerControllers/Mercs/Arson/gas_progress.gd" id="30_di0u0"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_laqpj"]
 
@@ -923,6 +924,8 @@ collision_layer = 2
 script = ExtResource("1_2owpn")
 debug_mode = true
 camera = NodePath("Camera3D")
+health = 140.0
+speed = 0.75
 visual_body = NodePath("ModelsForSelect")
 visual_hand = NodePath("ModelsForSelect")
 abilities = [NodePath("PassiveAbilities/JumpAbility"), NodePath("PassiveAbilities/SprintAbility"), NodePath("Camera3D/Held/ArsonFlamethrower"), NodePath("Camera3D/Held/ArsonIncendiary"), NodePath("Camera3D/Held/ArsonGascan")]
@@ -950,6 +953,7 @@ AbilityDescription = "A breathable burn."
 trigger_key = "2"
 
 [node name="ArsonGascan" parent="Camera3D/Held" unique_id=607304877 node_paths=PackedStringArray("fire_rate") instance=ExtResource("4_bk2kd")]
+transform = Transform3D(0.052671716, 0, 0.4569745, 0, 0.45999995, 0, -0.4569745, 0, 0.052671716, 0.5254529, 0.30368844, -0.7537116)
 fire_rate = NodePath("../../../Timers/Fire_Rate")
 trigger_key = "3"
 
@@ -1151,10 +1155,13 @@ frame_progress = 0.94409156
 [node name="PassiveAbilities" type="Node3D" parent="." unique_id=821434707]
 
 [node name="JumpAbility" parent="PassiveAbilities" unique_id=27473948 instance=ExtResource("9_nyruc")]
+jump_strength = 4.5
 AbilityDescription = "A little heavy though."
 trigger_key = "Space"
 
 [node name="SprintAbility" parent="PassiveAbilities" unique_id=699710493 instance=ExtResource("10_6wfe1")]
+speed_multiplier = 1.05
+fov_multiplier = 1.1
 AbilityDescription = "Next time, eat a salad."
 
 [node name="UI_Control" type="Control" parent="." unique_id=1760705249]
@@ -1247,6 +1254,7 @@ value = 100.0
 fill_mode = 3
 texture_under = ExtResource("16_6144p")
 texture_progress = ExtResource("17_w5rjq")
+script = ExtResource("30_di0u0")
 
 [node name="GasOverlay" type="Sprite2D" parent="UI_Control/UI_CanvasLayer/Centered_Bottom/Node" unique_id=446340274]
 position = Vector2(54.19, -37)

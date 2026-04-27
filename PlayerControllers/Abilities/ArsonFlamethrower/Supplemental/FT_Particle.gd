@@ -81,7 +81,6 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 		if body != null and body != self and body is Merc:
 			#if body.name.to_int() != multiplayer.get_unique_id():
 			if body.get_multiplayer_authority() != self.get_multiplayer_authority():
-				
 				if body.player_teams.has(self.get_multiplayer_authority()):
 					var attacker_team = body.player_teams[self.get_multiplayer_authority()]
 					# 3. Filter friendly fire
@@ -120,3 +119,9 @@ func RefreshAfterburn(bodypath):
 		if body.has_node("StatusEffect_Burn"):
 			var afterburn = body.get_node("StatusEffect_Burn")
 			afterburn.renewBurn() #Run on everyone, for the purposes of sync
+
+
+func _on_area_3d_area_entered(area: Area3D) -> void:
+	if is_multiplayer_authority():
+		if area.has_method("ignite"):
+			area.ignite()

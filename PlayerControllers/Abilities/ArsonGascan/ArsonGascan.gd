@@ -8,15 +8,21 @@ extends WeaponAbility
 @export var is_firing: bool = false
 @export var new_equipped: bool = false
 
+@onready var tick_timer: Timer = $TickTimer
 @export var fire_rate: Timer
 #@onready var ui_control: Control = $ScriptStuff/UI_Control
 #@onready var ui_control: = $ScriptStuff/UI_BypassControl
 #@onready var crosshair: Sprite2D = $ScriptStuff/UI_Control/Crosshair
+const GAS_SPILL = preload("res://PlayerControllers/Abilities/ArsonGascan/Supplements/GasSpill.tscn")
+
 
 @export_category("Weapon Stats")
-@export var max_ammo: int = 200
+@export var max_ammo: float = 100
 @export var damage: float = 2.0
 @export var fire_speed: float = 0.05 # Time in seconds between fire bursts
+@export var regen_speed: float = 6.0   # regen speed
+@export var drain_speed: float = 10.0   # drain speed
+@export var start_cost: float = 20.0   # use cost
 
 @export_category("Weapon Movement Juice")
 @export var weapon_mesh: Node3D # ASSIGN YOUR VISUAL GUN MODEL HERE!
@@ -32,13 +38,12 @@ var _initial_mesh_rotation: Vector3
 # Add ONE RayCast3D here for a Pistol/Rifle, or add MULTIPLE for a Shotgun
 @export var raycasts: Array[RayCast3D] = [] 
 
-var ammo: int
-
+var ammo: float
+var spawnGasCounter: int
 func _ready() -> void:
 	print("Ive been ready'd!")
 	ammo = max_ammo
-	fire_rate.wait_time = fire_speed
-	fire_rate.one_shot = true
+	spawnGasCounter = 0
 	hide()
 	#ui_control.hide()
 	#ui_control.hide()
@@ -56,9 +61,18 @@ func _ready() -> void:
 		#crosshair.hide()
 		#ui_control.visible = false
 		#crosshair.visible = false
-	
+
+var firstshot = false
 
 func _process(delta: float) -> void:
+	if ammo < max_ammo:
+		# Add ammo based on time passed
+		if !is_firing:
+			ammo += regen_speed * delta
+			
+			# Clamp the value so it doesn't exceed max_ammo
+			ammo = min(ammo, max_ammo)
+		
 	#print(ui_control.visible)
 	if weapon_mesh:
 		_apply_weapon_bob_and_tilt(delta)
@@ -78,23 +92,40 @@ func _process(delta: float) -> void:
 		#trigger_pulled = Input.is_action_just_pressed("left_click") # Click to shoot
 	#
 	# 3. Check if the gun is ready to fire based on the timer
-	if trigger_pulled and fire_rate.is_stopped() and !new_equipped and !is_reloading:
+	if trigger_pulled and (ammo >= start_cost or is_firing) and !new_equipped and !is_reloading:
+		if firstshot == false:
+			firstshot = true
+			ammo -= start_cost
+		#if tick_timer.is_stopped():
+			#tick_timer.start()
 		is_firing = true
-		UpdateAnimations()
-		shoot()
+		if ammo > 0:
+			ammo -= (drain_speed * delta)
+			spawnGasCounter += 1
+			UpdateAnimations()
+			if spawnGasCounter % 10 == 0: #Every 10 times actually spawn gas
+				shoot()
+		else:
+			ammo = 0
+			is_firing = false
+			firstshot = false
+			UpdateAnimations()
 	else:
 		is_firing = false
+		firstshot = false
 		UpdateAnimations()
+	print(is_firing)
+	print(ammo)
 	
-	if Input.is_action_just_pressed("reload"):
-		print("Pressed reload")
-		print(is_reloading)
-		print(new_equipped)
-		print(ammo)
-		print(max_ammo)
+	#if Input.is_action_just_pressed("reload"):
+		#print("Pressed reload")
+		#print(is_reloading)
+		#print(new_equipped)
+		#print(ammo)
+		#print(max_ammo)
 	
-	if Input.is_action_just_pressed("reload") and !is_reloading and !new_equipped and ammo < max_ammo and !trigger_pulled: #Not letting them reload while shooting, to avoid fat fingers
-		reload()
+	#if Input.is_action_just_pressed("reload") and !is_reloading and !new_equipped and ammo < max_ammo and !trigger_pulled: #Not letting them reload while shooting, to avoid fat fingers
+		#reload()
 
 func reload():
 	is_reloading = true
@@ -107,11 +138,49 @@ func finish_reload_anim():
 	is_reloading = false
 	UpdateAnimations()
 
+#func shoot():
+	##fire_rate.start()
+	##ammo = ammo - 1.0
+	#print("Pouring!")
+	#GAS_SPILL.instantiate()
+
 func shoot():
-	fire_rate.start()
-	print("Merc shot!")
-	print(merc)
-	ammo = ammo - 1
+	
+	# 1. Get the current physics world state
+	var space_state = get_world_3d().direct_space_state
+	
+	# 2. Define the start and end of the ray
+	var start_pos = global_position
+	var end_pos = global_position + Vector3.DOWN * 10.0 # Casts 10 meters down
+	
+	# 3. Setup the query
+	var query = PhysicsRayQueryParameters3D.create(start_pos, end_pos)
+	
+	# Optional: Tell the ray to ignore the player so it doesn't hit your own feet
+	query.exclude = [self] 
+	
+	# 4. Execute the raycast
+	var result = space_state.intersect_ray(query)
+	
+	# 5. Check if we hit the floor
+	if result:
+		spawn_gas_at.rpc(result.position, result.normal, self.get_multiplayer_authority())
+		#spawn_gas_at(result.position, result.normal)
+
+@rpc("any_peer","call_local","reliable")
+func spawn_gas_at(pos: Vector3, normal: Vector3, OwnerID):
+	#print("Spawning at: ", pos)
+	var spill = GAS_SPILL.instantiate()
+	
+	# Add to the root so it stays in the world if the player moves away
+	get_tree().root.add_child(spill)
+	spill.global_position = pos
+	spill.set_multiplayer_authority(OwnerID)
+	
+	# Align to the floor slope
+	if normal.dot(Vector3.UP) < 0.99:
+		spill.look_at(pos + normal, Vector3.RIGHT)
+		spill.rotate_object_local(Vector3.RIGHT, deg_to_rad(90))
 
 
 func UpdateAnimations():

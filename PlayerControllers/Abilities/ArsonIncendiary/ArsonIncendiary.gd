@@ -45,7 +45,7 @@ func shoot():
 	anim_player.play("throw")
 	rpc("sync_animation", "throw")
 	await anim_player.animation_finished
-	
+	ammo -= 1
 	#spawnNLaunch(hand.global_position, -merc.camera.global_basis.z * throw_strength)
 	rpc("spawnNLaunch", hand.global_position, -merc.camera.global_basis.z * throw_strength, merc.velocity, self.get_multiplayer_authority())
 	equip() # we are re-equipping heheheha
