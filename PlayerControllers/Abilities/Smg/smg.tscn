@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://doi6ksc5c3s7p" path="res://PlayerControllers/Abilities/TrackerRifle/tracer_effect.gd" id="3_0m1ia"]
 [ext_resource type="Texture2D" uid="uid://b65fa3kdr05md" path="res://PrototypeAssets/PrototypeCrosshairsAssets/PNG/White/crosshair002.png" id="4_57l42"]
 [ext_resource type="FontFile" uid="uid://b1ohfsj2areyx" path="res://Misc/UI/fonts/GothicA1-Medium.ttf" id="5_fpsyp"]
-[ext_resource type="AudioStream" uid="uid://d3jshgvujyeao" path="res://PlayerControllers/Abilities/Smg/gunshot.mp3" id="5_rdqvm"]
+[ext_resource type="AudioStream" uid="uid://bblluxxnhm6iq" path="res://PlayerControllers/Abilities/Smg/gunshot.mp3" id="5_rdqvm"]
 [ext_resource type="Material" uid="uid://ej07qv6yq17u" path="res://PlayerControllers/Abilities/DefuseBomb/explosivematerial.tres" id="6_62nle"]
 [ext_resource type="FontFile" uid="uid://f180c453b627" path="res://Misc/UI/fonts/GothicA1-SemiBold.ttf" id="7_j3to8"]
 

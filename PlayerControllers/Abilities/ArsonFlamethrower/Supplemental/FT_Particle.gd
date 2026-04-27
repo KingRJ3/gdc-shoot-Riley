@@ -76,10 +76,19 @@ func _physics_process(delta: float):
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	#print(body)
 	#print(get_multiplayer_authority())
+	var DoDamage = true
 	if is_multiplayer_authority():
 		if body != null and body != self and body is Merc:
-			if body.name.to_int() != multiplayer.get_unique_id():
-				if !DoneDamage:
+			#if body.name.to_int() != multiplayer.get_unique_id():
+			if body.get_multiplayer_authority() != self.get_multiplayer_authority():
+				
+				if body.player_teams.has(self.get_multiplayer_authority()):
+					var attacker_team = body.player_teams[self.get_multiplayer_authority()]
+					# 3. Filter friendly fire
+					if attacker_team == body.team and body.team != "default":
+						DoDamage = false
+				
+				if !DoneDamage and DoDamage:
 					DoneDamage = true
 					#print("Doing " + str(ParticleDamage) + " damage.")
 					var damage_mult = 1.0
