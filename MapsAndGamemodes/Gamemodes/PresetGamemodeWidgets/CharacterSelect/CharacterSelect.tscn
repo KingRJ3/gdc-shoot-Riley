@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bgx7lserrkrgs"]
 
 [ext_resource type="Script" uid="uid://i4snterwwfcp" path="res://MapsAndGamemodes/Gamemodes/PresetGamemodeWidgets/CharacterSelect/character_select.gd" id="1_flvx3"]
+[ext_resource type="Script" uid="uid://bil5rdqvrtd3w" path="res://MapsAndGamemodes/Gamemodes/PresetGamemodeWidgets/CharacterSelect/spin_spawn.gd" id="2_8i7tb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_flvx3"]
 content_margin_left = 0.0
@@ -96,9 +97,10 @@ spot_angle = 32.99246
 
 [node name="SpinSpawn" type="Marker3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=379684050]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.026600122, -33.922417, -2.2191494)
+script = ExtResource("2_8i7tb")
 
 [node name="Timer" type="Timer" parent="PanelContainer/SubViewportContainer/SubViewport/SpinSpawn" unique_id=1313410776]
-wait_time = 0.2
+wait_time = 500.0
 autostart = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="PanelContainer/SubViewportContainer/SubViewport/SpinSpawn" unique_id=1095285554]
