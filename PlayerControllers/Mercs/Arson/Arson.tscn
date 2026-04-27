@@ -8,8 +8,11 @@
 [ext_resource type="PackedScene" uid="uid://dagkuqdxw8qvf" path="res://PlayerControllers/Mercs/Arson/Assets/Gascanister.glb" id="4_nyruc"]
 [ext_resource type="PackedScene" uid="uid://ira31rxsm7x1" path="res://PlayerControllers/Mercs/Arson/Assets/Incendiary.glb" id="5_6wfe1"]
 [ext_resource type="PackedScene" uid="uid://bal6vhmoparwl" path="res://PlayerControllers/Mercs/Arson/Assets/WeldingMask.glb" id="6_teuj6"]
+[ext_resource type="Material" uid="uid://b8fd6bqjsi3la" path="res://PlayerControllers/Mercs/Arson/Assets/Flamethrower_Default.tres" id="6_xgfjt"]
 [ext_resource type="PackedScene" uid="uid://b7c8pomc2mix4" path="res://PlayerControllers/Mercs/Arson/Assets/Flamethrower.glb" id="7_70xir"]
 [ext_resource type="PackedScene" uid="uid://demkgx527675f" path="res://PlayerControllers/Abilities/ArsonFlamethrower/ArsonFlamethrower.tscn" id="7_airly"]
+[ext_resource type="Material" uid="uid://bxi4khb626mxc" path="res://PlayerControllers/Mercs/Arson/Assets/Welder_Mask_Eyes.tres" id="7_lvshh"]
+[ext_resource type="Material" uid="uid://cms8odrf8y27v" path="res://PlayerControllers/Mercs/Arson/Assets/Flamethrower_Undermetal.tres" id="8_jjlry"]
 [ext_resource type="PackedScene" uid="uid://b36uuh56645j5" path="res://PlayerControllers/Abilities/Jump/JumpAbility.tscn" id="9_nyruc"]
 [ext_resource type="Script" uid="uid://dmu12hppx1f0d" path="res://PlayerControllers/Mercs/Arson/models_for_select.gd" id="9_o0abd"]
 [ext_resource type="PackedScene" uid="uid://byblikkwgri3q" path="res://PlayerControllers/Abilities/Sprint/SprintAbility.tscn" id="10_6wfe1"]
@@ -17,8 +20,13 @@
 [ext_resource type="Script" uid="uid://slpyuxesuk8q" path="res://PlayerControllers/Mercs/Arson/ArsonTextHover.gd" id="13_bk2kd"]
 [ext_resource type="Script" uid="uid://clnufjuvs0053" path="res://PlayerControllers/Mercs/Arson/ft_crosshair.gd" id="13_laqpj"]
 [ext_resource type="Texture2D" uid="uid://7ltqlomfi0sa" path="res://PlayerControllers/Mercs/Arson/Textures/Crosshair2.png" id="14_o0abd"]
+[ext_resource type="Material" uid="uid://drorms66sqkvs" path="res://PlayerControllers/Mercs/Arson/Assets/Flamethrower_Metal.tres" id="14_qaalf"]
+[ext_resource type="Material" uid="uid://rq7cqlljrpwr" path="res://PlayerControllers/Mercs/Arson/Assets/Flamethrower_Primary.tres" id="15_j424p"]
 [ext_resource type="Texture2D" uid="uid://rfojkpxv7ix8" path="res://PlayerControllers/Mercs/Arson/Textures/FiresparkSpritesheet.png" id="16_25cui"]
 [ext_resource type="Texture2D" uid="uid://b5e52q46jg2us" path="res://PlayerControllers/Mercs/Arson/Textures/UnfilledGasBG.png" id="16_6144p"]
+[ext_resource type="Material" uid="uid://cm8rb5t5lpb1" path="res://PlayerControllers/Mercs/Arson/Assets/Flamethrower_Void.tres" id="16_di0u0"]
+[ext_resource type="Material" uid="uid://c41od2r8lq1gk" path="res://PlayerControllers/Mercs/Arson/Assets/Canister_Decal.tres" id="16_j424p"]
+[ext_resource type="Material" uid="uid://rdc0d4lmbpn3" path="res://PlayerControllers/Mercs/Arson/Assets/Flamethrower_Handle.tres" id="17_cfcnh"]
 [ext_resource type="Texture2D" uid="uid://d375cvcebr5vt" path="res://PlayerControllers/Mercs/Arson/Textures/FilledGasBG.png" id="17_w5rjq"]
 [ext_resource type="Texture2D" uid="uid://8jbvnttupwb8" path="res://PlayerControllers/Mercs/Arson/Textures/GasFG.png" id="18_jetmc"]
 [ext_resource type="Texture2D" uid="uid://85lbh4igi4h8" path="res://PlayerControllers/Mercs/Arson/Textures/IncendiaryGrenade.png" id="20_8kr54"]
@@ -917,7 +925,7 @@ debug_mode = true
 camera = NodePath("Camera3D")
 visual_body = NodePath("ModelsForSelect")
 visual_hand = NodePath("ModelsForSelect")
-abilities = [NodePath("PassiveAbilities/JumpAbility"), NodePath("PassiveAbilities/SprintAbility"), NodePath("Camera3D/Held/ArsonFlamethrower"), NodePath("Camera3D/Held/ArsonIncendiary"), NodePath("Camera3D/Held/ArsonGascan")]
+abilities = [NodePath("PassiveAbilities/JumpAbility"), NodePath("PassiveAbilities/SprintAbility"), null, null, null]
 metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
 
 [node name="BodyCollision" type="CollisionShape3D" parent="." unique_id=1807454471]
@@ -937,16 +945,21 @@ fire_rate = NodePath("../../../Timers/Fire_Rate")
 AbilityDescription = "A melter of men."
 trigger_key = "1"
 
-[node name="ArsonIncendiary" parent="Camera3D/Held" unique_id=741493472 instance=ExtResource("4_47sre")]
+[node name="ArsonIncendiary" parent="Camera3D/Held" unique_id=1005218326 instance=ExtResource("4_47sre")]
 AbilityDescription = "A breathable burn."
 trigger_key = "2"
 
-[node name="ArsonGascan" parent="Camera3D/Held" unique_id=1580489055 node_paths=PackedStringArray("fire_rate") instance=ExtResource("4_bk2kd")]
+[node name="ArsonGascan" parent="Camera3D/Held" unique_id=607304877 node_paths=PackedStringArray("fire_rate") instance=ExtResource("4_bk2kd")]
 fire_rate = NodePath("../../../Timers/Fire_Rate")
 trigger_key = "3"
 
 [node name="WeldingMask" parent="Camera3D" unique_id=1055653978 instance=ExtResource("6_teuj6")]
 transform = Transform3D(-7.86805e-09, 0, 0.16688146, 0, 0.08616943, 0, -0.18, 0, -7.29462e-09, 6.7055225e-05, -0.19914001, -0.48623013)
+
+[node name="Cube" parent="Camera3D/WeldingMask" index="0" unique_id=926108486]
+surface_material_override/0 = ExtResource("14_qaalf")
+surface_material_override/1 = ExtResource("7_lvshh")
+surface_material_override/2 = ExtResource("8_jjlry")
 
 [node name="Models" type="Node3D" parent="." unique_id=1946280673]
 
@@ -961,26 +974,60 @@ material_override = ExtResource("2_airly")
 mesh = SubResource("SphereMesh_upqj1")
 skeleton = NodePath("../../BodyCollision")
 
-[node name="Gascan" parent="Models" unique_id=342421113 instance=ExtResource("3_f3p2y")]
+[node name="Gascan" parent="Models" unique_id=345893804 instance=ExtResource("3_f3p2y")]
 transform = Transform3D(-2.9817253e-09, 0.031174632, 0.068213925, 1.3626862e-09, 0.06821393, -0.031174628, -0.07499998, 0, -3.2783531e-09, 0.031475067, 0.16545472, 0.54782706)
 
-[node name="Gascanister" parent="Models" unique_id=743982632 instance=ExtResource("4_nyruc")]
+[node name="Gascanister" parent="Models/Gascan" index="0" unique_id=1591594616]
+surface_material_override/0 = ExtResource("14_qaalf")
+surface_material_override/1 = ExtResource("15_j424p")
+surface_material_override/2 = ExtResource("16_di0u0")
+surface_material_override/3 = ExtResource("8_jjlry")
+surface_material_override/4 = ExtResource("17_cfcnh")
+
+[node name="Gascanister" parent="Models" unique_id=1343223131 instance=ExtResource("4_nyruc")]
 transform = Transform3D(-0.12225706, 0.087907255, -0.119075716, -0.024468247, 0.14788167, 0.13642195, 0.12886088, 0.1114822, -0.08706943, 0.5884235, 0.03445416, 0.15601897)
 
-[node name="Gascanister2" parent="Models" unique_id=1845481908 instance=ExtResource("4_nyruc")]
+[node name="Canister" parent="Models/Gascanister" index="0" unique_id=105582428]
+surface_material_override/0 = ExtResource("8_jjlry")
+surface_material_override/1 = ExtResource("16_j424p")
+
+[node name="Gascanister2" parent="Models" unique_id=54655071 instance=ExtResource("4_nyruc")]
 transform = Transform3D(-0.1680474, 0.047109358, -0.052712847, 0.00033421512, 0.15488099, 0.13163154, 0.0625346, 0.12576786, -0.14235717, 0.50315, 0.004151359, 0.33093885)
 
-[node name="Gascanister3" parent="Models" unique_id=984595748 instance=ExtResource("4_nyruc")]
+[node name="Canister" parent="Models/Gascanister2" index="0" unique_id=105582428]
+surface_material_override/0 = ExtResource("8_jjlry")
+surface_material_override/1 = ExtResource("16_j424p")
+
+[node name="Gascanister3" parent="Models" unique_id=1809434040 instance=ExtResource("4_nyruc")]
 transform = Transform3D(-0.08195889, 0.10768762, -0.1442084, -0.039559618, 0.14652692, 0.13334458, 0.15449394, 0.094647765, -0.042358268, 0.6061375, 0.04156207, -0.039191544)
 
-[node name="Incendiary" parent="Models" unique_id=1018205603 instance=ExtResource("5_6wfe1")]
+[node name="Canister" parent="Models/Gascanister3" index="0" unique_id=105582428]
+surface_material_override/0 = ExtResource("8_jjlry")
+surface_material_override/1 = ExtResource("16_j424p")
+
+[node name="Incendiary" parent="Models" unique_id=1440469924 instance=ExtResource("5_6wfe1")]
 transform = Transform3D(-0.0011081122, 0.020136956, 0.05116908, 0.0060961246, 0.050908983, -0.019902581, -0.054649875, 0.005270524, -0.0032576404, -0.55560935, -0.27658942, -0.090913)
 
-[node name="Incendiary2" parent="Models" unique_id=1519230863 instance=ExtResource("5_6wfe1")]
+[node name="Incendiary" parent="Models/Incendiary" index="0" unique_id=98659808]
+surface_material_override/0 = ExtResource("15_j424p")
+surface_material_override/1 = ExtResource("14_qaalf")
+surface_material_override/2 = ExtResource("8_jjlry")
+
+[node name="Incendiary2" parent="Models" unique_id=1245356747 instance=ExtResource("5_6wfe1")]
 transform = Transform3D(-0.0037714737, 0.01681983, 0.052229013, -0.0029803477, 0.05221216, -0.017029613, -0.054789536, -0.003997954, -0.0026688706, -0.5649864, -0.2774854, 0.066599816)
 
-[node name="Incendiary3" parent="Models" unique_id=1687195028 instance=ExtResource("5_6wfe1")]
+[node name="Incendiary" parent="Models/Incendiary2" index="0" unique_id=98659808]
+surface_material_override/0 = ExtResource("15_j424p")
+surface_material_override/1 = ExtResource("14_qaalf")
+surface_material_override/2 = ExtResource("8_jjlry")
+
+[node name="Incendiary3" parent="Models" unique_id=389058438 instance=ExtResource("5_6wfe1")]
 transform = Transform3D(-0.00573533, 0.01627996, 0.052221358, 0.00043118303, 0.052519456, -0.016325533, -0.054698452, -0.0012930091, -0.0056042867, -0.51668376, -0.2774854, 0.19988155)
+
+[node name="Incendiary" parent="Models/Incendiary3" index="0" unique_id=98659808]
+surface_material_override/0 = ExtResource("15_j424p")
+surface_material_override/1 = ExtResource("14_qaalf")
+surface_material_override/2 = ExtResource("8_jjlry")
 
 [node name="ModelsForSelect" type="Node3D" parent="." unique_id=141691032]
 script = ExtResource("9_o0abd")
@@ -989,45 +1036,96 @@ script = ExtResource("9_o0abd")
 material_override = ExtResource("2_airly")
 mesh = SubResource("CapsuleMesh_o0abd")
 skeleton = NodePath("../../BodyCollision")
+surface_material_override/0 = ExtResource("2_airly")
 
 [node name="Belly" type="MeshInstance3D" parent="ModelsForSelect" unique_id=739697366]
 transform = Transform3D(1, 0, 0, 0, 1.4144764, 0, 0, 0, 1, 0, -0.28050566, -0.14781544)
 material_override = ExtResource("2_airly")
 mesh = SubResource("SphereMesh_upqj1")
 skeleton = NodePath("../../BodyCollision")
+surface_material_override/0 = ExtResource("2_airly")
 
-[node name="Gascan" parent="ModelsForSelect" unique_id=279522341 instance=ExtResource("3_f3p2y")]
+[node name="Gascan" parent="ModelsForSelect" unique_id=429446961 instance=ExtResource("3_f3p2y")]
 transform = Transform3D(-2.9817253e-09, 0.031174632, 0.068213925, 1.3626862e-09, 0.06821393, -0.031174628, -0.07499998, 0, -3.2783531e-09, 0.031475067, 0.16545472, 0.54782706)
 
-[node name="Gascanister" parent="ModelsForSelect" unique_id=214247904 instance=ExtResource("4_nyruc")]
+[node name="Gascanister" parent="ModelsForSelect/Gascan" index="0" unique_id=1591594616]
+surface_material_override/0 = ExtResource("14_qaalf")
+surface_material_override/1 = ExtResource("15_j424p")
+surface_material_override/2 = ExtResource("16_di0u0")
+surface_material_override/3 = ExtResource("8_jjlry")
+surface_material_override/4 = ExtResource("17_cfcnh")
+
+[node name="Gascanister" parent="ModelsForSelect" unique_id=639452099 instance=ExtResource("4_nyruc")]
 transform = Transform3D(-0.12225706, 0.087907255, -0.119075716, -0.024468247, 0.14788167, 0.13642195, 0.12886088, 0.1114822, -0.08706943, 0.5884235, 0.03445416, 0.15601897)
 
-[node name="Gascanister2" parent="ModelsForSelect" unique_id=1509114067 instance=ExtResource("4_nyruc")]
+[node name="Canister" parent="ModelsForSelect/Gascanister" index="0" unique_id=105582428]
+surface_material_override/0 = ExtResource("8_jjlry")
+surface_material_override/1 = ExtResource("16_j424p")
+
+[node name="Gascanister2" parent="ModelsForSelect" unique_id=143494023 instance=ExtResource("4_nyruc")]
 transform = Transform3D(-0.1680474, 0.047109358, -0.052712847, 0.00033421512, 0.15488099, 0.13163154, 0.0625346, 0.12576786, -0.14235717, 0.50315, 0.004151359, 0.33093885)
 
-[node name="Gascanister3" parent="ModelsForSelect" unique_id=294589083 instance=ExtResource("4_nyruc")]
+[node name="Canister" parent="ModelsForSelect/Gascanister2" index="0" unique_id=105582428]
+surface_material_override/0 = ExtResource("8_jjlry")
+surface_material_override/1 = ExtResource("16_j424p")
+
+[node name="Gascanister3" parent="ModelsForSelect" unique_id=909270080 instance=ExtResource("4_nyruc")]
 transform = Transform3D(-0.08195889, 0.10768762, -0.1442084, -0.039559618, 0.14652692, 0.13334458, 0.15449394, 0.094647765, -0.042358268, 0.6061375, 0.04156207, -0.039191544)
 
-[node name="Incendiary" parent="ModelsForSelect" unique_id=1438148101 instance=ExtResource("5_6wfe1")]
+[node name="Canister" parent="ModelsForSelect/Gascanister3" index="0" unique_id=105582428]
+surface_material_override/0 = ExtResource("8_jjlry")
+surface_material_override/1 = ExtResource("16_j424p")
+
+[node name="Incendiary" parent="ModelsForSelect" unique_id=1353441946 instance=ExtResource("5_6wfe1")]
 transform = Transform3D(-0.0011081122, 0.020136956, 0.05116908, 0.0060961246, 0.050908983, -0.019902581, -0.054649875, 0.005270524, -0.0032576404, -0.55560935, -0.27658942, -0.090913)
 
-[node name="Incendiary2" parent="ModelsForSelect" unique_id=756604051 instance=ExtResource("5_6wfe1")]
+[node name="Incendiary" parent="ModelsForSelect/Incendiary" index="0" unique_id=98659808]
+surface_material_override/0 = ExtResource("15_j424p")
+surface_material_override/1 = ExtResource("14_qaalf")
+surface_material_override/2 = ExtResource("8_jjlry")
+
+[node name="Incendiary2" parent="ModelsForSelect" unique_id=1245597593 instance=ExtResource("5_6wfe1")]
 transform = Transform3D(-0.0037714737, 0.01681983, 0.052229013, -0.0029803477, 0.05221216, -0.017029613, -0.054789536, -0.003997954, -0.0026688706, -0.5649864, -0.2774854, 0.066599816)
 
-[node name="Incendiary3" parent="ModelsForSelect" unique_id=224009768 instance=ExtResource("5_6wfe1")]
+[node name="Incendiary" parent="ModelsForSelect/Incendiary2" index="0" unique_id=98659808]
+surface_material_override/0 = ExtResource("15_j424p")
+surface_material_override/1 = ExtResource("14_qaalf")
+surface_material_override/2 = ExtResource("8_jjlry")
+
+[node name="Incendiary3" parent="ModelsForSelect" unique_id=341127792 instance=ExtResource("5_6wfe1")]
 transform = Transform3D(-0.00573533, 0.01627996, 0.052221358, 0.00043118303, 0.052519456, -0.016325533, -0.054698452, -0.0012930091, -0.0056042867, -0.51668376, -0.2774854, 0.19988155)
+
+[node name="Incendiary" parent="ModelsForSelect/Incendiary3" index="0" unique_id=98659808]
+surface_material_override/0 = ExtResource("15_j424p")
+surface_material_override/1 = ExtResource("14_qaalf")
+surface_material_override/2 = ExtResource("8_jjlry")
 
 [node name="WeldingMask" parent="ModelsForSelect" unique_id=294764738 instance=ExtResource("6_teuj6")]
 transform = Transform3D(-7.86805e-09, 0, 0.16688146, 0, 0.08616943, 0, -0.18, 0, -7.29462e-09, 6.7055225e-05, 0.4419, -0.48623013)
 
 [node name="Cube" parent="ModelsForSelect/WeldingMask" index="0" unique_id=926108486]
 layers = 2
+surface_material_override/0 = ExtResource("14_qaalf")
+surface_material_override/1 = ExtResource("7_lvshh")
+surface_material_override/2 = ExtResource("8_jjlry")
 
-[node name="Flamethrower" parent="ModelsForSelect" unique_id=2053111305 instance=ExtResource("7_70xir")]
+[node name="Flamethrower" parent="ModelsForSelect" unique_id=1323524614 instance=ExtResource("7_70xir")]
 transform = Transform3D(0.03674133, -0.1565128, 0.12306011, 0.17502384, 0.042132236, -0.014140296, -0.012936146, 0.12551333, 0.1582003, 0.58987236, -0.22113177, -0.59686875)
 
-[node name="Gascanister" parent="ModelsForSelect/Flamethrower" unique_id=853534958 instance=ExtResource("4_nyruc")]
+[node name="Flamethrower" parent="ModelsForSelect/Flamethrower" index="0" unique_id=1317575421]
+surface_material_override/0 = ExtResource("6_xgfjt")
+surface_material_override/1 = ExtResource("15_j424p")
+surface_material_override/2 = ExtResource("17_cfcnh")
+surface_material_override/3 = ExtResource("14_qaalf")
+surface_material_override/4 = ExtResource("8_jjlry")
+surface_material_override/5 = ExtResource("16_di0u0")
+
+[node name="Gascanister" parent="ModelsForSelect/Flamethrower" unique_id=1205475692 instance=ExtResource("4_nyruc")]
 transform = Transform3D(0.99999994, 0, -4.4703484e-08, 0, 1, 0, 4.4703484e-08, 0, 0.99999994, 0, 0, 0)
+
+[node name="Canister" parent="ModelsForSelect/Flamethrower/Gascanister" index="0" unique_id=105582428]
+surface_material_override/0 = ExtResource("8_jjlry")
+surface_material_override/1 = ExtResource("16_j424p")
 
 [node name="Nameplate" type="Label3D" parent="ModelsForSelect" unique_id=388409555]
 transform = Transform3D(-0.99999994, 0, -8.742277e-08, 0, 1, 0, 8.742277e-08, 0, -0.99999994, 0, -0.9359561, -0.6772338)
@@ -1270,4 +1368,13 @@ replication_config = SubResource("SceneReplicationConfig_laqpj")
 [editable path="Models/Incendiary"]
 [editable path="Models/Incendiary2"]
 [editable path="Models/Incendiary3"]
+[editable path="ModelsForSelect/Gascan"]
+[editable path="ModelsForSelect/Gascanister"]
+[editable path="ModelsForSelect/Gascanister2"]
+[editable path="ModelsForSelect/Gascanister3"]
+[editable path="ModelsForSelect/Incendiary"]
+[editable path="ModelsForSelect/Incendiary2"]
+[editable path="ModelsForSelect/Incendiary3"]
 [editable path="ModelsForSelect/WeldingMask"]
+[editable path="ModelsForSelect/Flamethrower"]
+[editable path="ModelsForSelect/Flamethrower/Gascanister"]
