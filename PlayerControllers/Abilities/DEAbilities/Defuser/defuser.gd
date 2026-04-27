@@ -31,7 +31,8 @@ func activate():
 	
 	if bomb_target and bomb_target.planted:
 		$UI.show()
-		play_defuse.rpc()
+		if !$AudioStreamPlayer3D.is_playing():
+			play_defuse.rpc()
 		
 		is_defusing = true
 		# Use physics delta to ensure the math is accurate to the frame rate

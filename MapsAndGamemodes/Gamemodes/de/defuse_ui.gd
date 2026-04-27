@@ -32,6 +32,6 @@ func update_timer(time_left: float, state: int) -> void:
 # Called by DefuseGamemode.gd when a round is won
 func update_scores(attackers: int, defenders: int) -> void:
 	if attackers_score_label:
-		attackers_score_label.text = "Attackers: " + str(attackers)
+		attackers_score_label.text = str(attackers)
 	if defenders_score_label:
-		defenders_score_label.text = "Defenders: " + str(defenders)
+		defenders_score_label.text = str(defenders)
