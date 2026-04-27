@@ -44,16 +44,13 @@ func _process(delta: float) -> void:
 		hologram_mesh.hide()
 	
 	if Input.is_action_pressed("left_click") and surface_point != Vector3.ZERO:
-		if surface_normal.dot(Vector3.UP) > 0.8:
-			if animation_player.current_animation != 'plant':
-				animation_player.play('plant')
-				
-			time_to_plant -= delta
-			if time_to_plant <= 0.0:
-				# Tell the server to handle the actual planting!
-				_request_plant_bomb.rpc_id(1, surface_point, surface_normal)
-		else:
-			reset_plant_state()
+		if animation_player.current_animation != 'plant':
+			animation_player.play('plant')
+			
+		time_to_plant -= delta
+		if time_to_plant <= 0.0:
+			# Tell the server to handle the actual planting!
+			_request_plant_bomb.rpc_id(1, surface_point, surface_normal)
 	else:
 		reset_plant_state()
 

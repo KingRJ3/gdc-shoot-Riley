@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" uid="uid://co4gkxh1je7gk" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/bomb.gd" id="1_r4gtw"]
 [ext_resource type="Material" uid="uid://uiq7fijwx2od" path="res://PlayerControllers/Abilities/Turret/turretpreview.tres" id="3_o1hlm"]
-[ext_resource type="Material" uid="uid://ej07qv6yq17u" path="res://PlayerControllers/Abilities/DefuseBomb/explosivematerial.tres" id="3_qqgut"]
+[ext_resource type="Material" uid="uid://ej07qv6yq17u" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/explosivematerial.tres" id="3_qqgut"]
 [ext_resource type="Material" uid="uid://bj31ogvo4qulj" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/bombmaterial.tres" id="3_r4gtw"]
 [ext_resource type="FontFile" uid="uid://bxfv5oguicmee" path="res://Misc/UI/fonts/GothicA1-Light.ttf" id="4_r4gtw"]
-[ext_resource type="AudioStream" uid="uid://4xah06aixdq5" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/plant.mp3" id="5_qqgut"]
-[ext_resource type="Texture2D" uid="uid://brupuhk60x54r" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/image-removebg-preview(10).png" id="5_t045v"]
+[ext_resource type="AudioStream" uid="uid://bpb8bmowhnkgd" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/plant.mp3" id="5_qqgut"]
+[ext_resource type="Texture2D" uid="uid://dgk8egylyylkq" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/image-removebg-preview(10).png" id="5_t045v"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_xlgcv"]
 _surfaces = [{

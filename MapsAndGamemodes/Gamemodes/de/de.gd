@@ -260,7 +260,8 @@ func _spawn_individual_for_round(player_id: int, team: String) -> void:
 	var player : Merc = player_spawner.spawn({
 		"merc_type": chosen_merc,
 		"position": spawn_pos,
-		"peer_id": player_id
+		"peer_id": player_id,
+		"team": team
 	})
 	if team == 'blue': player.add_ability(defuser_node_scene)
 	
