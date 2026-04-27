@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cs48kw4fn3gnt"]
+
+[ext_resource type="Script" uid="uid://c7vkyhxe2elm5" path="res://PlayerControllers/Abilities/ArsonIncendiary/Supplemental/incendiary_instance.gd" id="1_w8lmh"]
+
+[node name="IncendiaryInstance" type="RigidBody3D" unique_id=1495288775]
+script = ExtResource("1_w8lmh")
