@@ -35,8 +35,7 @@ func _on_body_entered(body: Node3D) -> void:
 		# Pass the resource string path to the Merc instead of a node
 		body.add_ability(ability_scene.resource_path)
 		
-		if consumable:
-			_sync_destroy.rpc()
+		_sync_destroy.rpc()
 
 @rpc("any_peer", "call_local", "reliable")
 func _sync_destroy() -> void:

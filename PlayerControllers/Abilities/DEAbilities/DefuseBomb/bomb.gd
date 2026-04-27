@@ -84,11 +84,15 @@ func _request_plant_bomb(plant_spot: Vector3, surface_normal: Vector3):
 	if planted: return
 	
 	planted = true
-	
+	if merc:
+		var merc_parent = merc.get_parent()
+		if merc_parent is DE:
+			defuse_gamemode = merc_parent
+			
 	# 1. Ask the Gamemode to spawn the REAL bomb into the world
 	if defuse_gamemode:
 		var planter_id = multiplayer.get_remote_sender_id()
 		defuse_gamemode.spawn_real_bomb(planter_id, plant_spot, surface_normal)
-		
+		print(defuse_gamemode)
 	# 2. Delete this visual hand-bomb from the player's inventory completely!
 	merc.remove_ability(self)
