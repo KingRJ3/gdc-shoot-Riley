@@ -912,6 +912,8 @@ properties/5/path = NodePath(".:velocitysync")
 properties/5/spawn = true
 properties/5/replication_mode = 1
 
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_5ll0e"]
+
 [node name="Arson" type="CharacterBody3D" unique_id=1805749237 node_paths=PackedStringArray("camera", "visual_body", "visual_hand", "abilities")]
 collision_layer = 2
 script = ExtResource("1_2owpn")
@@ -1234,6 +1236,23 @@ text = "/200"
 fit_content = true
 horizontal_alignment = 1
 
+[node name="FPS_CanvasLayer" type="CanvasLayer" parent="UI_Control" unique_id=1484136375]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="UI_Control/FPS_CanvasLayer" unique_id=767678133]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="UI_Control/FPS_CanvasLayer/SubViewportContainer" unique_id=1847024140]
+transparent_bg = true
+size = Vector2i(1280, 720)
+
+[node name="FPS_Camera" type="Camera3D" parent="UI_Control/FPS_CanvasLayer/SubViewportContainer/SubViewport" unique_id=940759380]
+cull_mask = 32768
+
 [node name="Timers" type="Node3D" parent="." unique_id=216451349]
 
 [node name="Fire_Rate" type="Timer" parent="Timers" unique_id=1172938056]
@@ -1241,6 +1260,11 @@ process_callback = 0
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1918191754]
 replication_config = SubResource("SceneReplicationConfig_laqpj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1863591537]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.7080622)
+layers = 32768
+mesh = SubResource("CapsuleMesh_5ll0e")
 
 [editable path="Camera3D/WeldingMask"]
 [editable path="Models/Gascan"]

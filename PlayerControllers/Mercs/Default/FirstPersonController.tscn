@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://csiftfye8gckf"]
+[gd_scene format=3 uid="uid://bcx63mqj80yes"]
 
 [ext_resource type="Script" uid="uid://2ip0lrtrrhsr" path="res://PlayerControllers/merc.gd" id="1_3ccpb"]
 [ext_resource type="PackedScene" uid="uid://bwbfmr1nmjwg" path="res://PlayerControllers/Abilities/EvilGun/EvilGunAbility.tscn" id="2_4fgnm"]
