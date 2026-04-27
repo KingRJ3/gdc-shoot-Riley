@@ -55,7 +55,7 @@ func extinguish():
 	tween.tween_callback(queue_free)
 
 func _on_tick_timer_timeout() -> void:
-	spread_fire()
+	#spread_fire()
 	if is_multiplayer_authority() and current_state == State.IGNITED:
 		for i in area_3d.get_overlapping_bodies():
 			print(i)
