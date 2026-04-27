@@ -1,17 +1,26 @@
 extends WeaponAbility
 
-@onready var animation_tree: AnimationTree = $AnimationTree
-var is_shooting: bool = false
-var is_reloading: bool = false
-var new_equipped: bool = false
+#@onready var animation_tree: AnimationTree = $AnimationTree
+@onready var animation_tree: AnimationTree = $AnimationStuff/AnimationTree
+@export_category("Synchronized Variables")
+@export var is_shooting: bool = false
+@export var is_reloading: bool = false
+@export var is_firing: bool = false
+@export var new_equipped: bool = false
+var trigger_pulled: bool = false
 
-@onready var fire_rate: Timer = $ScriptStuff/FireRate
-@onready var ui_control: Control = $ScriptStuff/UI_Control
+@export var fire_rate: Timer
+@export var PlayerCamera: Camera3D
+var RNG1 = RandomNumberGenerator.new()
+var RNG2 = RandomNumberGenerator.new()
+@onready var barrel_exit: Marker3D = $Flamethrower/BarrelExit
+const FT_PARTICLE = preload("res://PlayerControllers/Abilities/ArsonFlamethrower/Supplemental/FT_Particle.tscn")
+
 
 @export_category("Weapon Stats")
 @export var max_ammo: int = 200
-@export var damage: float = 2.0
-@export var fire_speed: float = 0.05 # Time in seconds between fire bursts
+@export var damage: float = 1.0
+@export var fire_speed: float = 0.001 # Time in seconds between fire bursts
 
 @export_category("Weapon Movement Juice")
 @export var weapon_mesh: Node3D # ASSIGN YOUR VISUAL GUN MODEL HERE!
@@ -23,13 +32,10 @@ var _bob_time: float = 0.0
 var _initial_mesh_position: Vector3
 var _initial_mesh_rotation: Vector3
 
-@export_category("Weapon Nodes")
-# Add ONE RayCast3D here for a Pistol/Rifle, or add MULTIPLE for a Shotgun
-@export var raycasts: Array[RayCast3D] = [] 
-
 var ammo: int
 
 func _ready() -> void:
+	print("Ive been ready'd!")
 	ammo = max_ammo
 	fire_rate.wait_time = fire_speed
 	fire_rate.one_shot = true
@@ -39,86 +45,213 @@ func _ready() -> void:
 		_initial_mesh_position = weapon_mesh.position
 		_initial_mesh_rotation = weapon_mesh.rotation
 	
-	if !is_multiplayer_authority():
-		ui_control.hide()
+	if !is_multiplayer_authority(): #If I join late and im not playing arson, I want the RNG values
+		rpc_id(get_multiplayer_authority(), "syncRNGrequest")
+	else: #if I am the late joiner, or I just joined, sync it.
+		rpc("syncRNG", RNG1.state, RNG2.state, RNG1.seed, RNG2.seed)
+
+@rpc("any_peer", "reliable")
+func syncRNGrequest():
+	var ID = multiplayer.get_remote_sender_id()
+	rpc_id(ID, "syncRNG", RNG1.state, RNG2.state, RNG1.seed, RNG2.seed)
+
+@rpc("any_peer", "reliable") #I'm doing this to synchronize the RNG variables on late joining clients
+func syncRNG(RNG1State, RNG2State, RNG1Seed, RNG2Seed):
+	RNG1.seed = RNG1Seed
+	RNG2.seed = RNG2Seed
+	RNG1.state = RNG1State
+	RNG2.state = RNG2State
+
+var time_accumulator: float = 0.0
+var fire_interval: float = 0.0025 # Total time between individual puffs
+var ammo_sub_counter: float = 0.0 # To handle "fractional" ammo
+
+func _physics_process(delta: float) -> void:
+	if trigger_pulled and !new_equipped and !is_reloading and ammo > 0:
+		is_firing = true
+		UpdateAnimations()
+		
+		time_accumulator += delta
+		
+		# This loop runs exactly enough times to match the time passed
+		while time_accumulator >= fire_interval:
+			if ammo <= 0:
+				break
+			
+			# 1. Spawn the particle
+			spawn_flame_puff()
+			
+			# 2. Handle Ammo Drain
+			# If 1 puff = 1 ammo, just do: ammo -= 1
+			# If you want 8 puffs per 1 ammo, do:
+			ammo_sub_counter += (1.0 / 16.0) 
+			if ammo_sub_counter >= 1.0:
+				ammo -= 1
+				ammo_sub_counter -= 1.0
+			
+			time_accumulator -= fire_interval
+	else:
+		is_firing = false
+		UpdateAnimations()
+		# INSTEAD OF RESETTING TO 0:
+		# Limit the accumulator so they can't "store up" a burst, 
+		# but don't delete the progress toward the next shot.
+		time_accumulator = min(time_accumulator, fire_interval)
 
 func _process(delta: float) -> void:
 	if weapon_mesh:
 		_apply_weapon_bob_and_tilt(delta)
-	
+	UpdateAnimations()
 	if !is_multiplayer_authority(): return
 	if !currently_active: return
 	
-	## Don't allow shooting or reloading while already reloading
-	#if animation_player.is_playing() and animation_player.current_animation == "reload": 
-		#return
-	## 2. Handle Single vs Auto fire inputs
-	var trigger_pulled: bool = false
 	trigger_pulled = Input.is_action_pressed("left_click") # Hold to shoot
-	#if is_auto:
-		#trigger_pulled = Input.is_action_pressed("left_click") # Hold to shoot
-	#else:
-		#trigger_pulled = Input.is_action_just_pressed("left_click") # Click to shoot
-	#
+	
 	# 3. Check if the gun is ready to fire based on the timer
-	if trigger_pulled and fire_rate.is_stopped() and !new_equipped and !is_reloading:
-		shoot()
+	#if trigger_pulled and fire_rate.is_stopped() and !new_equipped and !is_reloading:
+		#is_firing = true
+		#UpdateAnimations()
+		#shoot()
+	#else:
+		#is_firing = false
+		#UpdateAnimations()
+	
+	#if Input.is_action_just_pressed("reload"):
+		#print("Pressed reload")
+		#print(is_reloading)
+		#print(new_equipped)
+		#print(ammo)
+		#print(max_ammo)
 	
 	if Input.is_action_just_pressed("reload") and !is_reloading and !new_equipped and ammo < max_ammo and !trigger_pulled: #Not letting them reload while shooting, to avoid fat fingers
 		reload()
 
 func reload():
 	is_reloading = true
-	animation_tree.set("parameters/conditions/is_reloading", is_reloading)
-	animation_tree.set("parameters/conditions/not_reloading", !is_reloading)
+	UpdateAnimations()
 
 func reload_ammo():
 	ammo = max_ammo
 
 func finish_reload_anim():
 	is_reloading = false
-	animation_tree.set("parameters/conditions/is_reloading", is_reloading)
-	animation_tree.set("parameters/conditions/not_reloading", !is_reloading)
+	UpdateAnimations()
 
 func shoot():
-	pass
+	fire_rate.start()
+	print("Merc shot!")
+	for i in range(6):
+		spawn_flame_puff()
+	ammo = ammo - 1
+
+func spawn_flame_puff():
+	var puff = FT_PARTICLE.instantiate()
+	
+	puff.ParticleDamage = damage
+	# 1. Start at the nozzle
+	get_tree().root.add_child(puff) # Spawn in world root
+	puff.global_position = barrel_exit.global_position
+	puff.ParticleDamage = damage
+	# 2. Calculate Muzzle Velocity (The "Push" from the gun)
+	var forward = barrel_exit.global_transform.basis.x
+	var up = barrel_exit.global_transform.basis.y      # Your local Up
+	var z_axis = barrel_exit.global_transform.basis.z  # Your local Side
+	
+	var spread_amount = 0.35
+	var spread_v = up * RNG1.randf_range(-spread_amount, spread_amount)
+	var spread_h = z_axis * RNG1.randf_range(-spread_amount, spread_amount)
+	var direction = (forward + spread_v + spread_h).normalized()
+	var muzzle_velocity = direction * 12.0
+	
+	# 3. INHERIT Player Velocity
+	# 'arson' is your CharacterBody3D player
+	var inherited_velocity = merc.velocity 
+	
+	# 4. Combine them
+	var final_velocity = muzzle_velocity + (inherited_velocity)
+	
+	# 5. Send it to the puff script
+	puff.velocity = final_velocity
+	
+	rpc("spawn_rpc_flame_puffs", barrel_exit.global_position, final_velocity)
+
+@rpc("any_peer", "reliable")
+func spawn_rpc_flame_puffs(starting_pos, velocity):
+	var puff = FT_PARTICLE.instantiate()
+	get_tree().root.add_child(puff)
+	#puff.global_position = starting_pos
+	puff.global_position = barrel_exit.global_position
+	puff.velocity = velocity
+
+func spawn_flame_dmgbox():
+	var puff = FT_PARTICLE.instantiate()
+	
+	# 1. Start at the nozzle
+	get_tree().root.add_child(puff) # Spawn in world root
+	puff.global_position = barrel_exit.global_position
+	
+	# 2. Calculate Muzzle Velocity (The "Push" from the gun)
+	#var forward = -PlayerCamera.global_transform.basis.z
+	var forward = barrel_exit.global_transform.basis.x
+	var spread_x = RNG2.randf_range(-0.35, 0.35)
+	var spread_y = RNG2.randf_range(-0.35, 0.35)
+	var muzzle_velocity = (forward + Vector3(spread_x, spread_y, 0)).normalized() * 12.0
+	
+	# 3. INHERIT Player Velocity
+	# 'arson' is your CharacterBody3D player
+	var inherited_velocity = merc.velocity 
+	
+	# 4. Combine them
+	var final_velocity = muzzle_velocity + inherited_velocity
+	
+	# 5. Send it to the puff script
+	puff.velocity = final_velocity
+
+
+
+
+func UpdateAnimations():
+	animation_tree.set("parameters/conditions/is_firing", is_firing)
+	animation_tree.set("parameters/conditions/not_firing", !is_firing)
+	animation_tree.set("parameters/conditions/is_reloading", is_reloading)
+	animation_tree.set("parameters/conditions/not_reloading", !is_reloading)
+	animation_tree.set("parameters/conditions/new_equipped", new_equipped)
 
 func equip():
 	show()
+	is_shooting = false
+	is_reloading = false
+	is_firing = false
 	new_equipped = true
-	animation_tree.set("parameters/conditions/new_equipped", new_equipped)
-	#animation_tree.start("ft_equip")
+	UpdateAnimations()
 	show_self.rpc(true) #tell all clients to update
 
 func finish_equip():
 	new_equipped = false
-	ui_control.show()
-	animation_tree.set("parameters/conditions/new_equipped", new_equipped)
+	UpdateAnimations()
 
 @rpc("any_peer","call_remote","reliable")
 func show_self(vis : bool):
 	if vis:
 		show()
 		new_equipped = true
-		animation_tree.set("parameters/conditions/new_equipped", new_equipped)
+		UpdateAnimations()
 	else:
 		hide()
 
 func dequip():
-	#animation_player.play("dequip")
-	#await animation_player.animation_finished
 	hide()
 	new_equipped = false
-	animation_tree.set("parameters/conditions/new_equipped", new_equipped)
-	ui_control.hide()
+	UpdateAnimations()
 	show_self.rpc(false)
-	#show_visual_hand.rpc(false)
 
 # ==========================================
 # SOURCE-ENGINE WEAPON SWAY & BOB
 # ==========================================
 func _apply_weapon_bob_and_tilt(delta: float) -> void:
 	# We only want 2D horizontal velocity (ignoring jumping/falling for the bob cycle)
+	if merc == null:
+		return
 	var horizontal_velocity = Vector3(merc.velocity.x, 0, merc.velocity.z)
 	var speed = horizontal_velocity.length()
 	
