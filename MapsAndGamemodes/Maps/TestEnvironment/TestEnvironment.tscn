@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dnqxl0h5xo3hc"]
 
 [ext_resource type="Material" uid="uid://km15c643od4h" path="res://MapsAndGamemodes/Maps/dm_grahhh/tileflooring.tres" id="1_od7r5"]
+[ext_resource type="Script" uid="uid://vgxqdhfcdobx" path="res://MapsAndGamemodes/Maps/dm_grahhh/killbox.gd" id="2_ox1it"]
 [ext_resource type="PackedScene" uid="uid://duvphyrab7uu4" path="res://MapsAndGamemodes/Gamemodes/PresetGamemodeWidgets/HurtableProp/HurtableProp.tscn" id="2_wxeq5"]
 [ext_resource type="Script" uid="uid://duov0i2gxblbi" path="res://MapsAndGamemodes/Maps/TestEnvironment/bouncyhurt.gd" id="3_ox1it"]
 
@@ -56,9 +57,22 @@ material = ExtResource("1_od7r5")
 [sub_resource type="BoxMesh" id="BoxMesh_eruum"]
 material = ExtResource("1_od7r5")
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_eruum"]
+size = Vector3(7.395508, 1, 6.234131)
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gkqfs"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_eruum"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ox1it"]
+albedo_color = Color(0.32, 0.32, 1, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ox1it"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gkqfs"]
+albedo_color = Color(1, 0.32999998, 0.32999998, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_eruum"]
 
 [node name="TestEnvironment" type="Node3D" unique_id=765145103]
 
@@ -262,10 +276,29 @@ shape = SubResource("BoxShape3D_gkqfs")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D10" unique_id=1834964992]
 mesh = SubResource("BoxMesh_eruum")
 
+[node name="Label3D" type="Label3D" parent="." unique_id=869153681]
+transform = Transform3D(-0.40880948, 0, -8.742277e-08, 0, 0.49301893, 0, 3.573926e-08, 0, -0.99999994, -17.894093, -4.522443, 21.462858)
+modulate = Color(1, 0, 0, 1)
+text = "DAMAGE BOX"
+font_size = 420
+outline_size = 20
+
+[node name="Area3D" type="Area3D" parent="." unique_id=32478480]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.745523, -6.5541983, 17.693186)
+collision_mask = 2
+script = ExtResource("2_ox1it")
+damage = 20
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1758765194]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1485691, 0, 5.8733673)
+shape = SubResource("BoxShape3D_eruum")
+debug_color = Color(0.95490557, 9.62615e-08, 0.54852843, 0.41960785)
+
 [node name="HurtableProp" parent="." unique_id=1847698847 instance=ExtResource("2_wxeq5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.1217165, -7.0307746, 17.693186)
 collision_layer = 3
 script = ExtResource("3_ox1it")
+fake_team = "blue"
 
 [node name="CollisionShape3D" parent="HurtableProp" index="0" unique_id=404081774]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0323086, 0)
@@ -274,8 +307,46 @@ shape = SubResource("CapsuleShape3D_gkqfs")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="HurtableProp" unique_id=1564769388]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0385575, 0)
 mesh = SubResource("CapsuleMesh_eruum")
+surface_material_override/0 = SubResource("StandardMaterial3D_ox1it")
 
 [node name="Label3D" type="Label3D" parent="HurtableProp" unique_id=687985743]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5139937, 0)
+text = "HURT ME"
+
+[node name="HurtableProp6" parent="." unique_id=253564346 instance=ExtResource("2_wxeq5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.629296, -7.0307746, 17.693186)
+collision_layer = 3
+script = ExtResource("3_ox1it")
+fake_team = "red"
+
+[node name="CollisionShape3D" parent="HurtableProp6" index="0" unique_id=404081774]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0323086, 0)
+shape = SubResource("CapsuleShape3D_ox1it")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HurtableProp6" unique_id=1467235824]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0385575, 0)
+mesh = SubResource("CapsuleMesh_eruum")
+surface_material_override/0 = SubResource("StandardMaterial3D_gkqfs")
+
+[node name="Label3D" type="Label3D" parent="HurtableProp6" unique_id=2133118421]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5139937, 0)
+text = "HURT ME"
+
+[node name="HurtableProp7" parent="." unique_id=39739350 instance=ExtResource("2_wxeq5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.75012, -7.0307746, 17.693186)
+collision_layer = 3
+script = ExtResource("3_ox1it")
+fake_team = "default"
+
+[node name="CollisionShape3D" parent="HurtableProp7" index="0" unique_id=404081774]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0323086, 0)
+shape = SubResource("CapsuleShape3D_eruum")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HurtableProp7" unique_id=1524814299]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0385575, 0)
+mesh = SubResource("CapsuleMesh_eruum")
+
+[node name="Label3D" type="Label3D" parent="HurtableProp7" unique_id=1149187896]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5139937, 0)
 text = "HURT ME"
 
@@ -283,6 +354,7 @@ text = "HURT ME"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.73233, 2.3499417, 8.17588)
 collision_layer = 3
 script = ExtResource("3_ox1it")
+fake_team = "red"
 
 [node name="CollisionShape3D" parent="HurtableProp2" index="0" unique_id=404081774]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0402565, 0)
@@ -300,6 +372,7 @@ text = "HURT ME"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.0699139, 22.509338, -32.178257)
 collision_layer = 3
 script = ExtResource("3_ox1it")
+fake_team = "red"
 
 [node name="CollisionShape3D" parent="HurtableProp3" index="0" unique_id=404081774]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0522747, 0)
@@ -317,6 +390,7 @@ text = "HURT ME"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42.24514, 16.761095, 2.2451744)
 collision_layer = 3
 script = ExtResource("3_ox1it")
+fake_team = "red"
 
 [node name="CollisionShape3D" parent="HurtableProp4" index="0" unique_id=404081774]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0260868, 0)
@@ -334,6 +408,7 @@ text = "HURT ME"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -87.17112, -7.4694223, -40.612976)
 collision_layer = 3
 script = ExtResource("3_ox1it")
+fake_team = "red"
 
 [node name="CollisionShape3D" parent="HurtableProp5" index="0" unique_id=404081774]
 shape = SubResource("CapsuleShape3D_gkqfs")
@@ -346,7 +421,11 @@ mesh = SubResource("CapsuleMesh_eruum")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5139937, 0)
 text = "HURT ME"
 
+[connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]
+
 [editable path="HurtableProp"]
+[editable path="HurtableProp6"]
+[editable path="HurtableProp7"]
 [editable path="HurtableProp2"]
 [editable path="HurtableProp3"]
 [editable path="HurtableProp4"]
