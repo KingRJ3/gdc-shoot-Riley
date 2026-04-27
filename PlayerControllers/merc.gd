@@ -139,9 +139,6 @@ func _ready() -> void:
 	kill_confirmed_sound = KILL_CONFIRMED.instantiate()
 	add_child(kill_confirmed_sound)
 	
-	var parent_gamemode = get_parent()
-	if parent_gamemode and "master_team_database" in parent_gamemode:
-		sync_team_database(parent_gamemode.master_team_database)
 	# Pass the player's network ID into the label so it knows whose name to grab
 	name_label_instance.setup(name.to_int())
 	if TEAM_COLORS.has(team):
@@ -459,18 +456,6 @@ func request_drop_single_ability(ability_path: NodePath) -> void:
 # TEAM FIGHTING STUFF
 # ==========================================
 
-func sync_team_database(new_database: Dictionary) -> void:
-	player_teams = new_database
-	
-	# Update our own team based on our multiplayer ID (Node name)
-	var my_id = name.to_int()
-	if player_teams.has(my_id):
-		team = player_teams[my_id]
-		
-		# Update the UI color
-		if name_label_instance and TEAM_COLORS.has(team):
-			name_label_instance.modulate = TEAM_COLORS[team]
-
 @rpc("any_peer", "call_remote", "unreliable")
 func receive_pos_from_server(pos: Vector3, rot: Vector3):
 	# Don't move them yet! Just update the target.
@@ -481,20 +466,20 @@ func receive_pos_from_server(pos: Vector3, rot: Vector3):
 func take_damage(damage: float):
 	if !is_multiplayer_authority(): return
 	var attacker_id = multiplayer.get_remote_sender_id()
-	# 2. Check the local database for their team
-	if player_teams.has(attacker_id):
-		var attacker_team = player_teams[attacker_id]
-		
-		# 3. Filter friendly fire
-		if attacker_team == team and team != "default":
-			return # Block the damage!
-			
 	
+	# 1. Find the attacker's actual node in the world
+	var map_node = get_parent()
+	if map_node:
+		var attacker_node = map_node.get_node_or_null(str(attacker_id))
+		
+		# 2. Compare teams directly node-to-node
+		if attacker_node and attacker_node is Merc:
+			if attacker_node.team == self.team and self.team != "default":
+				return # Block friendly fire!
+				
 	if damage < 0:
 		healed.emit()
-	
-	# Apply damage if they pass the check
-	
+		
 	health -= damage
 	
 	# TELL EVERYONE TO FLASH THIS PLAYER YELLOW
@@ -553,7 +538,8 @@ func die(killer_id: int = 0):
 @rpc("any_peer","call_remote","reliable")
 func notify_kill_confirmed(id : int = 0): 
 	#was not working because players had the authority
-	kill_confirmed_sound.play()
+	if kill_confirmed_sound:
+		kill_confirmed_sound.play()
 	kill_confirmed.emit(id)
 
 func custom_process(delta : float):

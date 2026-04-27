@@ -166,7 +166,7 @@ speed = 0.685
 visual_body = NodePath("MeshInstance3D")
 visual_hand = NodePath("Hand")
 merc_UI_color = Color(0.25355646, 0.42044947, 0.109449945, 1)
-abilities = [NodePath("JumpAbility"), NodePath("SprintAbility"), NodePath("turretpreview"), NodePath("techrifle"), NodePath("bandage"), null]
+abilities = [NodePath("JumpAbility"), NodePath("SprintAbility"), NodePath("turretpreview"), NodePath("techrifle"), NodePath("bandage")]
 
 [node name="SprintAbility" parent="." unique_id=699710493 instance=ExtResource("2_dmx7s")]
 speed_multiplier = 1.2
