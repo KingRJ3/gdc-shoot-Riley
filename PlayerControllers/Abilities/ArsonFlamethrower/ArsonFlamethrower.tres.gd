@@ -16,7 +16,6 @@ var RNG2 = RandomNumberGenerator.new()
 @onready var barrel_exit: Marker3D = $Flamethrower/BarrelExit
 const FT_PARTICLE = preload("res://PlayerControllers/Abilities/ArsonFlamethrower/Supplemental/FT_Particle.tscn")
 
-
 @export_category("Weapon Stats")
 @export var max_ammo: int = 200
 @export var damage: float = 0.05
@@ -195,8 +194,9 @@ func spawn_flame_dmgbox():
 	var puff = FT_PARTICLE.instantiate()
 	
 	# 1. Start at the nozzle
-	get_tree().root.add_child(puff) # Spawn in world root
-	puff.global_position = barrel_exit.global_position
+	if get_tree():
+		get_tree().root.add_child(puff) # Spawn in world root
+		puff.global_position = barrel_exit.global_position
 	
 	# 2. Calculate Muzzle Velocity (The "Push" from the gun)
 	#var forward = -PlayerCamera.global_transform.basis.z
@@ -214,9 +214,6 @@ func spawn_flame_dmgbox():
 	
 	# 5. Send it to the puff script
 	puff.velocity = final_velocity
-
-
-
 
 func UpdateAnimations():
 	animation_tree.set("parameters/conditions/is_firing", is_firing)

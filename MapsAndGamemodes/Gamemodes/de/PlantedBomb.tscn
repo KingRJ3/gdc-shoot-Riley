@@ -3,10 +3,10 @@
 [ext_resource type="Script" uid="uid://ccjmcrw3adh57" path="res://MapsAndGamemodes/Gamemodes/de/planted_bomb.gd" id="1_yo78a"]
 [ext_resource type="Texture2D" uid="uid://7t25cg31su6k" path="res://MapsAndGamemodes/Maps/dm_grahhh/assets/blahhh_0.png" id="2_comtp"]
 [ext_resource type="Material" uid="uid://uiq7fijwx2od" path="res://PlayerControllers/Abilities/Turret/turretpreview.tres" id="3_1reia"]
-[ext_resource type="Material" uid="uid://ej07qv6yq17u" path="res://PlayerControllers/Abilities/DefuseBomb/explosivematerial.tres" id="4_r0uuc"]
+[ext_resource type="Material" uid="uid://ej07qv6yq17u" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/explosivematerial.tres" id="4_r0uuc"]
 [ext_resource type="Material" uid="uid://bj31ogvo4qulj" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/bombmaterial.tres" id="5_4rluo"]
 [ext_resource type="FontFile" uid="uid://bxfv5oguicmee" path="res://Misc/UI/fonts/GothicA1-Light.ttf" id="6_fhdgg"]
-[ext_resource type="Texture2D" uid="uid://brupuhk60x54r" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/image-removebg-preview(10).png" id="7_d4rk3"]
+[ext_resource type="Texture2D" uid="uid://dgk8egylyylkq" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/image-removebg-preview(10).png" id="7_d4rk3"]
 [ext_resource type="Texture2D" uid="uid://cqh3me5bmmfrm" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/Untitled.png" id="8_1reia"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3hlvc"]
