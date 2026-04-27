@@ -6,7 +6,7 @@ const defuse_time : float = 4.5
 var cur_defuse_level : float = 10.0
 
 var is_defusing : bool = false
-
+var defused = false
 # FIX 1: Use physics process so it perfectly matches the Merc's check_abilities rate
 func _physics_process(delta: float) -> void:
 	if !is_multiplayer_authority(): return
@@ -29,7 +29,7 @@ func activate():
 	var bomb_target = hit_object if hit_object is PlantedBomb else hit_object.owner as PlantedBomb
 	
 	
-	if bomb_target and bomb_target.planted:
+	if bomb_target and bomb_target.planted and !defused:
 		$UI.show()
 		if !$AudioStreamPlayer3D.is_playing():
 			play_defuse.rpc()
@@ -59,6 +59,8 @@ func stop_defuse():
 @rpc("any_peer", "call_local", "reliable")
 func _request_defuse(bomb_path: NodePath):
 	if not multiplayer.is_server(): return
+	defused = true
+	
 	$AudioStreamPlayer3D2.play()
 	# On a headless server, this will ALWAYS be the correct player ID
 	var defuser_id = multiplayer.get_remote_sender_id() 

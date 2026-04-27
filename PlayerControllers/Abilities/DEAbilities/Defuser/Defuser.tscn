@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://br8qxi03sjcru" path="res://PlayerControllers/Abilities/DEAbilities/Defuser/defuser.gd" id="1_cnii5"]
 [ext_resource type="FontFile" uid="uid://dupcfw4cw5fjv" path="res://Misc/UI/fonts/GothicA1-Bold.ttf" id="2_wepyk"]
 [ext_resource type="AudioStream" uid="uid://dl7m4cujsvvkv" path="res://MapsAndGamemodes/Gamemodes/de/vox/bombdefused.mp3" id="3_nm107"]
-[ext_resource type="AudioStream" uid="uid://dlg7yv08e77j1" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/defusingbomb.mp3" id="3_wepyk"]
+[ext_resource type="AudioStream" uid="uid://c7vv65htpfhmi" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/defusingbomb.mp3" id="3_wepyk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wepyk"]
 bg_color = Color(0.81, 0.20411998, 0.097200006, 1)

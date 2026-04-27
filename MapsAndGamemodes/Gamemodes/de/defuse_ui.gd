@@ -5,6 +5,8 @@ class_name DEUI
 @export var state_label: Label
 @export var attackers_score_label: Label
 @export var defenders_score_label: Label
+@onready var a_remaining: Label = $HBoxContainer/ColorRect2/ARemaining
+@onready var d_remaining: Label = $HBoxContainer/ColorRect/DRemaining
 
 # Called by DefuseGamemode.gd every frame
 func update_timer(time_left: float, state: int) -> void:
@@ -35,3 +37,7 @@ func update_scores(attackers: int, defenders: int) -> void:
 		attackers_score_label.text = str(attackers)
 	if defenders_score_label:
 		defenders_score_label.text = str(defenders)
+
+func update_remaining_players(attackers : int, defenders : int):
+	a_remaining.text = str(attackers)
+	d_remaining.text = str(defenders)

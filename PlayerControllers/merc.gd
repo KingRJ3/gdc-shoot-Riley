@@ -15,7 +15,9 @@ const ABILITY_UI = preload("res://Misc/UI/ability_ui.tscn")
 const MERC_LABEL = preload("res://MultiplayerStuff/Client/MercLabel.tscn")
 const HEALTH_BAR = preload("res://Misc/UI/health_bar.tscn")
 const FOOTSTEPS = preload("res://PlayerControllers/Abilities/Footsteps/footsteps.tscn")
+const KILL_CONFIRMED = preload("res://Misc/Sounds/KillConfirmed.tscn")
 
+var kill_confirmed_sound : AudioStreamPlayer
 var health_bar: ProgressBar
 
 @export var debug_mode : bool = false
@@ -51,7 +53,6 @@ var health_bar: ProgressBar
 			#scale
 			#velocity
 			#is_on_floor()
-
 
 @export var abilities : Array[Ability]
 #reminder abilities  can have their own ui
@@ -133,8 +134,10 @@ func _ready() -> void:
 	
 	name_label_instance = MERC_LABEL.instantiate()
 	add_child(name_label_instance)
-	
 	name_label_instance.position = Vector3(0, 1.6, 0) 
+	
+	kill_confirmed_sound = KILL_CONFIRMED.instantiate()
+	add_child(kill_confirmed_sound)
 	
 	var parent_gamemode = get_parent()
 	if parent_gamemode and "master_team_database" in parent_gamemode:
@@ -549,7 +552,8 @@ func die(killer_id: int = 0):
 #emits when you kill a player
 @rpc("any_peer","call_remote","reliable")
 func notify_kill_confirmed(id : int = 0): 
-	#was not working because players had the authority`
+	#was not working because players had the authority
+	kill_confirmed_sound.play()
 	kill_confirmed.emit(id)
 
 func custom_process(delta : float):
