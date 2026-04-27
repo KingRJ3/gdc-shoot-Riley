@@ -96,15 +96,16 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 @rpc("any_peer", "reliable")
 func GiveAfterburn(bodypath): #Run on everyone, for the purposes of sync
 	var body = get_node_or_null(bodypath)
-	if body == null: return
-	var afterburn = BURNING_EFFECT.instantiate()
-	afterburn.name = "StatusEffect_Burn"
-	#afterburn.set_multiplayer_authority(body.name.to_int())
-	body.add_child(afterburn)
+	if body != null:
+		var afterburn = BURNING_EFFECT.instantiate()
+		afterburn.name = "StatusEffect_Burn"
+		#afterburn.set_multiplayer_authority(body.name.to_int())
+		body.add_child(afterburn)
 
 @rpc("any_peer", "reliable")
 func RefreshAfterburn(bodypath):
 	var body = get_node_or_null(bodypath)
-	if body == null: return
-	var afterburn = body.get_node("StatusEffect_Burn")
-	afterburn.renewBurn() #Run on everyone, for the purposes of sync
+	if body != null:
+		if body.has_node("StatusEffect_Burn"):
+			var afterburn = body.get_node("StatusEffect_Burn")
+			afterburn.renewBurn() #Run on everyone, for the purposes of sync

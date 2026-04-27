@@ -925,7 +925,7 @@ debug_mode = true
 camera = NodePath("Camera3D")
 visual_body = NodePath("ModelsForSelect")
 visual_hand = NodePath("ModelsForSelect")
-abilities = [NodePath("PassiveAbilities/JumpAbility"), NodePath("PassiveAbilities/SprintAbility"), null, null, null]
+abilities = [NodePath("PassiveAbilities/JumpAbility"), NodePath("PassiveAbilities/SprintAbility"), NodePath("Camera3D/Held/ArsonFlamethrower"), NodePath("Camera3D/Held/ArsonIncendiary"), NodePath("Camera3D/Held/ArsonGascan")]
 metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
 
 [node name="BodyCollision" type="CollisionShape3D" parent="." unique_id=1807454471]

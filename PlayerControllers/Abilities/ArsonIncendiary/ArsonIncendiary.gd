@@ -18,6 +18,9 @@ var ammo = 2
 var holding_about_to_throw : bool = false
 var thrown : bool = false
 
+func _ready() -> void:
+	dequip()
+
 func _process(_delta: float) -> void:
 	if !is_multiplayer_authority(): return
 	if !currently_active: return
