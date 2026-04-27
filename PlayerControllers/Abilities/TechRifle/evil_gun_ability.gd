@@ -121,7 +121,14 @@ func equip():
 	equipped = true
 	show()
 	crosshair_002.show()
-	show_visual_hand.rpc(true)
+	show_self.rpc(true) #tell all clients to update
+
+@rpc("any_peer","call_remote","reliable")
+func show_self(vis : bool):
+	if vis:
+		show()
+	else:
+		hide()
 
 @rpc("any_peer","call_remote","reliable")
 func show_visual_hand(vis : bool):
@@ -132,7 +139,7 @@ func dequip():
 	equipped = false
 	hide()
 	crosshair_002.hide()
-	show_visual_hand.rpc(false)
+	show_self.rpc(false)
 
 # ==========================================
 # SOURCE-ENGINE WEAPON SWAY & BOB

@@ -4,9 +4,10 @@
 [ext_resource type="FontFile" uid="uid://bbiqgpxf2c38" path="res://Misc/UI/fonts/GothicA1-Black.ttf" id="2_k7brl"]
 [ext_resource type="FontFile" uid="uid://b1ohfsj2areyx" path="res://Misc/UI/fonts/GothicA1-Medium.ttf" id="3_iviih"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_hsb4b"]
+[sub_resource type="LabelSettings" id="LabelSettings_y35bt"]
 font = ExtResource("2_k7brl")
 font_size = 26
+font_color = Color(0.13, 0.13, 0.13, 1)
 outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_ravbi"]
@@ -16,11 +17,6 @@ font_size = 33
 [sub_resource type="LabelSettings" id="LabelSettings_eeq32"]
 font = ExtResource("3_iviih")
 font_size = 23
-
-[sub_resource type="LabelSettings" id="LabelSettings_y35bt"]
-font = ExtResource("2_k7brl")
-font_size = 26
-outline_color = Color(0, 0, 0, 1)
 
 [node name="DefuseUi" type="Control" unique_id=665496908 node_paths=PackedStringArray("timer_label", "state_label", "attackers_score_label", "defenders_score_label")]
 layout_mode = 3
@@ -56,7 +52,7 @@ layout_mode = 0
 offset_right = 65.0
 offset_bottom = 85.0
 text = "0"
-label_settings = SubResource("LabelSettings_hsb4b")
+label_settings = SubResource("LabelSettings_y35bt")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -74,7 +70,7 @@ size_flags_horizontal = 0
 
 [node name="AWins" type="Label" parent="HBoxContainer/VBoxContainer/PanelContainer/PanelContainer" unique_id=976199125]
 layout_mode = 2
-text = "1"
+text = "00"
 label_settings = SubResource("LabelSettings_ravbi")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -93,7 +89,7 @@ size_flags_horizontal = 8
 
 [node name="DWins" type="Label" parent="HBoxContainer/VBoxContainer/PanelContainer/PanelContainer2" unique_id=2028578017]
 layout_mode = 2
-text = "1"
+text = "00"
 label_settings = SubResource("LabelSettings_ravbi")
 horizontal_alignment = 1
 vertical_alignment = 1
