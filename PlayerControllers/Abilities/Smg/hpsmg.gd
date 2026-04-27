@@ -108,7 +108,7 @@ func _do_raycasts() -> void:
 			var person_hit = rc.get_collider()
 			if person_hit != null and person_hit is Merc:
 				if person_hit.team == merc.team:
-					if person_hit.health < (person_hit.max_health+25):
+					if person_hit.get_health() < (person_hit.max_health+25):
 						person_hit.take_damage.rpc_id(int(person_hit.name), damage)
 				else:
 					person_hit.take_damage.rpc_id(int(person_hit.name), -damage)
