@@ -83,7 +83,7 @@ func shoot():
 	# Consume 1 ammo per trigger pull (even if it's a shotgun firing 8 pellets)
 	ammo = clamp(ammo - 1, 0, max_ammo)
 	
-	$AudioStreamPlayer3D.play()
+	play_gunshot.rpc()
 	# Restart animation and start the cooldown timer
 	animation_player.stop() 
 	animation_player.play("shoot")
@@ -103,7 +103,7 @@ func _do_raycasts() -> void:
 			var person_hit = rc.get_collider()
 			if person_hit != null and person_hit is Merc:
 				person_hit.take_damage.rpc_id(int(person_hit.name), damage)
-				person_hit.apply_knockback.rpc_id(int(person_hit.name), (get_parent().position-person_hit.position).normalized(), 90, 0.91)
+				person_hit.apply_knockback.rpc_id(int(person_hit.name), -(get_parent().position-person_hit.position).normalized(), 5, 0.91)
 				
 			# Spawn tracer at hit point
 			tracer_effect._create_tracer_effect.rpc(tracer_effect.global_position, rc.get_collision_point())
@@ -116,6 +116,10 @@ func equip():
 	equipped = true
 	show()
 	show_visual_hand.rpc(true)
+
+@rpc("any_peer","call_local","reliable")
+func play_gunshot():
+	$AudioStreamPlayer3D.play()
 
 @rpc("any_peer","call_remote","reliable")
 func show_visual_hand(vis : bool):

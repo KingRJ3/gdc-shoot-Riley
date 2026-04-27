@@ -2,7 +2,13 @@ extends DestructibleProp
 @onready var label_3d: Label3D = $Label3D
 
 var time_to_reset = .5
+
+@export var fake_team:String = "red"
+
 @rpc("any_peer", "call_local", "reliable")
+func _ready():
+	team = fake_team
+
 func take_damage(damage: float):
 	# We still accept the RPC call from the raycast, but we completely ignore 
 	# the attacker_id because this is just a prop.

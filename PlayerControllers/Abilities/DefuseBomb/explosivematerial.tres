@@ -1,4 +1,4 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://ej07qv6yq17u"]
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cvb22fneqgci8"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_t045v"]
 seed = 7
