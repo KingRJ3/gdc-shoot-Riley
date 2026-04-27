@@ -15,8 +15,8 @@ var round_timer: float = 0.0
 @export var defender_spawn_points: Array[Node3D] = []
 @export var before_round_start_barriers : StaticBody3D
 @export var bomb_spawn_point : Node3D
-@export var max_rounds: int = 6          # Maximum rounds possible (for a 6-6 tie)
-@export var rounds_to_win: int = 3       # First to 7 wins
+@export var max_rounds: int = 12          # Maximum rounds possible (for a 6-6 tie)
+@export var rounds_to_win: int = 7       # First to 7 wins
 @export var match_end_wait: float = 30.0 # Time for map voting
 
 var rounds_played: int = 0
