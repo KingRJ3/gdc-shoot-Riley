@@ -31,7 +31,7 @@ mesh = SubResource("QuadMesh_h6ttx")
 
 [node name="Area3D" type="Area3D" parent="." unique_id=658030302]
 collision_layer = 2147483648
-collision_mask = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=709240761]
 transform = Transform3D(0.825, 0, 0, 0, 0.825, 0, 0, 0, 0.825, 0, 0, 0)
