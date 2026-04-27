@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://qbndxwane47x"]
 
-[ext_resource type="Script" uid="uid://dmhasmgjkuk7u" path="res://PlayerControllers/Abilities/TrackerBoltGun/evil_gun_ability.gd" id="1_76wo1"]
+[ext_resource type="Script" uid="uid://dmhasmgjkuk7u" path="res://PlayerControllers/Abilities/TrackerBoltGun/trackerboltgun.gd" id="1_76wo1"]
 [ext_resource type="PackedScene" uid="uid://d4g3x720sp8m6" path="res://PlayerControllers/Abilities/TrackerBoltGun/tracer_effect.tscn" id="2_nwyqb"]
 [ext_resource type="Script" uid="uid://cc8iyij6vj0io" path="res://PlayerControllers/Abilities/TrackerBoltGun/tracer_effect.gd" id="3_fpgdt"]
 [ext_resource type="Texture2D" uid="uid://b65fa3kdr05md" path="res://PrototypeAssets/PrototypeCrosshairsAssets/PNG/White/crosshair002.png" id="4_7xwhs"]

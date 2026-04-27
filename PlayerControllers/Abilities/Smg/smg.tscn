@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://c4indsu5jqmn6"]
 
-[ext_resource type="Script" uid="uid://csy5ae7uxmqla" path="res://PlayerControllers/Abilities/Smg/evil_gun_ability.gd" id="1_6fyxj"]
+[ext_resource type="Script" uid="uid://csy5ae7uxmqla" path="res://PlayerControllers/Abilities/Smg/hpsmg.gd" id="1_6fyxj"]
 [ext_resource type="PackedScene" uid="uid://lgfelikpw6ce" path="res://PlayerControllers/Abilities/TrackerRifle/tracer_effect.tscn" id="2_kvdrf"]
 [ext_resource type="Script" uid="uid://doi6ksc5c3s7p" path="res://PlayerControllers/Abilities/TrackerRifle/tracer_effect.gd" id="3_0m1ia"]
 [ext_resource type="Texture2D" uid="uid://b65fa3kdr05md" path="res://PrototypeAssets/PrototypeCrosshairsAssets/PNG/White/crosshair002.png" id="4_57l42"]

@@ -25,7 +25,7 @@ var health_bar: ProgressBar
 @export_group("Universal Properties")
 @export var health :float = 100.0:
 	set(value):
-		if health_bar: health_bar.health = clamp(value, 0, max_health)
+		if health_bar: health_bar.health = value
 		if value != health:
 			var old := health
 			health = value
