@@ -25,7 +25,7 @@ var health_bar: ProgressBar
 @export_group("Universal Properties")
 @export var health :float = 100.0:
 	set(value):
-		if health_bar: health_bar.health = clamp(value, 0, max_health)
+		if health_bar: health_bar.health = value
 		if value != health:
 			var old := health
 			health = value
@@ -208,6 +208,11 @@ func _setup_synchronizer() -> void:
 var knockback_dir : Vector3 = Vector3(0,0,0)
 var knockback_pwr := 0
 var knockback_decay := 0.3
+
+
+@rpc("any_peer", "call_local", "reliable")
+func get_health():
+	return health
 
 @rpc("any_peer", "call_remote", "reliable")
 func apply_knockback(vec:Vector3, power:float, decay:float):

@@ -21,6 +21,7 @@ trigger_key = "E"
 target_position = Vector3(0, 0, -5)
 
 [node name="UI" type="Control" parent="." unique_id=1797526441]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
