@@ -74,7 +74,7 @@ size_flags_horizontal = 0
 
 [node name="AWins" type="Label" parent="HBoxContainer/VBoxContainer/PanelContainer/PanelContainer" unique_id=976199125]
 layout_mode = 2
-text = "1"
+text = "00"
 label_settings = SubResource("LabelSettings_ravbi")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -93,7 +93,7 @@ size_flags_horizontal = 8
 
 [node name="DWins" type="Label" parent="HBoxContainer/VBoxContainer/PanelContainer/PanelContainer2" unique_id=2028578017]
 layout_mode = 2
-text = "1"
+text = "00"
 label_settings = SubResource("LabelSettings_ravbi")
 horizontal_alignment = 1
 vertical_alignment = 1
