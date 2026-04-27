@@ -4,3 +4,4 @@
 
 [node name="DefuseWinSound" type="AudioStreamPlayer" unique_id=805902952]
 stream = ExtResource("1_cw0l3")
+volume_db = -18.236

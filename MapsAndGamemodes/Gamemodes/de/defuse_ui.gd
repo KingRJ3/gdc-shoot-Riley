@@ -8,8 +8,19 @@ class_name DEUI
 @onready var a_remaining: Label = $HBoxContainer/ColorRect2/ARemaining
 @onready var d_remaining: Label = $HBoxContainer/ColorRect/DRemaining
 
+func _ready() -> void:
+	hide()
+
 # Called by DefuseGamemode.gd every frame
 func update_timer(time_left: float, state: int) -> void:
+	var lobby_id = get_parent().name
+	var my_id = multiplayer.get_unique_id()
+	if not ServerDatabase.Lobbies.has(lobby_id) or not my_id in ServerDatabase.Lobbies[lobby_id]:
+		hide()
+		return
+	else:
+		show()
+	
 	# Format time into MM:SS
 	var minutes := int(time_left) / 60
 	var seconds := int(time_left) % 60

@@ -61,7 +61,7 @@ func _request_defuse(bomb_path: NodePath):
 	if not multiplayer.is_server(): return
 	defused = true
 	
-	$AudioStreamPlayer3D2.play()
+	$Bombdefused.play()
 	# On a headless server, this will ALWAYS be the correct player ID
 	var defuser_id = multiplayer.get_remote_sender_id() 
 	

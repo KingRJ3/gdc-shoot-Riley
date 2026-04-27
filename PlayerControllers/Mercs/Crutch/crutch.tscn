@@ -127,7 +127,7 @@ grow_vertical = 2
 
 [node name="HPSMG" parent="." unique_id=1600695075 instance=ExtResource("4_7moma")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.23129117, 0.58409363, 0.24758685)
-damage = -2.0
+damage = -2.5
 AbilityDescription = "heal teammates. hurt enemies."
 
 [node name="wallplacer" parent="." unique_id=1651484999 instance=ExtResource("6_mofov")]

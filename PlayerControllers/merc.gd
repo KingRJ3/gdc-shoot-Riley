@@ -491,6 +491,8 @@ func take_damage(damage: float):
 			
 	
 	if damage < 0:
+		if health > max_health+25:
+			return
 		healed.emit()
 	
 	# Apply damage if they pass the check
