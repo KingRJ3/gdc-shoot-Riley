@@ -30,8 +30,6 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_laqpj"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_2owpn"]
-
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_o0abd"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_upqj1"]
@@ -912,8 +910,6 @@ properties/5/path = NodePath(".:velocitysync")
 properties/5/spawn = true
 properties/5/replication_mode = 1
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_5ll0e"]
-
 [node name="Arson" type="CharacterBody3D" unique_id=1805749237 node_paths=PackedStringArray("camera", "visual_body", "visual_hand", "abilities")]
 collision_layer = 2
 script = ExtResource("1_2owpn")
@@ -921,20 +917,15 @@ debug_mode = true
 camera = NodePath("Camera3D")
 visual_body = NodePath("ModelsForSelect")
 visual_hand = NodePath("ModelsForSelect")
-abilities = [NodePath("PassiveAbilities/JumpAbility"), NodePath("PassiveAbilities/SprintAbility"), NodePath("Camera3D/Held/ArsonFlamethrower"), NodePath("Camera3D/Held/ArsonIncendiary")]
+abilities = [NodePath("PassiveAbilities/JumpAbility"), NodePath("PassiveAbilities/SprintAbility"), NodePath("Camera3D/Held/ArsonFlamethrower"), NodePath("Camera3D/Held/ArsonIncendiary"), NodePath("Camera3D/Held/ArsonGascan")]
 metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
 
 [node name="BodyCollision" type="CollisionShape3D" parent="." unique_id=1807454471]
 shape = SubResource("CapsuleShape3D_laqpj")
 
-[node name="BellyCollision" type="CollisionShape3D" parent="." unique_id=957466568]
-transform = Transform3D(1, 0, 0, 0, 1.4144764, 0, 0, 0, 1, 0, -0.28050566, -0.14781544)
-visible = false
-shape = SubResource("SphereShape3D_2owpn")
-
 [node name="Camera3D" type="Camera3D" parent="." unique_id=479450823]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.64104, 0)
-cull_mask = 1048509
+cull_mask = 1048319
 fov = 90.0
 
 [node name="Held" type="Node3D" parent="Camera3D" unique_id=382989314]
@@ -1077,8 +1068,32 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("12_laqpj")
 
-[node name="Centered" type="Control" parent="UI_Control" unique_id=254293058]
-layout_mode = 1
+[node name="FPS_CanvasLayer" type="CanvasLayer" parent="UI_Control" unique_id=1484136375]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="UI_Control/FPS_CanvasLayer" unique_id=767678133]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="UI_Control/FPS_CanvasLayer/SubViewportContainer" unique_id=1847024140]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1280, 720)
+render_target_update_mode = 4
+
+[node name="FPS_Camera" type="Camera3D" parent="UI_Control/FPS_CanvasLayer/SubViewportContainer/SubViewport" unique_id=940759380]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.64104, 0)
+cull_mask = 32768
+fov = 90.0
+
+[node name="UI_CanvasLayer" type="CanvasLayer" parent="UI_Control" unique_id=783951415]
+layer = 2
+
+[node name="Centered" type="Control" parent="UI_Control/UI_CanvasLayer" unique_id=254293058]
+layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -1091,13 +1106,14 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Crosshair" type="Sprite2D" parent="UI_Control/Centered" unique_id=1273884129]
+[node name="Crosshair" type="Sprite2D" parent="UI_Control/UI_CanvasLayer/Centered" unique_id=1273884129 node_paths=PackedStringArray("arson_flamethrower")]
 position = Vector2(20, 20)
 texture = ExtResource("14_o0abd")
 script = ExtResource("13_laqpj")
+arson_flamethrower = NodePath("../../../../Camera3D/Held/ArsonFlamethrower")
 
-[node name="Centered_Bottom" type="Control" parent="UI_Control" unique_id=1219275280]
-layout_mode = 1
+[node name="Centered_Bottom" type="Control" parent="UI_Control/UI_CanvasLayer" unique_id=1219275280]
+layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -1109,20 +1125,20 @@ offset_right = 20.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="Node" type="Control" parent="UI_Control/Centered_Bottom" unique_id=1228904079]
+[node name="Node" type="Control" parent="UI_Control/UI_CanvasLayer/Centered_Bottom" unique_id=1228904079]
 anchors_preset = 0
 offset_left = 20.0
 offset_right = 20.0
 scale = Vector2(0.1, 0.1)
 
-[node name="GasReady" type="AnimatedSprite2D" parent="UI_Control/Centered_Bottom/Node" unique_id=2053051554]
+[node name="GasReady" type="AnimatedSprite2D" parent="UI_Control/UI_CanvasLayer/Centered_Bottom/Node" unique_id=2053051554]
 position = Vector2(-16.66661, -233.33345)
 scale = Vector2(25, 20)
 sprite_frames = SubResource("SpriteFrames_vl4bk")
 autoplay = "default"
 frame_progress = 0.03643165
 
-[node name="GasProgress" type="TextureProgressBar" parent="UI_Control/Centered_Bottom/Node" unique_id=1363448273]
+[node name="GasProgress" type="TextureProgressBar" parent="UI_Control/UI_CanvasLayer/Centered_Bottom/Node" unique_id=1363448273]
 layout_mode = 0
 offset_left = -254.0
 offset_top = -275.0
@@ -1134,13 +1150,13 @@ fill_mode = 3
 texture_under = ExtResource("16_6144p")
 texture_progress = ExtResource("17_w5rjq")
 
-[node name="GasOverlay" type="Sprite2D" parent="UI_Control/Centered_Bottom/Node" unique_id=446340274]
+[node name="GasOverlay" type="Sprite2D" parent="UI_Control/UI_CanvasLayer/Centered_Bottom/Node" unique_id=446340274]
 position = Vector2(54.19, -37)
 scale = Vector2(0.98, 0.98)
 texture = ExtResource("18_jetmc")
 
-[node name="Bottom_Right" type="Control" parent="UI_Control" unique_id=1627435181]
-layout_mode = 1
+[node name="Bottom_Right" type="Control" parent="UI_Control/UI_CanvasLayer" unique_id=1627435181]
+layout_mode = 3
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -1151,19 +1167,19 @@ offset_top = -40.0
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="Grenade Control" type="Control" parent="UI_Control/Bottom_Right" unique_id=68892366]
+[node name="Grenade Control" type="Control" parent="UI_Control/UI_CanvasLayer/Bottom_Right" unique_id=68892366]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="GrenadeBG" type="Sprite2D" parent="UI_Control/Bottom_Right/Grenade Control" unique_id=2002967433]
+[node name="GrenadeBG" type="Sprite2D" parent="UI_Control/UI_CanvasLayer/Bottom_Right/Grenade Control" unique_id=2002967433]
 position = Vector2(-85.31348, -12.263977)
 rotation = -0.445059
 scale = Vector2(0.15745002, 0.15745002)
 texture = ExtResource("20_8kr54")
 script = ExtResource("21_8kr54")
 
-[node name="GrenadeCount" type="RichTextLabel" parent="UI_Control/Bottom_Right/Grenade Control" unique_id=1562110391]
+[node name="GrenadeCount" type="RichTextLabel" parent="UI_Control/UI_CanvasLayer/Bottom_Right/Grenade Control" unique_id=1562110391 node_paths=PackedStringArray("arson_incendiary")]
 layout_mode = 0
 offset_left = -118.037
 offset_top = -54.193
@@ -1182,8 +1198,9 @@ text = "1"
 fit_content = true
 horizontal_alignment = 1
 script = ExtResource("23_0vwqq")
+arson_incendiary = NodePath("../../../../../Camera3D/Held/ArsonIncendiary")
 
-[node name="Ammo Control" type="Control" parent="UI_Control/Bottom_Right" unique_id=1073662274]
+[node name="Ammo Control" type="Control" parent="UI_Control/UI_CanvasLayer/Bottom_Right" unique_id=1073662274 node_paths=PackedStringArray("arson_flamethrower")]
 anchors_preset = 0
 offset_left = -3.875
 offset_top = -11.73
@@ -1191,14 +1208,15 @@ offset_right = 36.125
 offset_bottom = 28.27
 scale = Vector2(0.335, 0.335)
 script = ExtResource("26_5ll0e")
+arson_flamethrower = NodePath("../../../../Camera3D/Held/ArsonFlamethrower")
 
-[node name="AmmoBG" type="Sprite2D" parent="UI_Control/Bottom_Right/Ammo Control" unique_id=2026312541]
+[node name="AmmoBG" type="Sprite2D" parent="UI_Control/UI_CanvasLayer/Bottom_Right/Ammo Control" unique_id=2026312541]
 texture = ExtResource("22_47sre")
 script = ExtResource("21_8kr54")
 base_angle = 0.0
 cycle_speed = 2.544
 
-[node name="AmmoCount" type="RichTextLabel" parent="UI_Control/Bottom_Right/Ammo Control" unique_id=1715920311]
+[node name="AmmoCount" type="RichTextLabel" parent="UI_Control/UI_CanvasLayer/Bottom_Right/Ammo Control" unique_id=1715920311]
 layout_mode = 0
 offset_left = -174.538
 offset_top = -55.619
@@ -1217,7 +1235,7 @@ text = "175"
 fit_content = true
 horizontal_alignment = 1
 
-[node name="MaxAmmo" type="RichTextLabel" parent="UI_Control/Bottom_Right/Ammo Control" unique_id=1502818759]
+[node name="MaxAmmo" type="RichTextLabel" parent="UI_Control/UI_CanvasLayer/Bottom_Right/Ammo Control" unique_id=1502818759]
 layout_mode = 0
 offset_left = 9.707031
 offset_top = 17.496094
@@ -1236,23 +1254,6 @@ text = "/200"
 fit_content = true
 horizontal_alignment = 1
 
-[node name="FPS_CanvasLayer" type="CanvasLayer" parent="UI_Control" unique_id=1484136375]
-
-[node name="SubViewportContainer" type="SubViewportContainer" parent="UI_Control/FPS_CanvasLayer" unique_id=767678133]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-stretch = true
-
-[node name="SubViewport" type="SubViewport" parent="UI_Control/FPS_CanvasLayer/SubViewportContainer" unique_id=1847024140]
-transparent_bg = true
-size = Vector2i(1280, 720)
-
-[node name="FPS_Camera" type="Camera3D" parent="UI_Control/FPS_CanvasLayer/SubViewportContainer/SubViewport" unique_id=940759380]
-cull_mask = 32768
-
 [node name="Timers" type="Node3D" parent="." unique_id=216451349]
 
 [node name="Fire_Rate" type="Timer" parent="Timers" unique_id=1172938056]
@@ -1260,11 +1261,6 @@ process_callback = 0
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1918191754]
 replication_config = SubResource("SceneReplicationConfig_laqpj")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1863591537]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.7080622)
-layers = 32768
-mesh = SubResource("CapsuleMesh_5ll0e")
 
 [editable path="Camera3D/WeldingMask"]
 [editable path="Models/Gascan"]

@@ -6,36 +6,44 @@ extends WeaponAbility
 @onready var cpu_particles_3d: CPUParticles3D = $Grenade/CPUParticles3D
 @onready var explosion_radius: Area3D = $Grenade/ExplosionRadius
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
+const INCENDIARY_INSTANCE = preload("res://PlayerControllers/Abilities/ArsonIncendiary/Supplemental/IncendiaryInstance.tscn")
 
 @export var cool_down := 5.0
-@export var fuse_time := 4.0
+#@export var fuse_time := 4.0
 @export var throw_strength = 12.0
 @export var damage = 70.0
 
-var ammo = 7
+var ammo = 2
 
 var holding_about_to_throw : bool = false
 var thrown : bool = false
 
 func _process(_delta: float) -> void:
+	if !is_multiplayer_authority(): return
 	if !currently_active: return
 	if merc and merc.camera:
 		global_transform = merc.camera.global_transform
-	if Input.is_action_just_pressed("left_click") and not thrown:
+	if Input.is_action_just_pressed("left_click") and ammo > 0 and !thrown:
 		holding_about_to_throw = true
 		anim_player.play("hold_to_throw")
-		fuse_timer.start(fuse_time)
+		rpc("sync_animation", "hold_to_throw")
 		
-	if Input.is_action_just_released("left_click") and holding_about_to_throw and !thrown:
+	if Input.is_action_just_released("left_click") and holding_about_to_throw and ammo > 0 and !thrown:
 		holding_about_to_throw = false
 		thrown = true
 		shoot()
-	
+
+@rpc("any_peer", "reliable")
+func sync_animation(animation):
+	anim_player.play(animation)
 
 func shoot():
 	# Detach the grenade from the hand and throw it
 	anim_player.play("throw")
+	rpc("sync_animation", "throw")
 	await anim_player.animation_finished
+	
+	var incendiary = INCENDIARY_INSTANCE.instance()
 	
 	hand.set_deferred("remote_path", null)
 	grenade.freeze = false
@@ -44,13 +52,28 @@ func shoot():
 
 func equip():
 	show()
-	anim_player.play("equip")
-	anim_player.queue("idle")
-	
+	show_self.rpc(true) #tell all clients to update
+	if ammo > 0:
+		anim_player.play("equip")
+		anim_player.queue("idle")
+	else:
+		hide()
+
+@rpc("any_peer","call_remote","reliable")
+func show_self(vis : bool):
+	if vis:
+		show()
+		if ammo > 0:
+			anim_player.play("equip")
+			anim_player.queue("idle")
+		else:
+			hide()
+	else:
+		hide()
+
 func dequip():
-	anim_player.play("dequip")
-	await anim_player.animation_finished
-	#hide()
+	hide()
+	show_self.rpc(false)
 
 @rpc("any_peer", "call_local", "reliable")
 func explode():

@@ -78,28 +78,33 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 	#print(get_multiplayer_authority())
 	if is_multiplayer_authority():
 		if body != null and body != self and body is Merc:
-			if !DoneDamage:
-				DoneDamage = true
-				#print("Doing " + str(ParticleDamage) + " damage.")
-				var damage_mult = 1.0
-				if life_percent:
-					damage_mult = remap(life_percent, 1.0, 0.0, 1.0, 0.5)
-				body.take_damage.rpc_id(body.name.to_int(), ParticleDamage*damage_mult)
-				if body.has_node("StatusEffect_Burn"):
-					RefreshAfterburn(body)
-					rpc("RefreshAfterburn", body)
-				else:
-					GiveAfterburn(body)
-					rpc("GiveAfterburn", body)
+			if body.name.to_int() != multiplayer.get_unique_id():
+				if !DoneDamage:
+					DoneDamage = true
+					#print("Doing " + str(ParticleDamage) + " damage.")
+					var damage_mult = 1.0
+					if life_percent:
+						damage_mult = remap(life_percent, 1.0, 0.0, 1.0, 0.5)
+					body.take_damage.rpc_id(body.name.to_int(), ParticleDamage*damage_mult)
+					if body.has_node("StatusEffect_Burn"):
+						RefreshAfterburn(body)
+						rpc("RefreshAfterburn", body.get_path())
+					else:
+						GiveAfterburn(body)
+						rpc("GiveAfterburn", body.get_path())
 
 @rpc("any_peer", "reliable")
-func GiveAfterburn(body): #Run on everyone, for the purposes of sync
+func GiveAfterburn(bodypath): #Run on everyone, for the purposes of sync
+	var body = get_node_or_null(bodypath)
+	if body == null: return
 	var afterburn = BURNING_EFFECT.instantiate()
 	afterburn.name = "StatusEffect_Burn"
 	#afterburn.set_multiplayer_authority(body.name.to_int())
 	body.add_child(afterburn)
 
 @rpc("any_peer", "reliable")
-func RefreshAfterburn(body):
+func RefreshAfterburn(bodypath):
+	var body = get_node_or_null(bodypath)
+	if body == null: return
 	var afterburn = body.get_node("StatusEffect_Burn")
 	afterburn.renewBurn() #Run on everyone, for the purposes of sync

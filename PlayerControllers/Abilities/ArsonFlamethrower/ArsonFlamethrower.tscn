@@ -787,7 +787,7 @@ transform = Transform3D(0.17930585, 0, 0, 0, 0.205, 0, 0, 0, 0.20092544, 0, 0, 0
 transform = Transform3D(1.000001, 0, 0, 0, 1.0000023, 0, 0, 0, 1.0000027, 0, 0, 0)
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="Flamethrower" unique_id=1756229397]
-transform = Transform3D(0.99996495, -0.008373172, 0.00021483701, 0.008374288, 0.9999478, -0.005860944, -0.0001657511, 0.005862538, 0.99998283, 5.96, -0.35, 0.03)
+transform = Transform3D(0.99996495, -0.008373172, 0.000214837, 0.008374288, 0.9999478, -0.0058609443, -0.00016575109, 0.0058625382, 0.99998283, 5.96, -0.35, 0.03)
 billboard = 2
 sprite_frames = SubResource("SpriteFrames_jqxcm")
 autoplay = "default"
@@ -801,3 +801,6 @@ transform = Transform3D(5.5556617, -0.43172872, 0.22776961, 0.38874346, 4.854431
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=214803831]
 replication_config = SubResource("SceneReplicationConfig_70jtl")
+
+[editable path="Flamethrower"]
+[editable path="Flamethrower/Gascanister"]

@@ -38,7 +38,6 @@ func _on_tick():
 	if target and target.has_method("take_damage"):
 		if is_multiplayer_authority():
 			target.take_damage(damage_per_tick*AfterburnDuration)
-			print("Burning Tick!")
 
 func renewBurn():
 	AfterburnDuration = AfterburnDuration + 0.002
