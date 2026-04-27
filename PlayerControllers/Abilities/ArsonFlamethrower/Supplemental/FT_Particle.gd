@@ -5,7 +5,9 @@ var lifetime: float = 0.8
 var initial_lifetime: float = 0.8
 var DoneDamage: bool = false
 var ParticleDamage: float = 0.0
+var life_percent
 @onready var mesh_instance_3d: MeshInstance3D = $MeshInstance3D
+const BURNING_EFFECT = preload("res://PlayerControllers/Abilities/ArsonFlamethrower/Supplemental/BurningEffect.tscn")
 
 # Inside your VisualFlame.gd _ready function
 func _ready():
@@ -53,7 +55,7 @@ func _physics_process(delta: float):
 	
 	# 3. Air Resistance & Visuals
 	velocity = velocity.move_toward(Vector3.ZERO, 5.0 * delta)
-	var life_percent = lifetime / initial_lifetime
+	life_percent = lifetime / initial_lifetime
 	# Starts at 0, grows rapidly to 
 	var grow_curve = inverse_lerp(1.5, 0.4, life_percent) # Grows to full size in first 20% of life
 	scale = Vector3.ONE * clamp(grow_curve * 1.5, 0.01, 1.5)
@@ -78,5 +80,26 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 		if body != null and body != self and body is Merc:
 			if !DoneDamage:
 				DoneDamage = true
-				print("Doing " + str(ParticleDamage) + " damage.")
-				body.take_damage.rpc_id(body.name.to_int(), ParticleDamage)
+				#print("Doing " + str(ParticleDamage) + " damage.")
+				var damage_mult = 1.0
+				if life_percent:
+					damage_mult = remap(life_percent, 1.0, 0.0, 1.0, 0.5)
+				body.take_damage.rpc_id(body.name.to_int(), ParticleDamage*damage_mult)
+				if body.has_node("StatusEffect_Burn"):
+					RefreshAfterburn(body)
+					rpc("RefreshAfterburn", body)
+				else:
+					GiveAfterburn(body)
+					rpc("GiveAfterburn", body)
+
+@rpc("any_peer", "reliable")
+func GiveAfterburn(body): #Run on everyone, for the purposes of sync
+	var afterburn = BURNING_EFFECT.instantiate()
+	afterburn.name = "StatusEffect_Burn"
+	#afterburn.set_multiplayer_authority(body.name.to_int())
+	body.add_child(afterburn)
+
+@rpc("any_peer", "reliable")
+func RefreshAfterburn(body):
+	var afterburn = body.get_node("StatusEffect_Burn")
+	afterburn.renewBurn() #Run on everyone, for the purposes of sync

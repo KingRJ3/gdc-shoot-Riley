@@ -19,7 +19,7 @@ const FT_PARTICLE = preload("res://PlayerControllers/Abilities/ArsonFlamethrower
 
 @export_category("Weapon Stats")
 @export var max_ammo: int = 200
-@export var damage: float = 1.0
+@export var damage: float = 0.05
 @export var fire_speed: float = 0.001 # Time in seconds between fire bursts
 
 @export_category("Weapon Movement Juice")
