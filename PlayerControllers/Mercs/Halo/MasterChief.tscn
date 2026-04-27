@@ -48,7 +48,7 @@ trigger_key = "Space"
 
 [node name="HaloAR" parent="." unique_id=1600695075 instance=ExtResource("4_euw0f")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10683805, 0.61868656, -0.23055923)
-max_ammo = 32
+max_ammo = 35
 damage = 2.5
 fire_speed = 0.06
 

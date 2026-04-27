@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" uid="uid://co4gkxh1je7gk" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/bomb.gd" id="1_r4gtw"]
 [ext_resource type="Material" uid="uid://uiq7fijwx2od" path="res://PlayerControllers/Abilities/Turret/turretpreview.tres" id="3_o1hlm"]
-[ext_resource type="Material" uid="uid://ej07qv6yq17u" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/explosivematerial.tres" id="3_qqgut"]
+[ext_resource type="Material" uid="uid://ej07qv6yq17u" path="res://PlayerControllers/Abilities/DefuseBomb/explosivematerial.tres" id="3_qqgut"]
 [ext_resource type="Material" uid="uid://bj31ogvo4qulj" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/bombmaterial.tres" id="3_r4gtw"]
 [ext_resource type="FontFile" uid="uid://bxfv5oguicmee" path="res://Misc/UI/fonts/GothicA1-Light.ttf" id="4_r4gtw"]
-[ext_resource type="AudioStream" uid="uid://bpb8bmowhnkgd" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/plant.mp3" id="5_qqgut"]
-[ext_resource type="Texture2D" uid="uid://dgk8egylyylkq" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/image-removebg-preview(10).png" id="5_t045v"]
+[ext_resource type="AudioStream" uid="uid://4xah06aixdq5" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/plant.mp3" id="5_qqgut"]
+[ext_resource type="Texture2D" uid="uid://brupuhk60x54r" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/image-removebg-preview(10).png" id="5_t045v"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_xlgcv"]
 _surfaces = [{
@@ -322,10 +322,10 @@ tracks/0/path = NodePath("bomb:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.03333333, 0.49999997),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.49999997),
+"transitions": PackedFloat32Array(0.43527526, 1),
 "update": 0,
-"values": [Vector3(0.80700636, -1.2017539, -0.4203116), Vector3(0.13166164, 0.933576, 1.2886964)]
+"values": [Vector3(-0.8360127, 1.5969763, 0.3298672), Vector3(0.13166164, 0.933576, 1.2886964)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -334,10 +334,10 @@ tracks/1/path = NodePath("bomb:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.03333333, 0.46666667),
+"times": PackedFloat32Array(0, 0.46666667),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(1.4453976, -0.873229, -2.2667933), Vector3(1.7126286, -1.9781165, -1.1581482)]
+"values": [Vector3(1.078, -1.003, -1.763), Vector3(0.893, -1.518, -0.533)]
 }
 
 [sub_resource type="Animation" id="Animation_p1o0t"]
@@ -352,7 +352,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.38, 0.5),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector3(0.13166164, 0.933576, 1.2886964), Vector3(0.7994422, -1.2158315, -0.4317279), Vector3(0.80700636, -1.2017539, -0.4203116)]
+"values": [Vector3(0.13166164, 0.933576, 1.2886964), Vector3(0.7994422, -1.2158315, -0.4317279), Vector3(0.6981317, -1.0576695, -0.42062435)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -361,10 +361,10 @@ tracks/1/path = NodePath("bomb:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.38, 0.5),
+"times": PackedFloat32Array(0, 0.36666667, 0.5),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector3(1.7126286, -1.9781165, -1.1581482), Vector3(1.4453976, -0.8276164, -2.2667933), Vector3(1.4453976, -0.873229, -2.2667933)]
+"values": [Vector3(1.078, -1.003, -1.763), Vector3(0.698, -1.058, -1.426), Vector3(0.698, -1.058, -1.426)]
 }
 
 [sub_resource type="Animation" id="Animation_o1hlm"]

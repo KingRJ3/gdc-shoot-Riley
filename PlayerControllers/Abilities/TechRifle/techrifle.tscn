@@ -330,7 +330,8 @@ shadow_mesh = SubResource("ArrayMesh_qku2o")
 
 [node name="TrackerRifle" type="Node3D" unique_id=1600695075 node_paths=PackedStringArray("weapon_mesh", "raycasts")]
 script = ExtResource("1_07wno")
-fire_speed = 0.14
+damage = 9.0
+fire_speed = 0.2
 weapon_mesh = NodePath("buffer/techrifle")
 raycasts = [NodePath("buffer/BulletRayCast")]
 trigger_key = "1"
