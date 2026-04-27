@@ -1447,11 +1447,19 @@ size = Vector3(21.856567, 1, 17.496952)
 
 [node name="de_dust2" type="Node3D" unique_id=1186981559 node_paths=PackedStringArray("attacker_spawn_points", "defender_spawn_points", "before_round_start_barriers", "bomb_spawn_point")]
 script = ExtResource("1_w4oxy")
+freeze_duration = null
+action_duration = null
+bomb_duration = null
+end_duration = null
 attacker_spawn_points = [NodePath("TSPAWN"), NodePath("TSPAWN2"), NodePath("TSPAWN3"), NodePath("TSPAWN4"), NodePath("TSPAWN5")]
 defender_spawn_points = [NodePath("CTSPAWN"), NodePath("CTSPAWN2"), NodePath("CTSPAWN3"), NodePath("CTSPAWN4"), NodePath("CTSPAWN5")]
 before_round_start_barriers = NodePath("StaticBody3D")
 bomb_spawn_point = NodePath("bomb_spawn_point")
+max_rounds = null
+rounds_to_win = null
+match_end_wait = null
 map_name = "de_dust2"
+characters_allowed = null
 metadata/_custom_type_script = "uid://bbpag3rbeurnu"
 
 [node name="Sketchfab_model" type="Node3D" parent="." unique_id=316304161]
@@ -1838,12 +1846,12 @@ mesh = SubResource("BoxMesh_kvxdb")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.59558, 3.0019453, -60.92945)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PlantableSpot" unique_id=1920642879]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8469238, 0, -3.0026016)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8469238, -0.9119091, -3.0026016)
 shape = SubResource("BoxShape3D_cyfk8")
 debug_color = Color(0.67058825, 0, 0.25490198, 1)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PlantableSpot/CollisionShape3D" unique_id=1454942013]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -66.29465, -3.1924853, 0.09462738)
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="PlantableSpot" unique_id=1454942013]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -69.14157, -3.3725138, -2.9079742)
 shape = SubResource("BoxShape3D_6574f")
 debug_color = Color(0.67058825, 0, 0.25490198, 1)
 

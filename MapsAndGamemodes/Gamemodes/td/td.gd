@@ -94,7 +94,7 @@ func _respawn_player(player_id: int):
 @rpc("authority", "call_local", "reliable")
 func update_client_team_databases(new_database: Dictionary) -> void:
 	master_team_database = new_database
-	# Removed the loop that called child.sync_team_database() because 
+	# Removed the loop that called ch`ild.sync_team_database() because 
 	# Mercs now get their team natively on spawn!
 
 func _on_player_left(player_id: int) -> void:
