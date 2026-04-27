@@ -11,16 +11,11 @@ var round_timer: float = 0.0
 @export var action_duration: float = 120.0
 @export var bomb_duration: float = 45.0
 @export var end_duration: float = 5.0
+@export var rounds_to_win: int = 13
 @export var attacker_spawn_points: Array[Node3D] = []
 @export var defender_spawn_points: Array[Node3D] = []
 @export var before_round_start_barriers : StaticBody3D
 @export var bomb_spawn_point : Node3D
-@export var max_rounds: int = 12          # Maximum rounds possible (for a 6-6 tie)
-@export var rounds_to_win: int = 7       # First to 7 wins
-@export var match_end_wait: float = 30.0 # Time for map voting
-
-var rounds_played: int = 0
-var half_time_reached: bool = false
 
 var attackers_score: int = 0
 var defenders_score: int = 0
@@ -28,8 +23,6 @@ var master_team_database: Dictionary = {}
 var master_character_database: Dictionary = {}
 var players_alive_this_round: Array[int] = []
 
-
-var leaderboard_scene = preload("res://MapsAndGamemodes/Gamemodes/de/LeaderBoardDE.tscn")
 var defuse_ui_scene = preload("res://MapsAndGamemodes/Gamemodes/de/DefuseUI.tscn")
 var char_select_scene = preload("res://MapsAndGamemodes/Gamemodes/PresetGamemodeWidgets/CharacterSelect/CharacterSelect.tscn")
 var team_select_scene = preload("res://MapsAndGamemodes/Gamemodes/dm/deathmatch side choice button.tscn")
@@ -38,7 +31,6 @@ const DEFUSE_LOSE_SOUND = preload("res://MapsAndGamemodes/Gamemodes/de/DefuseLos
 const DEFUSE_WIN_SOUND = preload("res://MapsAndGamemodes/Gamemodes/de/DefuseWinSound.tscn")
 const SPECTATOR_MODE = preload("res://MapsAndGamemodes/Gamemodes/PresetGamemodeWidgets/SpectatorMode/SpectatorMode.tscn")
 
-var leaderboard
 var defuser_node_scene = "res://PlayerControllers/Abilities/DEAbilities/Defuser/Defuser.tscn"
 var defuse_ui: DEUI
 var defuse_win_sound : AudioStreamPlayer
@@ -72,7 +64,6 @@ func _ready() -> void:
 	# Instance all UI elements exactly like in DM and TD
 	defuse_ui = defuse_ui_scene.instantiate()
 	add_child(defuse_ui)
-	
 	
 	spectator_mode = SPECTATOR_MODE.instantiate()
 	add_child(spectator_mode)
@@ -170,24 +161,21 @@ func _toggle_barriers(is_on: bool):
 	
 func reset_round() -> void:
 	if not multiplayer.is_server(): return
-	
-	# Check for halftime swap BEFORE spawning!
-	if rounds_played == max_rounds/2 and not half_time_reached:
-		half_time_reached = true
-		_perform_halftime_swap()
-		
 	spawn_bomb_pickup(bomb_spawn_point.global_position)
 	
 	if is_instance_valid(active_bomb):
 		active_bomb.queue_free()
 	active_bomb = null
 	_toggle_barriers.rpc(true)
-	
+	# 1. Clear any surviving players or leftover bodies from the previous round
 	for child in get_children():
 		if child is Merc:
 			child.queue_free()
 			
+	# 2. Spawn everyone for the new round
 	spawn_teams_for_new_round()
+	
+	# 3. Put us back into the Freeze phase
 	_set_state(RoundState.FREEZE, freeze_duration)
 
 # --- ABSTRACT MAP FUNCTION IMPLEMENTATIONS ---
@@ -283,7 +271,6 @@ func _spawn_individual_for_round(player_id: int, team: String) -> void:
 func submit_team_choice(team_name: String) -> void:
 	var sender_id = multiplayer.get_remote_sender_id()
 	master_team_database[sender_id] = team_name
-	update_client_team_databases.rpc(master_team_database)
 	
 	if team_name == "spectator":
 		client_enable_spectator.rpc_id(sender_id)
@@ -294,33 +281,10 @@ func submit_team_choice(team_name: String) -> void:
 			players_alive_this_round.append(sender_id)
 			check_win_conditions()
 
-@rpc("authority", "call_local", "reliable")
-func update_client_team_databases(new_database: Dictionary) -> void:
-	master_team_database = new_database
-
-func _perform_halftime_swap() -> void:
-	print("--- HALF TIME: SWAPPING SIDES ---")
-	
-	# 1. Swap the scores so physical players keep their points
-	var temp_score = attackers_score
-	attackers_score = defenders_score
-	defenders_score = temp_score
-	_sync_scores.rpc(attackers_score, defenders_score)
-	
-	# 2. Swap everyone's team
-	for peer_id in master_team_database.keys():
-		if master_team_database[peer_id] == "red":
-			master_team_database[peer_id] = "blue"
-		elif master_team_database[peer_id] == "blue":
-			master_team_database[peer_id] = "red"
-			
-	# 3. Broadcast the new teams to all clients
-	update_client_team_databases.rpc(master_team_database)
-
 # Called by the server when the player finishes the plant animation
 func spawn_real_bomb(planter_id: int, plant_spot: Vector3, surface_normal: Vector3) -> void:
 	if not multiplayer.is_server(): return
-
+	print('BOMB HERE PLEASE', plant_spot)
 	# Package the spawn location data
 	var spawn_data = {
 		"pos": plant_spot,
@@ -417,8 +381,6 @@ func check_win_conditions() -> void:
 			_round_won("red")
 
 func _round_won(winning_team: String) -> void:
-	rounds_played += 1 # Increment rounds played
-	
 	if winning_team == "red":
 		attackers_score += 1
 	elif winning_team == "blue":
@@ -426,72 +388,28 @@ func _round_won(winning_team: String) -> void:
 		
 	_sync_scores.rpc(attackers_score, defenders_score)
 	
-	# Play ROUND win/lose sounds
+	# Loop through all players to send the specific win/lose sounds
 	for player_id in master_team_database:
 		var player_team = master_team_database[player_id]
+		
+		# Make sure we only play sounds for active players, not spectators
 		if player_team in ["red", "blue"]:
 			if player_team == winning_team:
 				_play_win_sound.rpc_id(player_id)
 			else:
 				_play_lose_sound.rpc_id(player_id)
 	
-	# CHECK FOR MATCH END (Win Limit Reached OR Max Rounds Played)
-	if attackers_score >= rounds_to_win or defenders_score >= rounds_to_win or rounds_played >= max_rounds:
-		var match_winner = "tie"
-		if attackers_score > defenders_score: match_winner = "red"
-		elif defenders_score > attackers_score: match_winner = "blue"
-		
-		print("Match Over! Winner: ", match_winner.capitalize())
-		is_match_active = false # Stops the _process loop timer
-		_start_match_over_sequence(match_winner)
-		return # Exit here so we don't start the ROUND_END state!
+	# Check for Match Win
+	if attackers_score >= rounds_to_win or defenders_score >= rounds_to_win:
+			print(winning_team.capitalize() + " win the match!")
+			is_match_active = false # Stop the timer
+			_game_ended() # Call the abstract Map function to notify the Lobby
+			return # Exit the function so we don't start the ROUND_END state
 		
 	_set_state(RoundState.ROUND_END, end_duration)
 
-# --- NEW: POST MATCH SEQUENCE ---
-func _start_match_over_sequence(winner: String) -> void:
-	# Tell all clients to show the end screen / voting UI
-	show_match_winner_and_start_vote.rpc(winner)
-	
-	# Wait exactly 30 seconds for map voting
-	await get_tree().create_timer(match_end_wait).timeout
-	
-	# Tell the lobby the match is completely finished
-	_game_ended()
-
-@rpc("authority", "call_local", "reliable")
-func show_match_winner_and_start_vote(winner: String) -> void:
-	# 1. FIX: Tell all clients to stop their _process loop!
-	is_match_active = false 
-	
-	# 2. Force the UI to visually lock and display the end state
-	if defuse_ui:
-		# Optional: Lock the timer at 0 so it doesn't show random leftover time
-		defuse_ui.update_timer(0.0, RoundState.ROUND_END) 
-		
-		if defuse_ui.state_label:
-			if winner == "tie":
-				defuse_ui.state_label.text = "MATCH TIED"
-			else:
-				defuse_ui.state_label.text = winner.to_upper() + " WINS MATCH!"
-			
-	# Trigger your Map Voting UI here if you have one
-	print("Match over! Showing voting screen...")
-
 @rpc("authority", "call_local", "reliable")
 func _sync_scores(a_score: int, d_score: int) -> void:
-#	var my_id = multiplayer.get_unique_id()
-#	var my_kills = 0
-#	var top_kills = 0
-#	
-#	if leaderboard and leaderboard.stats:
-#		if leaderboard.stats.has(my_id):
-#			my_kills = leaderboard.stats[my_id].get("kills", 0)
-#		for player_data in leaderboard.stats.values():
-#			var kills = player_data.get("kills", 0)
-#			if kills > top_kills:
-#				top_kills = kills
-	
 	attackers_score = a_score
 	defenders_score = d_score
 	if defuse_ui:
@@ -508,7 +426,6 @@ func _on_local_team_locked_in(chosen_team: String):
 	team_select_ui.hide()
 	has_picked_team_locally = true 
 	submit_team_choice.rpc_id(1, chosen_team)
-	
 
 @rpc("authority", "call_remote", "reliable")
 func start_char_select():
