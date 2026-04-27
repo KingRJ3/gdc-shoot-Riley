@@ -5,7 +5,7 @@ var current_state = State.GAS
 
 @export var burn_duration: float = 8.0     # How long it stays on fire
 @export var spread_delay: float = 0.2      # Time before it lights neighbors
-@export var fire_damage: float = 0.5      # Damage per second
+@export var fire_damage: float = 0.05      # Damage per second
 const BURNING_EFFECT = preload("res://PlayerControllers/Abilities/ArsonFlamethrower/Supplemental/BurningEffect.tscn")
 
 @onready var area_3d: Area3D = $Area3D               # The "Damage/Detection" area
@@ -87,4 +87,4 @@ func RefreshAfterburn(bodypath):
 	if body != null:
 		if body.has_node("StatusEffect_Burn"):
 			var afterburn = body.get_node("StatusEffect_Burn")
-			afterburn.renewBurnBetter(2, 15) #Run on everyone, for the purposes of sync
+			afterburn.renewBurnBetter(1, 10) #Run on everyone, for the purposes of sync
