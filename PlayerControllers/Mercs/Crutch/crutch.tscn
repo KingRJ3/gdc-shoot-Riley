@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bpgdy8e5xjpfc" path="res://PlayerControllers/Mercs/Crutch/textures/Ushanka1Mtl_baseColor.png" id="6_038mh"]
 [ext_resource type="PackedScene" uid="uid://b36uuh56645j5" path="res://PlayerControllers/Abilities/Jump/JumpAbility.tscn" id="6_f21af"]
 [ext_resource type="PackedScene" uid="uid://dk1uiyodtwjio" path="res://PlayerControllers/Abilities/WallBuilder/turretplacer.tscn" id="6_mofov"]
+[ext_resource type="PackedScene" uid="uid://cuqfn6bvsi10e" path="res://PlayerControllers/Abilities/PassiveHeal/passive_heal.tscn" id="6_v83g2"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lwjk5"]
 radius = 0.38378906
@@ -69,7 +70,7 @@ speed = 0.9
 visual_body = NodePath("crutch")
 visual_hand = NodePath("Hand")
 camera_fov = 110.0
-abilities = [NodePath("SprintAbility"), NodePath("HPSMG"), NodePath("JumpAbility"), NodePath("wallplacer")]
+abilities = [NodePath("SprintAbility"), NodePath("HPSMG"), NodePath("JumpAbility"), NodePath("wallplacer"), NodePath("Passive Heal")]
 metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
 
 [node name="SprintAbility" parent="." unique_id=699710493 instance=ExtResource("2_mofov")]
@@ -130,7 +131,11 @@ damage = -2.0
 AbilityDescription = "heal teammates. hurt enemies."
 
 [node name="wallplacer" parent="." unique_id=1651484999 instance=ExtResource("6_mofov")]
+AbilityDescription = "place destructible walls"
 trigger_key = "2"
+
+[node name="Passive Heal" parent="." unique_id=971415938 instance=ExtResource("6_v83g2")]
+health_per_second = 4.0
 
 [node name="crutch" type="Node3D" parent="." unique_id=1678716086]
 transform = Transform3D(0.57, 0, 0, 0, 0.54, 0, 0, 0, 0.54, 0, 0.635, -0.05389023)
