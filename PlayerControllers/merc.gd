@@ -382,8 +382,7 @@ func _on_ability_spawned(new_ability: Ability) -> void:
 	# 4. Refresh local UI
 	if abilites_ui and abilites_ui.has_method("generate_ui"):
 		abilites_ui.generate_ui(self)
-		
-	new_ability.activate()
+	
 
 # Keep your remove logic relatively the same, just update the array cleanup
 func remove_ability(ability: Ability) -> void:

@@ -17,9 +17,11 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if !is_multiplayer_authority(): return
+	visual_hand.hide()
 	if !currently_active: return
 	#if !defuse_gamemode: return
 	if planted: return
+	
 	
 	# --- RIGHT CLICK TO DROP ---
 	if Input.is_action_just_pressed("right_click"): # Make sure this action is in your Input Map!

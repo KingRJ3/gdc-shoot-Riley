@@ -38,7 +38,7 @@ func _on_body_entered(body: Node3D) -> void:
 		if consumable:
 			_sync_destroy.rpc()
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func _sync_destroy() -> void:
 	hide()
 	collision_shape_3d.set_deferred("disabled", true)
