@@ -76,30 +76,41 @@ func _physics_process(delta: float):
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	#print(body)
 	#print(get_multiplayer_authority())
+	var DoDamage = true
 	if is_multiplayer_authority():
 		if body != null and body != self and body is Merc:
-			if body.name.to_int() != multiplayer.get_unique_id():
-				if !DoneDamage:
+			#if body.name.to_int() != multiplayer.get_unique_id():
+			if body.get_multiplayer_authority() != self.get_multiplayer_authority():
+				
+				if body.player_teams.has(self.get_multiplayer_authority()):
+					var attacker_team = body.player_teams[self.get_multiplayer_authority()]
+					# 3. Filter friendly fire
+					if attacker_team == body.team and body.team != "default":
+						DoDamage = false
+				
+				if !DoneDamage and DoDamage:
 					DoneDamage = true
 					#print("Doing " + str(ParticleDamage) + " damage.")
 					var damage_mult = 1.0
 					if life_percent:
 						damage_mult = remap(life_percent, 1.0, 0.0, 1.0, 0.5)
-					body.take_damage.rpc_id(body.name.to_int(), ParticleDamage*damage_mult)
+					body.take_damage.rpc_id(body.get_multiplayer_authority(), ParticleDamage*damage_mult)
 					if body.has_node("StatusEffect_Burn"):
 						RefreshAfterburn(body.get_path())
 						rpc("RefreshAfterburn", body.get_path())
 					else:
-						GiveAfterburn(body.get_path())
-						rpc("GiveAfterburn", body.get_path())
+						GiveAfterburn(body.get_path(), self.get_multiplayer_authority())
+						rpc("GiveAfterburn", body.get_path(), self.get_multiplayer_authority())
 
 @rpc("any_peer", "reliable")
-func GiveAfterburn(bodypath): #Run on everyone, for the purposes of sync
+func GiveAfterburn(bodypath, ownerID): #Run on everyone, for the purposes of sync
 	var body = get_node_or_null(bodypath)
 	if body != null:
 		var afterburn = BURNING_EFFECT.instantiate()
 		afterburn.name = "StatusEffect_Burn"
 		#afterburn.set_multiplayer_authority(body.name.to_int())
+		#if is_multiplayer_authority():
+		afterburn.set_multiplayer_authority(ownerID)
 		body.add_child(afterburn)
 
 @rpc("any_peer", "reliable")

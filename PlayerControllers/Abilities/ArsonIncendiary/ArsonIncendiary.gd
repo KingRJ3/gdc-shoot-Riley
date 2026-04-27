@@ -19,7 +19,7 @@ var holding_about_to_throw : bool = false
 var thrown : bool = false
 
 func _ready() -> void:
-	dequip()
+	hide()
 
 func _process(_delta: float) -> void:
 	if !is_multiplayer_authority(): return
@@ -47,7 +47,7 @@ func shoot():
 	await anim_player.animation_finished
 	
 	#spawnNLaunch(hand.global_position, -merc.camera.global_basis.z * throw_strength)
-	rpc("spawnNLaunch", hand.global_position, -merc.camera.global_basis.z * throw_strength, multiplayer.get_unique_id())
+	rpc("spawnNLaunch", hand.global_position, -merc.camera.global_basis.z * throw_strength, merc.velocity, self.get_multiplayer_authority())
 	equip() # we are re-equipping heheheha
 	#hand.set_deferred("remote_path", null)
 	#grenade.freeze = false
@@ -55,10 +55,11 @@ func shoot():
 	#grenade.apply_central_impulse(-merc.camera.global_basis.z * throw_strength)
 
 @rpc("any_peer", "call_local", "reliable")
-func spawnNLaunch(starting_pos, vectorImpulse, ownerID):
+func spawnNLaunch(starting_pos, vectorImpulse, velocity, ownerID):
 	print("Spawning n launching!")
 	var incendiary = INCENDIARY_INSTANCE.instantiate()
 	incendiary.set_multiplayer_authority(ownerID)
+	incendiary.name = ("IncendiaryGrenade_" + str(ownerID))
 	get_tree().root.add_child(incendiary)
 	incendiary.global_position = starting_pos
 	incendiary.apply_central_impulse(vectorImpulse)

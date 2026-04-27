@@ -226,25 +226,21 @@ _data = {
 }
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_seah1"]
-properties/0/path = NodePath("Grenade:position")
-properties/0/spawn = true
-properties/0/replication_mode = 1
 
 [node name="ArsonIncendiary" type="Node3D" unique_id=1600695075]
 script = ExtResource("1_1dgpb")
 
 [node name="Grenade" type="RigidBody3D" parent="." unique_id=2084771126]
-transform = Transform3D(1, 0, 0, 0, 0.94833475, 0.31727147, 0, -0.31727147, 0.94833475, 0.42329928, -0.23782785, -0.66948545)
 top_level = true
 collision_layer = 0
-collision_mask = 3
+collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Grenade" unique_id=939373278]
 transform = Transform3D(1, -1.1920929e-07, 1.4901161e-08, 0, 1, -1.4901161e-08, 0, 0, 1, 1.4901161e-07, -0.020019472, 1.1920929e-07)
 shape = SubResource("CapsuleShape3D_seah1")
 
 [node name="Incendiary2" parent="Grenade" unique_id=1440469924 instance=ExtResource("2_xs34p")]
-transform = Transform3D(-0.064691305, -0.0008594734, -0.006268321, -0.0002704938, 0.06471433, -0.00608163, 0.006321179, -0.0060266657, -0.0644106, -0.004298568, -0.03716053, -0.00364542)
+transform = Transform3D(-0.064691305, -0.0008594734, -0.006268321, -0.0002704938, 0.06471433, -0.0060816295, 0.006321179, -0.006026665, -0.0644106, -0.004298568, -0.03716053, -0.00364542)
 
 [node name="Incendiary" parent="Grenade/Incendiary2" index="0" unique_id=98659808]
 surface_material_override/0 = ExtResource("3_l3mhk")
@@ -252,6 +248,7 @@ surface_material_override/1 = ExtResource("4_std12")
 surface_material_override/2 = ExtResource("5_5mc0a")
 
 [node name="ExplosionRadius" type="Area3D" parent="Grenade" unique_id=83263472]
+collision_layer = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Grenade/ExplosionRadius" unique_id=1608404638]
 transform = Transform3D(1.4343741, -5.9604645e-08, 2.9802322e-08, 0, 1.4343741, 0, -1.4901161e-08, 1.4901161e-08, 1.4343741, 0, 0, 0)
@@ -259,6 +256,7 @@ shape = SubResource("SphereShape3D_ypg12")
 debug_color = Color(0.77254903, 0, 0.09803922, 0.7921569)
 
 [node name="CPUParticles3D" type="CPUParticles3D" parent="Grenade" unique_id=800159809]
+layers = 0
 emitting = false
 amount = 30
 lifetime = 3.0

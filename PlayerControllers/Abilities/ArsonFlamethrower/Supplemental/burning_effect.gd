@@ -36,8 +36,12 @@ func _ready():
 
 func _on_tick():
 	if target and target.has_method("take_damage"):
+		#print("My target is: " + str(target))
 		if is_multiplayer_authority():
-			target.take_damage(damage_per_tick*AfterburnDuration)
+			#print("Mult Auth!")
+			#print(damage_per_tick*AfterburnDuration)
+			target.take_damage.rpc_id(target.get_multiplayer_authority(), damage_per_tick*AfterburnDuration)
+			#target.take_damage(damage_per_tick*AfterburnDuration)
 
 func renewBurn():
 	AfterburnDuration = AfterburnDuration + 0.002

@@ -11,6 +11,9 @@ radius = 0.09082031
 height = 0.4013672
 
 [node name="IncendiaryInstance" type="RigidBody3D" unique_id=1495288775]
+collision_layer = 67108865
+contact_monitor = true
+max_contacts_reported = 1
 script = ExtResource("1_w8lmh")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1015682497]
@@ -24,5 +27,7 @@ transform = Transform3D(-0.064691305, -0.00085947354, -0.006268321, -0.000270493
 surface_material_override/0 = ExtResource("3_ex7v6")
 surface_material_override/1 = ExtResource("4_iynjq")
 surface_material_override/2 = ExtResource("5_q4bds")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
 
 [editable path="CollisionShape3D/Incendiary2"]

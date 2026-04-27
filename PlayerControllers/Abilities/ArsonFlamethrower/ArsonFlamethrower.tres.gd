@@ -144,11 +144,16 @@ func shoot():
 		spawn_flame_puff()
 	ammo = ammo - 1
 
+var puff_count: int = 0 #For counting how many particles are being spawned for sync.
 func spawn_flame_puff():
+	puff_count += 1
 	var puff = FT_PARTICLE.instantiate()
 	
 	puff.ParticleDamage = damage
 	# 1. Start at the nozzle
+	puff.set_multiplayer_authority(self.get_multiplayer_authority())
+	var puffname = "FT_Particle_" + str(self.get_multiplayer_authority()) + "_" + str(puff_count)
+	puff.name = puffname
 	get_tree().root.add_child(puff) # Spawn in world root
 	puff.global_position = barrel_exit.global_position
 	puff.ParticleDamage = damage
@@ -172,16 +177,19 @@ func spawn_flame_puff():
 	
 	# 5. Send it to the puff script
 	puff.velocity = final_velocity
-	
-	rpc("spawn_rpc_flame_puffs", barrel_exit.global_position, final_velocity)
+	#print("I'm the owner: " + puff.name)
+	rpc("spawn_rpc_flame_puffs", barrel_exit.global_position, final_velocity, self.get_multiplayer_authority(), puffname)
 
 @rpc("any_peer", "reliable")
-func spawn_rpc_flame_puffs(starting_pos, velocity):
+func spawn_rpc_flame_puffs(starting_pos, velocity, ID, nametoset):
 	var puff = FT_PARTICLE.instantiate()
+	puff.set_multiplayer_authority(ID)
+	puff.name = nametoset
 	get_tree().root.add_child(puff)
 	#puff.global_position = starting_pos
 	puff.global_position = barrel_exit.global_position
 	puff.velocity = velocity
+	#print("I'm the others: " + puff.name)
 
 func spawn_flame_dmgbox():
 	var puff = FT_PARTICLE.instantiate()
