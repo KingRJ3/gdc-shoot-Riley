@@ -59,6 +59,10 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_f5gf6")
 
+[sub_resource type="TorusMesh" id="TorusMesh_v83g2"]
+rings = 8
+ring_segments = 6
+
 [node name="Player" type="CharacterBody3D" unique_id=1167000142 node_paths=PackedStringArray("camera", "visual_body", "abilities")]
 collision_layer = 2
 script = ExtResource("1_v83g2")
@@ -121,10 +125,6 @@ offset_right = -2.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Hand" type="CSGSphere3D" parent="." unique_id=427775565]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25360978, 0.23060426, -0.48329479)
-radius = 0.09193548
-
 [node name="HPSMG" parent="." unique_id=1600695075 instance=ExtResource("4_7moma")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.23129117, 0.58409363, 0.24758685)
 damage = -2.0
@@ -156,3 +156,7 @@ transform = Transform3D(100, 0, 0, 0, -100.000015, -1.5099583e-05, 0, 1.5099583e
 material_override = SubResource("StandardMaterial3D_mofov")
 mesh = SubResource("ArrayMesh_my7go")
 skeleton = NodePath("")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1647378939]
+transform = Transform3D(0.06, 0, 0, 0, 0.037103683, 0.04715206, 0, -0.04715206, 0.037103683, 0, 0.52236015, -0.36766684)
+mesh = SubResource("TorusMesh_v83g2")

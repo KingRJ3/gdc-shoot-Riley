@@ -37,10 +37,8 @@ func set_ammo(value):
 	label.text = str(get_parent().bolts)
 	if ammo <= 0:
 		$boltgun/Cube_002.hide()
-		$VisualHand/boltgun/Cube_002.hide()
 	else:
 		$boltgun/Cube_002.show()
-		$VisualHand/boltgun/Cube_002.show()
 
 func _ready() -> void:
 	fire_attack_speed.wait_time = fire_speed
