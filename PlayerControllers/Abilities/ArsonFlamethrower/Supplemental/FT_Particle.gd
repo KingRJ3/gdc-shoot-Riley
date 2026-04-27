@@ -87,10 +87,10 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 						damage_mult = remap(life_percent, 1.0, 0.0, 1.0, 0.5)
 					body.take_damage.rpc_id(body.name.to_int(), ParticleDamage*damage_mult)
 					if body.has_node("StatusEffect_Burn"):
-						RefreshAfterburn(body)
+						RefreshAfterburn(body.get_path())
 						rpc("RefreshAfterburn", body.get_path())
 					else:
-						GiveAfterburn(body)
+						GiveAfterburn(body.get_path())
 						rpc("GiveAfterburn", body.get_path())
 
 @rpc("any_peer", "reliable")

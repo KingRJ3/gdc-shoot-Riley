@@ -100,6 +100,20 @@ tracks/1/keys = {
 "update": 0,
 "values": [Vector3(0.3702678, 1.6343747, 0.11917809), Vector3(-0.6835726, 0.18785527, -0.46102214), Vector3(-0.3228509, 0, 0)]
 }
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"finish_equip_anim"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_ypg12"]
 resource_name = "hold_to_throw"
@@ -217,7 +231,7 @@ properties/0/replication_mode = 1
 script = ExtResource("1_1dgpb")
 
 [node name="Grenade" type="RigidBody3D" parent="." unique_id=2084771126]
-transform = Transform3D(1, 0, 0, 0, 0.9192178, -0.39374945, 0, 0.39374945, 0.9192178, 0.42329928, -0.06399463, -0.66948545)
+transform = Transform3D(1, 0, 0, 0, 0.94833475, 0.31727147, 0, -0.31727147, 0.94833475, 0.42329928, -0.23782785, -0.66948545)
 top_level = true
 collision_layer = 0
 collision_mask = 3

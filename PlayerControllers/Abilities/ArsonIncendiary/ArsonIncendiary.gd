@@ -43,12 +43,28 @@ func shoot():
 	rpc("sync_animation", "throw")
 	await anim_player.animation_finished
 	
-	var incendiary = INCENDIARY_INSTANCE.instance()
-	
-	hand.set_deferred("remote_path", null)
-	grenade.freeze = false
-	grenade.linear_velocity = Vector3.ZERO
-	grenade.apply_central_impulse(-merc.camera.global_basis.z * throw_strength) 
+	#spawnNLaunch(hand.global_position, -merc.camera.global_basis.z * throw_strength)
+	rpc("spawnNLaunch", hand.global_position, -merc.camera.global_basis.z * throw_strength, multiplayer.get_unique_id())
+	equip() # we are re-equipping heheheha
+	#hand.set_deferred("remote_path", null)
+	#grenade.freeze = false
+	#grenade.linear_velocity = Vector3.ZERO
+	#grenade.apply_central_impulse(-merc.camera.global_basis.z * throw_strength)
+
+@rpc("any_peer", "call_local", "reliable")
+func spawnNLaunch(starting_pos, vectorImpulse, ownerID):
+	print("Spawning n launching!")
+	var incendiary = INCENDIARY_INSTANCE.instantiate()
+	incendiary.set_multiplayer_authority(ownerID)
+	get_tree().root.add_child(incendiary)
+	incendiary.global_position = starting_pos
+	incendiary.apply_central_impulse(vectorImpulse)
+	var spin_power = 8.0
+	incendiary.angular_velocity = -merc.camera.global_basis.x * spin_power
+	#incendiary.apply_torque_impulse(Vector3(10.0, 0, 0))
+	#var spin_strength = 5.0 
+	#var pitch_axis = -incendiary.global_basis.x 
+	#incendiary.apply_torque_impulse(pitch_axis * spin_strength)
 
 func equip():
 	show()
@@ -58,6 +74,10 @@ func equip():
 		anim_player.queue("idle")
 	else:
 		hide()
+		show_self.rpc(false)
+
+func finish_equip_anim():
+	thrown = false
 
 @rpc("any_peer","call_remote","reliable")
 func show_self(vis : bool):
