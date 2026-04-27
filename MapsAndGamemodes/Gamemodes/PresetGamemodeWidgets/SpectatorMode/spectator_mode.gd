@@ -49,6 +49,7 @@ func _on_left_pressed() -> void:
 	if players_to_watch.is_empty(): return
 	
 	# Safely wraps the index to the end if we go below 0
+	players_to_watch[idx].visual_body.show()
 	idx = (idx - 1 + players_to_watch.size()) % players_to_watch.size()
 	switch_player_view()
 
@@ -59,7 +60,7 @@ func switch_player_view() -> void:
 	# Switch the camera
 	if is_instance_valid(target) and target.camera:
 		target.camera.make_current()
-		
+		target.visual_body.hide()
 	# Look up their name in the database based on their node name (peer ID)
 	var pid = target.name.to_int()
 	if ServerDatabase.Players.has(pid):

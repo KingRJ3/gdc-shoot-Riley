@@ -23,6 +23,8 @@ var master_team_database: Dictionary = {}
 var master_character_database: Dictionary = {}
 var players_alive_this_round: Array[int] = []
 
+
+var leaderboard_scene = preload("res://MapsAndGamemodes/Gamemodes/de/LeaderBoardDE.tscn")
 var defuse_ui_scene = preload("res://MapsAndGamemodes/Gamemodes/de/DefuseUI.tscn")
 var char_select_scene = preload("res://MapsAndGamemodes/Gamemodes/PresetGamemodeWidgets/CharacterSelect/CharacterSelect.tscn")
 var team_select_scene = preload("res://MapsAndGamemodes/Gamemodes/dm/deathmatch side choice button.tscn")
@@ -31,6 +33,7 @@ const DEFUSE_LOSE_SOUND = preload("res://MapsAndGamemodes/Gamemodes/de/DefuseLos
 const DEFUSE_WIN_SOUND = preload("res://MapsAndGamemodes/Gamemodes/de/DefuseWinSound.tscn")
 const SPECTATOR_MODE = preload("res://MapsAndGamemodes/Gamemodes/PresetGamemodeWidgets/SpectatorMode/SpectatorMode.tscn")
 
+var leaderboard
 var defuser_node_scene = "res://PlayerControllers/Abilities/DEAbilities/Defuser/Defuser.tscn"
 var defuse_ui: DEUI
 var defuse_win_sound : AudioStreamPlayer
@@ -64,6 +67,7 @@ func _ready() -> void:
 	# Instance all UI elements exactly like in DM and TD
 	defuse_ui = defuse_ui_scene.instantiate()
 	add_child(defuse_ui)
+	
 	
 	spectator_mode = SPECTATOR_MODE.instantiate()
 	add_child(spectator_mode)
@@ -410,6 +414,18 @@ func _round_won(winning_team: String) -> void:
 
 @rpc("authority", "call_local", "reliable")
 func _sync_scores(a_score: int, d_score: int) -> void:
+#	var my_id = multiplayer.get_unique_id()
+#	var my_kills = 0
+#	var top_kills = 0
+#	
+#	if leaderboard and leaderboard.stats:
+#		if leaderboard.stats.has(my_id):
+#			my_kills = leaderboard.stats[my_id].get("kills", 0)
+#		for player_data in leaderboard.stats.values():
+#			var kills = player_data.get("kills", 0)
+#			if kills > top_kills:
+#				top_kills = kills
+	
 	attackers_score = a_score
 	defenders_score = d_score
 	if defuse_ui:

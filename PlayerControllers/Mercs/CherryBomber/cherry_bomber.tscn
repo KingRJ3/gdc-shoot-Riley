@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://b65fa3kdr05md" path="res://PrototypeAssets/PrototypeCrosshairsAssets/PNG/White/crosshair002.png" id="6_r51g3"]
 [ext_resource type="Script" uid="uid://obx2ld1ir2qw" path="res://PlayerControllers/Abilities/Remote C4/remote_c4.gd" id="7_8qkhc"]
 [ext_resource type="PackedScene" uid="uid://bl7devu4xl58p" path="res://PlayerControllers/Abilities/Remote C4/C4.glb" id="8_uvt7h"]
-[ext_resource type="Script" path="res://PlayerControllers/Abilities/Remote C4/destructible_c4.gd" id="9_r51g3"]
+[ext_resource type="Script" uid="uid://hx31xruason3" path="res://PlayerControllers/Abilities/Remote C4/destructible_c4.gd" id="9_r51g3"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_amc3o"]
 resource_name = "Material.001"
@@ -1418,7 +1418,7 @@ visible = false
 shape = SubResource("BoxShape3D_r51g3")
 
 [node name="Doohicky" type="Node3D" parent="C4" unique_id=1747705607]
-transform = Transform3D(-0.4600466, 0.093597576, -0.8829473, 0.19936784, 0.9799247, 0, 0.86522174, -0.17603143, -0.46947142, 0.54, -0.33, -0.85)
+transform = Transform3D(-0.46004656, 0.093597576, -0.8829473, 0.19936784, 0.9799247, 0, 0.8652217, -0.17603143, -0.46947142, 0.54, -0.33, -0.85)
 visible = false
 
 [node name="Body" type="MeshInstance3D" parent="C4/Doohicky" unique_id=1592089141]
