@@ -5,7 +5,7 @@ var max_time_to_plant : float = 2.5
 var time_to_plant : float = 1.0
 
 @onready var plant_raycast: RayCast3D = $PlantRaycast
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var animation_player: AnimationPlayer = $buffer/AnimationPlayer
 @onready var hologram_mesh: Marker3D = $HologramMesh
 
 var planted : bool = false
