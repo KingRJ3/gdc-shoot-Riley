@@ -32,6 +32,7 @@ var Mercs : Dictionary [String, PackedScene] = {
 	'cheif' = load("res://PlayerControllers/Mercs/Halo/MasterChief.tscn"),
 	'CherryBomber' = load("res://PlayerControllers/Mercs/CherryBomber/cherry_bomber.tscn"),
 	'spiderman' = load("res://PlayerControllers/Mercs/Spiderman/SpiderMan.tscn"),
+	'Arson' = load("res://PlayerControllers/Mercs/Arson/Arson.tscn"),
 	'Tracker' = load("res://PlayerControllers/Mercs/Tracker/FirstPersonController.tscn"),
 	'Tech' = load("res://PlayerControllers/Mercs/Tech/Default/tech.tscn"),
 	'Crutch' = load("res://PlayerControllers/Mercs/Crutch/crutch.tscn"),

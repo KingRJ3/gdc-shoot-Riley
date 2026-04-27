@@ -29,7 +29,7 @@ func take_real_damage(damage):
 func _physics_process(delta):
 	if is_in_group("insmoke"):return
 	if targets.size() > 0 and !is_in_group("insmoke"):
-		if !targets[0].is_valid_instance():
+		if !targets[0].is_instance_valid():
 			targets.erase(0)
 		if !test_cast(targets[0]) and !$LockonTimer.is_stopped():
 			return

@@ -3,6 +3,7 @@ class_name Merc extends CharacterBody3D
 signal died(_self, killer_id: int) #Server will disable input on character
 ## @deprecated: Use `health_changed` and look for when `new < old`
 signal took_damage
+signal healed
 signal kill_confirmed(person_killed_id : int)
 signal health_changed(old: float, new: float)
 
@@ -480,7 +481,12 @@ func take_damage(damage: float):
 		if attacker_team == team and team != "default":
 			return # Block the damage!
 			
+	
+	if damage < 0:
+		healed.emit()
+	
 	# Apply damage if they pass the check
+	
 	health -= damage
 	
 	# TELL EVERYONE TO FLASH THIS PLAYER YELLOW

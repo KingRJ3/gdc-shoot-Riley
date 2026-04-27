@@ -10,8 +10,8 @@ bg_color = Color(0.81, 0.20411998, 0.097200006, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_nm107"]
 font = ExtResource("2_wepyk")
-outline_size = 2
-outline_color = Color(0, 0, 0, 1)
+font_size = 18
+font_color = Color(1, 1, 1, 0.4392157)
 
 [node name="Defuser" type="Node3D" unique_id=370528440]
 script = ExtResource("1_cnii5")
@@ -52,7 +52,6 @@ show_percentage = false
 layout_mode = 2
 text = "2.3090918"
 label_settings = SubResource("LabelSettings_nm107")
-horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="AudioStreamPlayer3D2" type="AudioStreamPlayer3D" parent="." unique_id=1649054577]

@@ -81,7 +81,7 @@ vertical_alignment = 1
 
 [node name="Time" type="Label" parent="HBoxContainer/VBoxContainer/PanelContainer" unique_id=860093040]
 layout_mode = 2
-text = "12:59"
+text = "0:00"
 label_settings = SubResource("LabelSettings_eeq32")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -93,14 +93,14 @@ size_flags_horizontal = 8
 
 [node name="DWins" type="Label" parent="HBoxContainer/VBoxContainer/PanelContainer/PanelContainer2" unique_id=2028578017]
 layout_mode = 2
-text = "2"
+text = "1"
 label_settings = SubResource("LabelSettings_ravbi")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="State" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=234974967]
 layout_mode = 2
-text = "TURRET PENIS 123456789"
+text = "ROUND STALLED"
 horizontal_alignment = 1
 vertical_alignment = 1
 
