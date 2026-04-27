@@ -59,7 +59,7 @@ func stop_defuse():
 @rpc("any_peer", "call_local", "reliable")
 func _request_defuse(bomb_path: NodePath):
 	if not multiplayer.is_server(): return
-	
+	$AudioStreamPlayer3D2.play()
 	# On a headless server, this will ALWAYS be the correct player ID
 	var defuser_id = multiplayer.get_remote_sender_id() 
 	

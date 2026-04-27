@@ -248,7 +248,7 @@ _data = {
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aenwx"]
 albedo_color = Color(0.1, 0.1, 0.1, 1)
 
-[node name="BoltGun" type="Node3D" unique_id=1600695075 node_paths=PackedStringArray("weapon_mesh", "raycasts", "visual_hand")]
+[node name="BoltGun" type="Node3D" unique_id=1600695075 node_paths=PackedStringArray("weapon_mesh", "raycasts")]
 script = ExtResource("1_76wo1")
 max_ammo = 1
 damage = 8.0
@@ -257,7 +257,6 @@ weapon_mesh = NodePath("boltgun")
 tilt_amount = 0.235
 raycasts = [NodePath("BulletRayCast")]
 AbilityDescription = "fire a tracking bolt into your opponent."
-visual_hand = NodePath("VisualHand")
 trigger_key = "2"
 
 [node name="TracerEffect" parent="." unique_id=1482231535 instance=ExtResource("2_nwyqb")]
